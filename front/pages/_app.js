@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import propTypes from 'prop-types';
 import '../styles/globals.scss';
+import wrapper from '../store/configureStore';
 
 const Ptop = ({ Component }) => {
     return (
@@ -19,4 +20,4 @@ Ptop.propTypes = {
     Component: propTypes.elementType.isRequired
 } 
 
-export default Ptop;
+export default wrapper.withRedux(Ptop);
