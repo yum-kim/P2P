@@ -1,9 +1,15 @@
 @import './constants/typography';
 @import './constants/colors';
+@import './constants/breakpoints';
 
 @import './base/reset';
+@import './base/globals';
 
 @import './mixins/text_style';
 @import './mixins/flexbox';
+@import './mixins/responsive';
+@import './mixins/position';
 
-@import './modules/buttons';
+@import './layout/grids';
+
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");

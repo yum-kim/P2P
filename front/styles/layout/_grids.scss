@@ -1,0 +1,94 @@
+/* 
+- columns : 그리드 기둥 수
+- unit: gutter를 제외한 그리드 기둥 너비
+- gutter: 간격이 몇인가
+*/
+
+/* 
+* MOBILE (<768px) --------------------------
+* fixture - sm (samll) (frefix. fixture라고 하는게 어떤건지 알 수 있음)
+* => 별명만 보면 모바일 혹은 데스크탑을 위한건지 바로 알 수 있게 영어로 fixture로 표현. 
+* => sm이 붙은건 모바일이라고 바로 인지할 수 있음!
+* # of columns - 4개
+* gutter - 20px
+* margin - 5px
+* container-size - 100% - (5px * 2)
+* 
+* TABLET (>=768px) --------------------------
+* fixture - md (medium)
+* # of columns - 12개
+* gutter - 20px
+* margin - 30px
+* container-size - 100% - (30px * 2)
+* max-container-size - 960px
+* 
+* DESKTOP (>=1200px) --------------------------
+* fixture - lg (large)
+* # of columns - 12
+* gutter - 20px
+* unit - 75px
+* margin - auto (viewport width 에서 container 뺀 양 옆 마진)
+* container-size - 1140px
+* max-container-size - 1140px
+*/
+
+@import '../constants/breakpoints';
+@import '../mixins/responsive';
+
+$gutter: 20px;
+
+$sm-columns: 4;
+$sm-margin: 5px;
+
+$md-columns: 12;
+$md-margin: 30px;
+$md-max-container: 960px + $md-margin * 2;
+
+$lg-columns: 12;
+$lg-unit: 75px; //unit이 고정된 경우 margin, max-container 값이 의미 없어짐.
+$lg-max-container: ($lg-unit + $gutter) * $lg-columns;
+
+.container {
+  width: 100%;
+  padding: 0 $sm-margin;
+  margin: 0 auto;
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  // 'col-' 로 시작하는 모든 클래스를 선택 (.col-sm-1, .col-md-2..)
+  [class^="col-"] {
+    padding: 0 $gutter / 2;
+  }
+
+  @for $i from 1 through $sm-columns {
+    .col-sm-#{$i} {
+      width: percentage($i / $sm-columns);
+    }
+  }
+
+  //md사이즈 부터는 미디어쿼리 적용 (기본은 sm)
+  @include responsive(T) {
+    max-width: $md-max-container;
+    padding: 0 $md-margin;
+
+    @for $i from 1 through $md-columns {
+      .col-md-#{$i} {
+        width: percentage($i / $md-columns);
+      }
+    }
+  }
+
+  @include responsive(D) {
+    max-width: $lg-max-container;
+    padding: 0;
+
+    @for $i from 1 through $lg-columns {
+      .col-lg-#{$i} {
+        width: ($lg-unit + $gutter) * $i;
+      }
+    }
+  }
+}

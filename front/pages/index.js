@@ -10,7 +10,9 @@ const Home = () => {
                 <title>P2P | main</title>
             </Head>
             <AppLayout>
-                <div>메인 피드 페이지</div>
+                <div>
+                    
+                </div>
             </AppLayout>
         </>
     );

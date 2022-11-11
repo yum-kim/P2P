@@ -1,0 +1,38 @@
+@import '../../styles/constants/colors';
+@import '../../styles/mixins/flexbox';
+@import '../../styles/layout/grids';
+
+.headerWrapper {
+    width: 100%;
+
+    .header {
+        @include flexbox(between);
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+
+        .logo {
+            width: 100px;
+            
+            img {
+                width: 100%;
+            }
+        }
+    
+        .search {
+            width: 30%;
+        }
+
+        .icon {
+            padding: 5px;
+
+            &:not(:last-child) {
+                margin-right: 0.5rem;
+            }
+        
+            i {
+                font-size: 1.7rem;
+            }
+        }
+    }
+}
+

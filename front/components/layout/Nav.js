@@ -1,11 +1,22 @@
 import React from 'react';
+import Link from "next/link";
+import styles from './Nav.module.scss';
 
 const Nav = () => {
     return (
-        <nav>
-            <a href="">nav1</a>
-            <a href="">nav2</a>
-            <a href="">nav3</a>
+        <nav className={styles.nav}>
+            <Link href="/">
+                <a>
+                    <i className="bi bi-house"></i>
+                    Feed
+                </a>
+            </Link>
+            <Link href="/">
+                <a>
+                    <i class="bi bi-box"></i>
+                    My page
+                </a>
+            </Link>
         </nav>
     );
 };
