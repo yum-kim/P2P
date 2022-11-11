@@ -1,13 +1,15 @@
 @import '../../styles/constants/colors';
 @import '../../styles/mixins/flexbox';
 @import '../../styles/mixins/text_style';
+@import '../../styles/modules/form';
 
 .search {
     @include flexbox();
 
-    padding: 10px 20px;
-    background: $background;
+    padding: 5px 20px;
+    // background: $white;
     border-radius: 10px;
+    border: 1px solid $tertiary;
     
     i {
         color: $secondary;
@@ -15,12 +17,6 @@
     }
 
     input {
-        @include text-style(14);
-
-        color: primary;
-        width: 100%;
-        height: 24px;
-        margin-left: 10px;
-
+        @extend %form-base;
     }
 }

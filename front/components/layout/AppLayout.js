@@ -6,11 +6,11 @@ import styles from './AppLayout.module.scss';
 
 const AppLayout = ({ children }) => {
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.app}>
             <Header />
-            <div className='container'>
+            <div className={`container ${styles.wrapper}`}>
                 <section className={styles.section}>
-                    <aside className={styles.aside}>
+                    <aside className={`lg-only ${styles.aside}`}>
                         <Nav />
                     </aside>
                     <main className={styles.main}>

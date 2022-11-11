@@ -4,11 +4,12 @@
 
 .headerWrapper {
     width: 100%;
-
+    background-color: $white;
+    box-shadow: -4px 2px 7px -1px rgba(176,176,176,0.5);
+    
     .header {
         @include flexbox(between);
-        padding: 2rem 0;
-        margin-bottom: 2rem;
+        padding: 1.5rem 0;
 
         .logo {
             width: 100px;
@@ -28,9 +29,16 @@
             &:not(:last-child) {
                 margin-right: 0.5rem;
             }
-        
+            
             i {
+                color: $secondary;
                 font-size: 1.7rem;
+            }
+
+            &:hover {
+                i {
+                    color: $black;
+                }
             }
         }
     }
