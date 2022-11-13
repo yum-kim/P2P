@@ -11,7 +11,7 @@ const Nav = () => {
                     Feed
                 </a>
             </Link>
-            <Link href="/">
+            <Link href="/myPage">
                 <a>
                     <i class="bi bi-box"></i>
                     My page

@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Header.module.scss';
+import Link from "next/link";
 import Button from '../common/Button';
 import Search from '../common/Search';
 
@@ -11,9 +12,11 @@ const Header = () => {
                     <div className='col-sm-4'>
                         <div className={styles.header}>
                             <h1 className={styles.logo}>
-                                <a href="/">
-                                    <img src='images/test-logo.png' alt='로고' />
-                                </a>
+                                <Link href='/'>
+                                    <a>
+                                        <img src='images/test-logo.png' alt='로고' />
+                                    </a>
+                                </Link>
                             </h1>
                             <div className={`lg-only ${styles.search}`}>
                                 <Search placeholder='search' />
