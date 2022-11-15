@@ -1,8 +1,7 @@
 import React from 'react';
-import styles from './Card.module.scss';
-import { symbol } from 'prop-types';
+import styles from './PostCard.module.scss';
 
-const Card = ({ children, ...rest }) => {
+const PostCard = ({ children, ...rest }) => {
     const { name, profileURL, fileURL, date } = rest;
     const profile = profileURL;
     const file = fileURL;
@@ -38,4 +37,4 @@ const Card = ({ children, ...rest }) => {
     );
 };
 
-export default Card;
+export default PostCard;

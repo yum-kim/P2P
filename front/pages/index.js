@@ -2,9 +2,11 @@
 import React from 'react';
 import Head from 'next/head';
 import AppLayout from "../components/layout/AppLayout";
-import Card from '../components/Card';
+import PostCard from '../components/component/PostCard';
+import PostForm from '../components/component/PostForm';
 
 const Home = () => {
+
     return (
         <>
             <Head>
@@ -12,7 +14,8 @@ const Home = () => {
             </Head>
             <AppLayout>
                 <div>
-                    <Card
+                    <PostForm />
+                    <PostCard
                         name='yumi'
                         profileURL='/images/myProfile.jpeg'
                         fileURL='/images/next.png'
@@ -20,14 +23,14 @@ const Home = () => {
                     >
                         next 쉽지않다 어렵도다ㄴ
                         살려줘ㅓㅓ
-                    </Card>
-                    <Card
+                    </PostCard>
+                    <PostCard
                         name='jemin'
                         profileURL='/images/profile.png'
                         date='2022.11.10 12:00:00'
                     >
                         오늘부터 부지런한 생활을 할테야!
-                    </Card>
+                    </PostCard>
                     
                 </div>
             </AppLayout>
