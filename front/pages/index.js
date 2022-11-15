@@ -30,9 +30,9 @@ const Home = () => {
                         </PostCard>
                     ))}
                 </div>
-
-                {isShowing ? <Message /> : ''}
-                
+                {/* <div>
+                    {isShowing ? <Message /> : ''}
+                </div> */}
             </AppLayout>
         </>
     );
