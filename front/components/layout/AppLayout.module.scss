@@ -5,9 +5,9 @@
 
 .app {
     @include column-flexbox(start);
-    height: 100vh;
+    min-height: 100vh;
     background-color: $background;
-    overflow-y: auto;
+    // overflow-y: auto;
 }
 
 .wrapper {
