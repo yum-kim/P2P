@@ -11,10 +11,10 @@ const Nav = () => {
                     Feed
                 </a>
             </Link>
-            <Link href="/myPage">
+            <Link href="/messenger">
                 <a>
                     <i class="bi bi-box"></i>
-                    My page
+                    Message 
                 </a>
             </Link>
         </nav>

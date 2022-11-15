@@ -1,0 +1,20 @@
+@import '../styles/constants/colors';
+@import '../styles/mixins/text_style';
+
+.messenger {
+    width: 100%;
+
+    h2 {
+        @include text-style(18, $tertiary);
+        margin-bottom: 1rem;
+    }
+}
+
+.message {
+    width: 100%;
+    max-height: calc(100vh - 122px);
+    border-radius: 10px;
+    border: 1px solid $border;
+    background-color: $white;
+    overflow-y: auto;
+}
