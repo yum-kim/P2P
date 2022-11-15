@@ -1,0 +1,22 @@
+@import '../../styles/constants/colors';
+@import '../../styles/mixins/text_style';
+@import '../../styles/modules/form';
+
+$heights : ('40','45','50','55','60','65','70','75','80','85','90','95','100');
+
+.textarea {
+    @extend %form-base;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: auto;
+
+    @each $height in $heights {
+        &[height='#{$height}'] {
+            height: #{$height}px;
+        }
+    }
+}
+
+.input {
+    @extend %form-base;
+}
