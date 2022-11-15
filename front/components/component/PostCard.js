@@ -6,8 +6,6 @@ const PostCard = ({ children, ...rest }) => {
     const profile = profileURL;
     const file = fileURL;
 
-    console.log(name, fileURL);
-
     return (
         <div className={styles.card}>
             <div className={styles.profile}>
