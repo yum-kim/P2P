@@ -5,7 +5,7 @@
     width: 100%;
 
     h2 {
-        @include text-style(18, $tertiary);
+        @include text-style(18, $black);
         margin-bottom: 1rem;
     }
 }
