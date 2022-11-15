@@ -13,7 +13,7 @@ const Nav = () => {
             </Link>
             <Link href="/messenger">
                 <a>
-                    <i class="bi bi-box"></i>
+                    <i class="bi bi-chat-left-text"></i>
                     Message 
                 </a>
             </Link>
