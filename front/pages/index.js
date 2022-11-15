@@ -5,9 +5,11 @@ import AppLayout from "../components/layout/AppLayout";
 import PostCard from '../components/component/PostCard';
 import PostForm from '../components/component/PostForm';
 import { useSelector } from 'react-redux';
+import Message from '../components/component/Message';
 
 const Home = () => {
     const { mainPosts } = useSelector((state) => state.post);
+    const { isShowing } = useSelector((state) => state.message);
 
     return (
         <>
@@ -28,6 +30,9 @@ const Home = () => {
                         </PostCard>
                     ))}
                 </div>
+
+                {isShowing ? <Message /> : ''}
+                
             </AppLayout>
         </>
     );

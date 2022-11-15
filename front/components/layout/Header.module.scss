@@ -29,6 +29,12 @@
 
         .icon {
             padding: 5px;
+            
+            &.active {
+                i {
+                    color: $black;
+                }
+            }
 
             &:not(:last-child) {
                 margin-right: 0.5rem;
