@@ -6,7 +6,7 @@ const Input = ({ type, ...rest }) => {
         <>
             {type == 'textarea' ?
                 <textarea className={styles.textarea} {...rest}></textarea>
-                : <input type="text" className={styles.input} {...rest} />
+                : <input type={type} className={styles.input} {...rest} />
             }
         </>
     );
