@@ -5,12 +5,16 @@ import Button from '../common/Button';
 import Search from '../common/Search';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleMessage } from '../../reducers/message';
+import { logoutAction } from '../../reducers/user';
 
 const Header = () => {
     const { isShowing } = useSelector((state) => state.message);
     const dispatch = useDispatch();
     const onClickToggleMsg = () => {
         dispatch(toggleMessage(!isShowing));
+    }
+    const onClickLogout = () => {
+        dispatch(logoutAction());
     }
 
     return (
@@ -36,7 +40,7 @@ const Header = () => {
                                 <button className={styles.icon}>
                                     <i class="bi bi-bell"></i>
                                 </button>
-                                <button className={styles.icon}>
+                                <button className={styles.icon} onClick={onClickLogout}>
                                     <i class="bi bi-box-arrow-right"></i>
                                 </button>
                             </div>
