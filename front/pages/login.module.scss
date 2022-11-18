@@ -1,0 +1,42 @@
+@import '../styles/constants/colors';
+@import '../styles/mixins/text_style';
+@import '../styles/mixins/flexbox';
+
+.login {
+    @include column-flexbox();
+
+    width: 400px;
+    height: 100vh;
+    
+    .logo {
+        width: 150px;
+        margin-bottom: 2rem;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .loginWrapper {
+        width: 100%;
+
+        input {
+            height: 34px;
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        button {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+    
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: $tertiary;
+            margin: 1.3rem 0;
+        }
+
+    }
+}
