@@ -9,7 +9,6 @@ import Message from '../components/component/Message';
 
 const Home = () => {
     const { mainPosts } = useSelector((state) => state.post);
-    const { isShowing } = useSelector((state) => state.message);
 
     return (
         <>
@@ -30,9 +29,6 @@ const Home = () => {
                         </PostCard>
                     ))}
                 </div>
-                {/* <div>
-                    {isShowing ? <Message /> : ''}
-                </div> */}
             </AppLayout>
         </>
     );
