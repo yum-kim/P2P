@@ -1,0 +1,47 @@
+@import '../styles/constants/colors';
+@import '../styles/mixins/flexbox';
+@import '../styles/mixins/text_style';
+
+.signup {
+    @include column-flexbox();
+    
+    width: 400px;
+    height: 100vh;
+    margin: 0 auto;
+    
+    .logo {
+        width: 150px;
+        margin-bottom: 2rem;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .signupWrapper {
+        width: 100%;
+
+        .form {
+            input {
+                height: 34px;
+                margin-bottom: 1rem;
+                margin-top: 0.5rem;
+            }
+            
+            margin-bottom: 2rem;
+
+        }
+
+        .login {
+            p {
+                @include text-style(14, $secondary);
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        button {
+            width: 100%;
+        }
+    }
+
+}
