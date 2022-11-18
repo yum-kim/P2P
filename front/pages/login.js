@@ -6,6 +6,7 @@ import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import { useDispatch } from 'react-redux';
 import { loginAction } from '../reducers/user';
+import Link from 'next/link';
 
 const Login = () => {
     const [email, setEmail] = useState();
@@ -42,7 +43,11 @@ const Login = () => {
                     <Button size='40' onClick={onClickLogin}>Login</Button>
                     <Button size='36' varient='outlined'>Sign in with Google</Button>
                     <div className={styles.divider}></div>
-                    <Button size='36' varient='secondary'>Sign up</Button>
+                    <Link href='/signup'>
+                        <a>
+                            <Button size='36' varient='secondary'>Sign up</Button>
+                        </a>
+                    </Link>
                 </div>
             </div>
         </>
