@@ -6,7 +6,9 @@ import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import { useDispatch } from 'react-redux';
 import { loginAction } from '../reducers/user';
+import { useSelector } from 'react-redux';
 import Link from 'next/link';
+import { useRouter } from 'next/dist/client/router';
 
 const Login = () => {
     const [email, setEmail] = useState();
@@ -18,9 +20,13 @@ const Login = () => {
         setPassword(e.target.value);
     }
     const dispatch = useDispatch();
+    const router = useRouter();
+    const { isLoggedIn } = useSelector((state) => state.user);
     const onClickLogin = () => {
         dispatch(loginAction({ email, password }));
-    };
+        if (isLoggedIn) router.push('/');
+    }
+
 
     return (
         <>
