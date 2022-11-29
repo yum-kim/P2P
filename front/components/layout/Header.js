@@ -4,15 +4,10 @@ import Link from "next/link";
 import Button from '../common/Button';
 import Search from '../common/Search';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleMessage } from '../../reducers/message';
 import { logoutAction } from '../../reducers/user';
 
 const Header = () => {
-    const { isShowing } = useSelector((state) => state.message);
     const dispatch = useDispatch();
-    const onClickToggleMsg = () => {
-        dispatch(toggleMessage(!isShowing));
-    }
     const onClickLogout = () => {
         dispatch(logoutAction());
     }
@@ -35,9 +30,6 @@ const Header = () => {
                                 <Search placeholder='search' />
                             </div>
                             <div>
-                                <button className={`${styles.icon} ${isShowing ? styles.active : ''}`} onClick={onClickToggleMsg}>
-                                    <i class="bi bi-chat-dots"></i>
-                                </button>
                                 <button className={styles.icon}>
                                     <i class="bi bi-bell"></i>
                                 </button>

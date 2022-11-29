@@ -5,8 +5,9 @@
     width: 100%;
 
     h2 {
-        @include text-style(18, $black);
+        @include text-style(16, $black);
         margin-bottom: 1rem;
+        font-weight: 400;
     }
 }
 
