@@ -9,11 +9,14 @@
     margin: 0 auto;
     
     .logo {
-        width: 150px;
+        width: 100px;
         margin-bottom: 2rem;
+
+        @include flexbox(start, center);
 
         img {
             width: 100%;
+            margin-right: 10px;
         }
     }
 

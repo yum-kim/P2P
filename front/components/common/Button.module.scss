@@ -43,12 +43,12 @@
     &[varient='secondary'] {
         @extend %btn-base;
         color: $white;
-        background-color: $blue;
+        background-color: $purple;
         border: 1px solid $white;
         transition: background-color 200ms ease-in-out;
 
         &:not(:disabled):hover {
-            background-color: $blue-dark;
+            background-color: $purple-dark;
         }
     }
 

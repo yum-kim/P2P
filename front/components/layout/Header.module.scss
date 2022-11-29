@@ -12,11 +12,17 @@
         padding: 1.5rem 0;
 
         .logo {
-            width: 100px;
             
-            img {
-                width: 100%;
+            a {
+                @include flexbox(start, center);
+                width: 35px;
+                
+                img {
+                    width: 100%;
+                    margin-right: 10px;
+                }
             }
+
         }
     
         .search {

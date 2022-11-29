@@ -26,7 +26,8 @@ const Header = () => {
                             <h1 className={styles.logo}>
                                 <Link href='/'>
                                     <a>
-                                        <img src='images/test-logo.png' alt='로고' />
+                                        <img src='images/extension_icon.svg' alt='로고' />
+                                        PTOP
                                     </a>
                                 </Link>
                             </h1>

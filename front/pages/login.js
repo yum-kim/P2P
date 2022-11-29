@@ -35,7 +35,7 @@ const Login = () => {
             </Head>
             <div className={styles.login}>
                 <h2 className={styles.logo}>
-                    <img src='images/test-logo.png' alt='로고' />
+                    <img src='images/extension_icon.svg' alt='로고' />
                 </h2>
                 <div className={styles.loginWrapper}>
                     <div className={styles.email}>
