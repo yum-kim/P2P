@@ -20,15 +20,8 @@ const Home = () => {
             <AppLayout>
                     <div>
                         <PostForm />
-                        {mainPosts.map((v) => (
-                            <PostCard
-                                name={v.user.nickname}
-                                profileURL={v.user.profileImagePath}
-                                fileURL={v.imagePath}
-                                date={v.postDate}
-                                >
-                                {v.content}
-                            </PostCard>
+                        {mainPosts.map((post) => (
+                            <PostCard key={post.postId} post={post} />
                         ))}
                     </div>
             </AppLayout>

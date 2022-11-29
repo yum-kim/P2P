@@ -60,17 +60,15 @@
             i {
                 font-size: 1rem;
                 margin-right: 5px;
+
+                &.bi-hand-thumbs-up-fill {
+                    color: $red;
+                }
             }
 
             &:not(:last-child) {
                 margin-right: 10px;
             }
-        }
-
-        .like {
-        }
-
-        .comment {
         }
     }
 }

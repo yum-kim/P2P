@@ -1,0 +1,60 @@
+@import '../styles/constants/colors';
+@import '../styles/mixins/flexbox';
+@import '../styles/mixins/text_style';
+@import '../styles/mixins/position';
+
+.comments {
+    padding-top: 1rem;
+    margin-top: 2rem;
+    border-top: 1px solid $border;
+
+    .length {
+        @include text-style(14, $primary);
+        font-weight: 700;
+    }
+
+    ul {
+        margin-top: 1rem;
+    
+        .list {
+            @include flexbox(start);
+
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
+
+            .img {
+                width: 30px;
+                height: 30px;            
+                position: relative;
+                border-radius: 50%;
+                overflow: hidden;
+                margin-right: 1rem;
+
+                img {
+                    @include pos-center();
+                    width: 100%;
+                }
+            }
+
+            .content {
+                @include column-flexbox(start, start);
+
+                .name {
+                    @include text-style(13, $secondary);
+                    font-weight: 400;
+                }
+        
+                .date {
+                    @include text-style(12, $secondary);
+                    margin-left: 5px;
+                    line-height: 1;
+                }
+        
+                .text {
+                    @include text-style(14, $black);
+                }
+            }
+    }
+    }
+}
