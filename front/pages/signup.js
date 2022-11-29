@@ -14,7 +14,7 @@ const myPage = () => {
             </Head>
             <div className={styles.signup}>
                 <h2 className={styles.logo}>
-                    <img src='images/test-logo.png' alt='로고' />
+                    <img src='images/extension_icon.svg' alt='로고' />
                 </h2>
                 <div className={styles.signupWrapper}>
                     <div className={styles.form}>
@@ -22,7 +22,7 @@ const myPage = () => {
                         <Input placeholder='Name' />
                         <label htmlFor="email">Email</label>
                         <Input placeholder='ptop@ptop.com' />
-                        <label htmlFor="password">Email</label>
+                        <label htmlFor="password">Password</label>
                         <Input type='password' placeholder='Password' />
                         <label htmlFor="password">Confirm Password</label>
                         <Input type='password' placeholder='Confirm Password' />
