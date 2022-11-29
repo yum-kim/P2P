@@ -1,11 +1,12 @@
 import React, { useRef, useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './PostForm.module.scss';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import { addPost } from '../../reducers/post';
 
 const PostForm = () => {
+    const user = useSelector((state) => state.user);
     const [text, setText] = useState('');
     const onChangeText = useCallback((e) => {
         setText(e.target.value);
@@ -34,15 +35,20 @@ const PostForm = () => {
 
     return (
         <div className={styles.postForm}>
-            <Input type='textarea' value={text} placeholder='오늘은 어떤 일이 있었나요?' height='100' onChange={onChangeText} />
-            <div className={styles.btnWrapper}>
-                <input type="file" ref={imageInput} multiple hidden />
-                <Button varient='outlined' onClick={onClickImageUpload}>
-                    <i class="bi bi-card-image"></i>이미지 선택
-                </Button>
-                <Button onClick={onClickUploadPost}>
-                    <i class="bi bi-upload"></i>업로드
-                </Button>
+            <div className={styles.img}>
+                {user.profileImagePath ? <img src={user.profileImagePath} alt="" /> : <i className="bi bi-person-fill"></i>}
+            </div>
+            <div className={styles.content}>
+                <Input type='textarea' value={text} placeholder='오늘은 어떤 일이 있었나요?' height='100' onChange={onChangeText} />
+                <div className={styles.btnWrapper}>
+                    <input type="file" ref={imageInput} multiple hidden />
+                    <Button varient='outlined' onClick={onClickImageUpload}>
+                        <i class="bi bi-card-image"></i>이미지 선택
+                    </Button>
+                    <Button onClick={onClickUploadPost}>
+                        <i class="bi bi-upload"></i>업로드
+                    </Button>
+                </div>
             </div>
         </div>
     );

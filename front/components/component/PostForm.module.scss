@@ -1,14 +1,51 @@
 @import '../../styles/mixins/flexbox';
+@import '../../styles/mixins/position';
+@import '../../styles/constants/colors';
 
 .postForm {
+    @include flexbox(start, start);
     margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid $border;
     
-    .btnWrapper {
-        @include flexbox(between);
-        margin-top: 1rem;
+    .img {
+        width: 30px;
+        height: 30px;
+        border: 1px solid $border;
+        border-radius: 50%;
+        margin-right: 10px;
+        overflow: hidden;
+        text-align: center;
+        position: relative;
 
         i {
-            margin-right: 5px;
+            @include pos-center-x;
+            top: 2px;
+            font-size: 28px;
+            color: $tertiary;
+        }
+
+        img {
+            width: 100%;
+            overflow: hidden;
         }
     }
+
+    .content {
+        flex: 1;
+
+        .btnWrapper {
+            @include flexbox(end);
+            margin-top: 1rem;
+    
+            *:not(:last-of-type) {
+                margin-right: 10px;
+            }
+
+            i {
+                margin-right: 5px;
+            }
+        }
+    }
+    
 }
