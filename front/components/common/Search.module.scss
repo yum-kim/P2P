@@ -7,16 +7,12 @@
     @include flexbox();
 
     padding: 5px 20px;
-    // background: $white;
+    background: $white;
     border-radius: 10px;
     border: 1px solid $tertiary;
     
     i {
         color: $secondary;
         font-size: 1.2rem;
-    }
-
-    input {
-        @extend %form-base;
     }
 }

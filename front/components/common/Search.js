@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from './Search.module.scss';
+import Input from './Input';
 
 const Search = ({ ...rest }) => {
     return (
         <div className={styles.search}>
             <i class="bi bi-search"></i>
-            <input type="text" {...rest} />
+            <Input {...rest} />
         </div>
     );
 };
