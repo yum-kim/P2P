@@ -26,7 +26,8 @@ const PostForm = () => {
             nickname: 'jemin',
             profileImagePath: '/images/profile.png'
         },
-        content: text
+        content: text,
+        Comments: []
     }
     const onClickUploadPost = () => {
         dispatch(addPost(dummyData));

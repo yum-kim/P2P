@@ -13,9 +13,27 @@
         font-weight: 700;
     }
 
+    .form {
+        position: relative;
+        padding: 1rem 0;
+        
+        input {
+            padding-right: 37px;
+        }
+        
+        button {
+            @include pos-center-y();
+            right: 5px;
+            width: 32px;
+
+            &:hover {
+                color: $primary;
+            }
+        }
+
+    }
+
     ul {
-        margin-top: 1rem;
-    
         .list {
             @include flexbox(start);
 

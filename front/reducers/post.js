@@ -31,12 +31,28 @@ export const addPost = (data) => {
     }
 }
 
+export const addComment = (data) => {
+    return {
+        type: 'ADD_COMMENT',
+        data: data
+    }
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'ADD_POST': {
             return {
                 ...state,
                 mainPosts: [action.data, ...state.mainPosts]
+            }
+        }
+        case 'ADD_COMMENT': {
+            const post = state.mainPosts.find((post) => post.postId == action.data.postId);
+            post.Comments = [action.data, ...post.Comments];
+            
+            return {
+                ...state,
+                mainPosts: [...state.mainPosts]
             }
         }
         default:
