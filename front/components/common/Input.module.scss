@@ -19,4 +19,17 @@ $heights : ('40','45','50','55','60','65','70','75','80','85','90','95','100');
 
 .input {
     @extend %form-base;
+
+    &[varient='primary'] {
+        border: 1px solid $tertiary;
+    }
+
+    &[varient='secondary'] {
+        border: 1px solid $border;
+    }
+
+    &[varient='background'] {
+        background-color: $background;
+    }
+
 }
