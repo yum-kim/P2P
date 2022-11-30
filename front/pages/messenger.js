@@ -2,8 +2,9 @@
 import React from 'react';
 import Head from 'next/head';
 import AppLayout from "../components/layout/AppLayout";
-import Message from '../components/component/Message';
+import MessageList from '../components/component/MessageList';
 import styles from './messenger.module.scss';
+import MessageRoom from '../components/component/MessageRoom';
 
 const message = () => {
 
@@ -14,11 +15,14 @@ const message = () => {
             </Head>
             <AppLayout>
                 <div className={styles.messenger}>
-                    <h2>Recent message</h2>
                     <div className={styles.message}>
-                        <ul>
-                            <Message />
+                        <h2>Recent message</h2>
+                        <ul className={styles.messageList}>
+                            <MessageList />
                         </ul>
+                    </div>
+                    <div className={styles.messageRoom}>
+                        <MessageRoom />
                     </div>
                 </div>
             </AppLayout>

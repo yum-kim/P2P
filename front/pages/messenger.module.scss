@@ -1,21 +1,30 @@
 @import '../styles/constants/colors';
 @import '../styles/mixins/text_style';
+@import '../styles/mixins/flexbox';
 
 .messenger {
     width: 100%;
+    @include flexbox(start, start);
+}
+
+.message {
+    width: 30%;
+    // height: calc(100vh - 199px);
+    border-right: 1px solid $border;
 
     h2 {
         @include text-style(16, $black);
         margin-bottom: 1rem;
         font-weight: 400;
     }
+
+    .messageList {
+        padding-right: 10px;
+        overflow-y: auto;
+    }
 }
 
-.message {
-    width: 100%;
-    max-height: calc(100vh - 122px);
-    border-radius: 10px;
-    border: 1px solid $border;
-    background-color: $white;
-    overflow-y: auto;
+.messageRoom {
+    width: 70%;
+    // height: calc(100vh - 199px);
 }

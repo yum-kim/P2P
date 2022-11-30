@@ -16,10 +16,8 @@
 }
 
 .section {
-    width: 100%;
-    height: 100%;
-    
     @include flexbox(start, start);
+    flex: 1 1 100%;
     
     .aside {
         height: 100%;
