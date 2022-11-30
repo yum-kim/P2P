@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './Comment.module.scss';
 import Input from '../common/Input';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +15,8 @@ const Comment = ({ post }) => {
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const onClickComment = () => {
+        if (!comment.replace(/\s/g, "")) return;
+
         const commentObj = {
             postId: post.postId,
             user: user?.nickname,
@@ -28,7 +30,6 @@ const Comment = ({ post }) => {
     return (
         <div className={styles.comments}>
             <p className={styles.length}>{post.Comments.length}개의 댓글이 있습니다.</p>
-
             <div className={styles.form}>
                 <Input placeholder="댓글을 입력하세요." varient="primary" ref={inputRef} value={comment} onChange={onChangeForm} />
                 <button onClick={onClickComment}>
