@@ -16,7 +16,7 @@ const jwtConfig = config.get('jwt');
     JwtModule.register({
       secret: jwtConfig.secret,
       signOptions: {
-        expiresIn: 60 * 60,
+        expiresIn: jwtConfig.expiresIn,
       },
     }),
     TypeOrmExModule.forCustomRepository([UserRepository]),
