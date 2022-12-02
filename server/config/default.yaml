@@ -4,6 +4,7 @@ server:
 db:
   type: 'postgres'
   database: 'TBOARD'
+  port: 5432
 
 jwt:
   expiresIn: 3600
