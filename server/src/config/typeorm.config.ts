@@ -3,7 +3,6 @@ import { Board } from 'src/boards/board.entity';
 import * as config from 'config';
 
 const dbConfig = config.get('db');
-console.log(dbConfig);
 
 export const typeORMConfig: TypeOrmModuleOptions = {
   type: dbConfig.type,
