@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -39,8 +40,13 @@ export class BoardsController {
     isArray: true,
   })
   @Get()
-  getAllBoards(): Promise<Board[]> {
-    return this.boardService.getAllBoards();
+  getAllBoards(
+    @Query('filter') filter: any,
+    @Query('sortby') sortby: any,
+    @Query('offset') offset: number,
+    @Query('limit') limit: number,
+  ): Promise<Board[]> {
+    return this.boardService.getAllBoards(filter, sortby, offset, limit);
   }
 
   @ApiOperation({
