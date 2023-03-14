@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import styles from './PostCard.module.scss';
 import Comment from './Comment';
+import { BsHandThumbsUpFill, BsHandThumbsUp, BsChatLeftTextFill, BsChatLeftText } from "react-icons/bs";
 
 const PostCard = ({ post }) => {
     const [showComments, setShowComments] = useState(false);
@@ -25,22 +26,20 @@ const PostCard = ({ post }) => {
                 </div>
             </div>
             <div className={styles.content}>
-                {imagePath ? <img src={imagePath} alt="" /> : ''}
+                {imagePath && <img src={imagePath} alt="attached image" />}
                 <p className={styles.content}>{content}</p>
             </div>
             <div className={styles.reaction}>
-                <button className={styles.like} onClick={onToggleLiked}>
-                    <i className={`bi bi-hand-thumbs-up${liked ? '-fill' : ''}`}></i>
+                <button className={liked && styles.liked} onClick={onToggleLiked}>
+                    {liked ? <BsHandThumbsUpFill /> : <BsHandThumbsUp />}
                     좋아요
                 </button>
-                <button className={styles.comment} onClick={onToggleComments}>
-                    <i className="bi bi-chat-square-text"></i>
+                <button onClick={onToggleComments}>
+                    {showComments ? <BsChatLeftTextFill /> : <BsChatLeftText />}
                     댓글
                 </button>
             </div>
-
             {showComments && (<Comment post={post} />)}
-
         </div>
     );
 };

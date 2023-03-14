@@ -18,9 +18,9 @@
         text-align: center;
         position: relative;
 
-        i {
+        svg {
             @include pos-center-x;
-            top: 2px;
+            top: 3px;
             font-size: 28px;
             color: $tertiary;
         }
@@ -42,7 +42,7 @@
                 margin-right: 10px;
             }
 
-            i {
+            svg {
                 margin-right: 5px;
             }
         }

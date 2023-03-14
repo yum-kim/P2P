@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 import styles from './Comment.module.scss';
 import Input from '../element/Input/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { addComment } from '../../store/reducers/post';
-
+import { addCommentRequestAction } from '../../store/actions/post';
+import { BsSend } from "react-icons/bs";
 
 const Comment = ({ post }) => {
     const inputRef = useRef(null);
@@ -23,7 +23,7 @@ const Comment = ({ post }) => {
             date: '2022',
             content: comment
         }
-        dispatch(addComment(commentObj));
+        dispatch(addCommentRequestAction(commentObj));
         setComment('');
     };
 
@@ -33,7 +33,7 @@ const Comment = ({ post }) => {
             <div className={styles.form}>
                 <Input placeholder="댓글을 입력하세요." varient="primary" ref={inputRef} value={comment} onChange={onChangeForm} />
                 <button onClick={onClickComment}>
-                    <i className="bi bi-send"></i>
+                    <BsSend />
                 </button>
             </div>
             <ul>

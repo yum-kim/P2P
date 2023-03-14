@@ -56,16 +56,16 @@
     .reaction {
         button {
             @include inline-flexbox;
-            @include text-style(14, $black);
+            @include text-style(14, $primary);
             font-weight: 600;
+
+            &.liked {
+                color: $red;
+            }
             
-            i {
+            svg {
                 font-size: 1.2rem;
                 margin-right: 5px;
-
-                &.bi-hand-thumbs-up-fill {
-                    color: $red;
-                }
             }
 
             &:not(:last-child) {

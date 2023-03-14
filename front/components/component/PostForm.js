@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './PostForm.module.scss';
 import Button from '../element/Button/Button';
 import Input from '../element/Input/Input';
-import { addPost } from '../../store/reducers/post';
+import { addPostRequestAction } from '../../store/actions/post';
+
+import { BsFillPersonFill, BsFileImage, BsCloudUpload } from "react-icons/bs";
+
 
 const PostForm = () => {
     const user = useSelector((state) => state.user);
@@ -30,24 +33,24 @@ const PostForm = () => {
         Comments: []
     }
     const onClickUploadPost = () => {
-        dispatch(addPost(dummyData));
+        dispatch(addPostRequestAction(dummyData));
         setText('');
     };
 
     return (
         <div className={styles.postForm}>
             <div className={styles.img}>
-                {user.profileImagePath ? <img src={user.profileImagePath} alt="" /> : <i className="bi bi-person-fill"></i>}
+                {user.profileImagePath ? <img src={user.profileImagePath} alt="" /> : <BsFillPersonFill />}
             </div>
             <div className={styles.content}>
                 <Input type='textarea' value={text} placeholder='오늘은 어떤 일이 있었나요?' height='100' onChange={onChangeText} />
                 <div className={styles.btnWrapper}>
                     <input type="file" ref={imageInput} multiple hidden />
                     <Button varient='outlined' onClick={onClickImageUpload}>
-                        <i class="bi bi-card-image"></i>이미지 선택
+                        <BsFileImage />이미지 선택
                     </Button>
                     <Button onClick={onClickUploadPost}>
-                        <i class="bi bi-upload"></i>업로드
+                        <BsCloudUpload />업로드
                     </Button>
                 </div>
             </div>

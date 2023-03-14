@@ -2,6 +2,7 @@ import React from 'react';
 import Link from "next/link";
 import styles from './Nav.module.scss';
 import { useRouter } from 'next/dist/client/router';
+import { BsHouseDoor, BsChatText } from "react-icons/bs";
 
 const Nav = () => {
     const router = useRouter();
@@ -10,13 +11,13 @@ const Nav = () => {
         <nav className={styles.nav}>
             <Link href="/">
                 <a className={router.pathname == '/' ? styles.active : ''}>
-                    <i className="bi bi-house"></i>
+                    <BsHouseDoor />
                     Feed
                 </a>
             </Link>
             <Link href="/messenger">
                 <a className={router.pathname == '/messenger' ? styles.active : ''}>
-                    <i class="bi bi-chat-left-text"></i>
+                    <BsChatText />
                     Message 
                 </a>
             </Link>
