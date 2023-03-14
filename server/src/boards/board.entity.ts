@@ -3,9 +3,12 @@ import { User } from 'src/auth/user.entity';
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { BoardStatus } from './board-status.enum';
 
@@ -30,6 +33,15 @@ export class Board extends BaseEntity {
   @Column()
   @ApiProperty({ description: '조회수' })
   hit: number;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deleteAt: Date;
 
   @ManyToOne((type) => User, (user) => user.boards, { eager: false })
   user: User;
