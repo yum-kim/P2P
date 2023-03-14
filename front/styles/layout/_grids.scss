@@ -60,12 +60,12 @@ $lg-max-container: ($lg-unit + $gutter) * $lg-columns;
 
   // 'col-' 로 시작하는 모든 클래스를 선택 (.col-sm-1, .col-md-2..)
   [class^="col-"] {
-    padding: 0 $gutter / 2;
+    padding: 0 calc($gutter / 2);
   }
 
   @for $i from 1 through $sm-columns {
     .col-sm-#{$i} {
-      width: percentage($i / $sm-columns);
+      width: percentage(calc($i / $sm-columns));
     }
   }
 
@@ -76,7 +76,7 @@ $lg-max-container: ($lg-unit + $gutter) * $lg-columns;
 
     @for $i from 1 through $md-columns {
       .col-md-#{$i} {
-        width: percentage($i / $md-columns);
+        width: percentage(calc($i / $md-columns));
       }
     }
   }
