@@ -5,6 +5,7 @@ import Button from '../element/Button/Button';
 import Search from '../common/Search/Search';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutRequestAction } from '../../store/actions/auth';
+import { BsBoxArrowInRight, BsBell } from "react-icons/bs";
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -31,10 +32,10 @@ const Header = () => {
                             </div>
                             <div>
                                 <button className={styles.icon}>
-                                    <i class="bi bi-bell"></i>
+                                    <BsBell />
                                 </button>
                                 <button className={styles.icon} onClick={onClickLogout}>
-                                    <i class="bi bi-box-arrow-right"></i>
+                                    <BsBoxArrowInRight />
                                 </button>
                             </div>
                         </div>
