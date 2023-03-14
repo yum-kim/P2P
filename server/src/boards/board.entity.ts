@@ -1,11 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from 'src/auth/user.entity';
+import { Comment } from 'src/comment/comment.entity';
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { BoardStatus } from './board-status.enum';
 
@@ -31,6 +36,18 @@ export class Board extends BaseEntity {
   @ApiProperty({ description: '조회수' })
   hit: number;
 
+  @CreateDateColumn({ name: 'created_at' })
+  createAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deleteAt: Date;
+
   @ManyToOne((type) => User, (user) => user.boards, { eager: false })
   user: User;
+
+  @OneToMany((type) => Comment, (comment) => comment.board, { eager: true })
+  comments: Comment[];
 }
