@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from 'src/auth/user.entity';
+import { Comment } from 'src/comment/comment.entity';
 import {
   BaseEntity,
   Column,
@@ -7,6 +8,7 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -45,4 +47,7 @@ export class Board extends BaseEntity {
 
   @ManyToOne((type) => User, (user) => user.boards, { eager: false })
   user: User;
+
+  @OneToMany((type) => Comment, (comment) => comment.board, { eager: true })
+  comments: Comment[];
 }
