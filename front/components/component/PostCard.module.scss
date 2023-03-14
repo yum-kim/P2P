@@ -42,6 +42,11 @@
             @include text-style(14, $secondary);
             line-height: 1;
         }
+
+        .status {
+            margin-left: 5px;
+            color: $primary;   
+        }
     }
 
     .content {
