@@ -1,14 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import styles from './PostCard.module.scss';
 import Comment from './Comment';
-import { BsHandThumbsUpFill, BsHandThumbsUp, BsChatLeftTextFill, BsChatLeftText, BsLockFill, BsUnlock } from "react-icons/bs";
-import Button from '../element/Button/Button';
+import { BsHandThumbsUpFill, BsHandThumbsUp, BsChatLeftTextFill, BsChatLeftText, BsLockFill } from "react-icons/bs";
+import { MdPublic } from "react-icons/md";
+import { BsFillPersonFill } from "react-icons/bs";
 import { useDispatch } from 'react-redux';
 
 const PostCard = ({ post }) => {
     const [showComments, setShowComments] = useState(false);
     const [liked, setLiked] = useState(false);
-    const { postId, postDate, user, content, imagePath } = post;
     const dispatch = useDispatch();
     
     const onToggleLiked = useCallback(() => {
@@ -27,22 +27,21 @@ const PostCard = ({ post }) => {
         <div className={styles.card}>
             <div className={styles.profile}>
                 <div className={styles.img}>
-                    <img src={user.profileImagePath} alt="profile" />
+                    {post.user?.profileImagePath ? <img src={post.user.profileImagePath} alt="프로필" /> : <BsFillPersonFill />}
                 </div>
                 <div>
-                    <p className={styles.name}>{user.nickname}</p>
+                    <p className={styles.name}>{post.user?.username}</p>
                     <div>
-                        <span className={styles.date}>{postDate}</span>
+                        <span className={styles.date}>{post.createAt}</span>
                         <button className={styles.status} onClick={onChangePostStatus}>
-                            <BsLockFill/>
-                            {/* <BsUnlock /> */}
+                            {post.status === 'PUBLIC' ? <MdPublic title="전체공개" /> : <BsLockFill title="나만보기" />}
                         </button>
                     </div>
                 </div>
             </div>
             <div className={styles.content}>
-                {imagePath && <img src={imagePath} alt="attached image" />}
-                <p className={styles.content}>{content}</p>
+                {post.imagePath && <img src={post.imagePath} alt="attached image" />}
+                <p className={styles.content}>{post.description}</p>
             </div>
             <div className={styles.reaction}>
                 <button className={liked && styles.liked} onClick={onToggleLiked}>

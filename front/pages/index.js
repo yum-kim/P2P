@@ -6,7 +6,7 @@ import Login from './login';
 import Feed from './feed';
 
 const Home = () => {
-    const { logInDone } = useSelector((state) => state.user);
+    const { logInDone } = useSelector((state) => state.auth);
 
     return (
         <>

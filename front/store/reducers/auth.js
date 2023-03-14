@@ -1,4 +1,8 @@
-import { LOG_IN_REQUEST, LOG_OUT_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, SIGN_UP_INIT } from "../actions/auth";
+import {
+    LOG_IN_REQUEST, LOG_OUT_REQUEST, LOG_IN_SUCCESS,
+    LOG_IN_FAILURE, LOG_OUT_SUCCESS, LOG_OUT_FAILURE,
+    SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, SIGN_UP_INIT
+} from "../actions/auth";
 import produce from 'immer';
 import auth from "../../api/auth";
 
@@ -26,10 +30,11 @@ const reducer = (state = initialState, action) => {
                 draft.logInError = null;
                 break;
             case LOG_IN_SUCCESS:
+                const { username, userid, accessToken } = action.data;
                 draft.logInLoading = false;
                 draft.logInDone = true;
-                // draft.user = action.data.user; //TODO: login API return값 추가 시 해제 
-                auth.setToken(action.data.accessToken);
+                draft.user = { username, userid };
+                auth.setToken(accessToken);
                 break;
             case LOG_IN_FAILURE:
                 draft.logInLoading = false;

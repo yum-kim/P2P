@@ -15,7 +15,7 @@ const Login = () => {
     const [password, setPassword] = useState();
     const dispatch = useDispatch();
     const router = useRouter();
-    const { logInLoading, logInDone, logInError } = useSelector((state) => state.user);
+    const { logInLoading, logInDone, logInError } = useSelector((state) => state.auth);
 
     const onChangeUsername = (e) => {
         setUsername(e.target.value);

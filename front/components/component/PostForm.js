@@ -4,12 +4,11 @@ import styles from './PostForm.module.scss';
 import Button from '../element/Button/Button';
 import Input from '../element/Input/Input';
 import { addPostRequestAction } from '../../store/actions/post';
-
 import { BsFillPersonFill, BsFileImage, BsCloudUpload } from "react-icons/bs";
 
 
 const PostForm = () => {
-    const user = useSelector((state) => state.user);
+    const { user } = useSelector((state) => state.auth);
     const [text, setText] = useState('');
     const onChangeText = useCallback((e) => {
         setText(e.target.value);
@@ -22,15 +21,10 @@ const PostForm = () => {
 
     const dispatch = useDispatch();
     const dummyData = {
-        postId: 2,
-        postDate: '2022.11.15 14:00:00',
-        user: {
-            id: 2,
-            nickname: 'jemin',
-            profileImagePath: '/images/profile.png'
-        },
-        content: text,
-        Comments: []
+        userid: user.userid,
+        username: user.username,
+        description: text,
+        imagePath: '',
     }
     const onClickUploadPost = () => {
         dispatch(addPostRequestAction(dummyData));

@@ -9,14 +9,14 @@ const Nav = () => {
 
     return (
         <nav className={styles.nav}>
-            <Link href="/">
-                <a className={router.pathname == '/' ? styles.active : ''}>
+            <Link href="/feed">
+                <a className={router.pathname == '/' && styles.active}>
                     <BsHouseDoor />
                     Feed
                 </a>
             </Link>
             <Link href="/messenger">
-                <a className={router.pathname == '/messenger' ? styles.active : ''}>
+                <a className={router.pathname == '/messenger' && styles.active}>
                     <BsChatText />
                     Message 
                 </a>

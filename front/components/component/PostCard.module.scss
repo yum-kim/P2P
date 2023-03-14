@@ -20,12 +20,20 @@
         margin-bottom: 20px;
 
         .img {
-            width: 40px;
-            height: 40px;            
+            width: 30px;
+            height: 30px;            
             position: relative;
             border-radius: 50%;
             overflow: hidden;
             margin-right: 1rem;
+            border: 1px solid $border;
+
+            svg {
+                @include pos-center-x;
+                top: 3px;
+                font-size: 30px;
+                color: $tertiary;
+            }
 
             img {
                 @include pos-center();
@@ -45,7 +53,7 @@
 
         .status {
             margin-left: 5px;
-            color: $primary;   
+            color: $secondary;   
         }
     }
 
