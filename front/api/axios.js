@@ -17,7 +17,10 @@ async function request(option) {
 
     const res = await axiosInstance(option);
 
-    if (res.statusText !== 'OK') {
+    // console.log('request response');
+    // console.log(res)
+
+    if (![200,201].includes(res.status)) {
       throw new Error(res);
     }
 

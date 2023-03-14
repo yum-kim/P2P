@@ -22,6 +22,16 @@ class Auth {
         }
         return await request(option);
     }
+
+    async signup(data) {
+        let option = {
+            "method": "POST",
+            "url": `/auth/signup`,
+            "Content-Type": "application/json",
+            "data": data
+        }
+        return await request(option);
+    }
 }
 
 const auth = new Auth();

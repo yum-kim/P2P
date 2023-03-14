@@ -12,24 +12,26 @@ import Loading from '../../components/common/Loading/Loading';
 
 const Login = () => {
     const [username, setUsername] = useState();
-    const onChangeUsername = (e) => {
-        setUsername(e.target.value);
-    }
     const [password, setPassword] = useState();
-    const onChangePassword = (e) => {
-        setPassword(e.target.value);
-    }
     const dispatch = useDispatch();
     const router = useRouter();
     const { logInLoading, logInDone, logInError } = useSelector((state) => state.user);
-    const onClickLogin = async () => {
+
+    const onChangeUsername = (e) => {
+        setUsername(e.target.value);
+    }
+
+    const onChangePassword = (e) => {
+        setPassword(e.target.value);
+    }
+
+    const onSubmitLogin = async (e) => {
+        e.preventDefault();
         if (!username || !password) {
             alert("빈 값이 있습니다.");
             return;
         }
-
-        const userInfo = { username, password };
-        dispatch(loginRequestAction(userInfo));
+        dispatch(loginRequestAction({ username, password }));
     }
     
     useEffect(() => {
@@ -56,15 +58,17 @@ const Login = () => {
                     <img src='images/extension_icon.svg' alt='로고' />
                 </h2>
                 <div className={styles.loginWrapper}>
-                    <div className={styles.username}>
-                        <label htmlFor="username">Username</label>
-                        <Input placeholder='' id='username' onChange={onChangeUsername} />
-                    </div>
-                    <div className={styles.password}>
-                        <label htmlFor="password">Password</label>
-                        <Input type='password' id='password' onChange={onChangePassword} />
-                    </div>
-                    <Button size='40' onClick={onClickLogin}>Login</Button>
+                    <form onSubmit={onSubmitLogin}>
+                        <div className={styles.username}>
+                            <label htmlFor="username">Username</label>
+                            <Input placeholder='' id='username' onChange={onChangeUsername} />
+                        </div>
+                        <div className={styles.password}>
+                            <label htmlFor="password">Password</label>
+                            <Input type='password' id='password' onChange={onChangePassword} />
+                        </div>
+                        <Button type='submit' size='40'>Login</Button>
+                    </form>
                     <Button size='36' varient='outlined'>Sign in with Google</Button>
                     <div className={styles.divider}></div>
                     <Link href='/signup'>
