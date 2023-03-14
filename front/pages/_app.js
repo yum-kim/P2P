@@ -3,8 +3,11 @@ import Head from 'next/head';
 import propTypes from 'prop-types';
 import '../styles/global.scss';
 import wrapper from '../store/configureStore';
+import { Provider } from 'react-redux';
 
-const Ptop = ({ Component, pageProps }) => {
+const App = ({ Component, ...rest }) => {
+    const { store, props } = wrapper.useWrappedStore(rest);
+
     return (
         <>
             <Head>
@@ -15,13 +18,15 @@ const Ptop = ({ Component, pageProps }) => {
                 <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"/>
                 <title>P2P</title>
             </Head>
-            <Component {...pageProps} />
+            <Provider store={store}>
+                <Component {...props.pageProps} />
+            </Provider>
         </>
     )
 }
 
-Ptop.propTypes = {
+App.propTypes = {
     Component: propTypes.elementType.isRequired
 } 
 
-export default wrapper.withRedux(Ptop);
+export default App;

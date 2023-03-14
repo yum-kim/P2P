@@ -10,20 +10,21 @@
 
 ### 🔍 front-end
 
-- react
-- next.js
-- react-redux
-- scss
-- bootstrap-icon
+- React
+- Next.js
+- React-redux
+- Redux-saga
+- CSS Module
+- SCSS
+- Bootstrap-icon
+
 
 ### 🔍 back-end
 
-
-- node
-- nest.js
-- typescript
-- postgresql
-
+- Node
+- Nest.js
+- Typescript
+- Postgresql
 
 <br />
 
@@ -34,6 +35,9 @@
 - [x] 채팅
 - [x] 게시글 포스트/수정/삭제
 
+<br />
 
-DB 는 localDB 사용
+## 🔨 기타 메모
+
+- DB 는 localDB 사용, 
 AWS RDB (x) -> 비용 발생

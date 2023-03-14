@@ -1,7 +1,7 @@
-@import '../../styles/constants/colors';
-@import '../../styles/mixins/flexbox';
-@import '../../styles/mixins/text_style';
-@import '../../styles/modules/form';
+@import '../../../styles/constants/colors';
+@import '../../../styles/mixins/flexbox';
+@import '../../../styles/mixins/text_style';
+@import '../../../styles/modules/form';
 
 .search {
     @include flexbox();

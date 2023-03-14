@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Search.module.scss';
-import Input from './Input';
+import Input from '../../element/Input/Input';
 
 const Search = ({ ...rest }) => {
     return (

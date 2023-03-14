@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import styles from './Comment.module.scss';
-import Input from '../common/Input';
+import Input from '../element/Input/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { addComment } from '../../reducers/post';
+import { addComment } from '../../store/reducers/post';
 
 
 const Comment = ({ post }) => {

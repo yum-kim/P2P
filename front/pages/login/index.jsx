@@ -1,19 +1,19 @@
 //login
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styles from './login.module.scss';
-import Input from '../components/common/Input';
-import Button from '../components/common/Button';
-import { useDispatch } from 'react-redux';
-import { loginAction } from '../reducers/user';
-import { useSelector } from 'react-redux';
+import Input from '../../components/element/Input/Input';
+import Button from '../../components/element/Button/Button';
+import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/dist/client/router';
+import { loginRequestAction } from '../../store/actions/auth';
+import Loading from '../../components/common/Loading/Loading';
 
 const Login = () => {
-    const [email, setEmail] = useState();
-    const onChangeEmail = (e) => {
-        setEmail(e.target.value);
+    const [username, setUsername] = useState();
+    const onChangeUsername = (e) => {
+        setUsername(e.target.value);
     }
     const [password, setPassword] = useState();
     const onChangePassword = (e) => {
@@ -21,26 +21,44 @@ const Login = () => {
     }
     const dispatch = useDispatch();
     const router = useRouter();
-    const { isLoggedIn } = useSelector((state) => state.user);
-    const onClickLogin = () => {
-        dispatch(loginAction({ email, password }));
-        if (isLoggedIn) router.push('/');
-    }
+    const { logInLoading, logInDone, logInError } = useSelector((state) => state.user);
+    const onClickLogin = async () => {
+        if (!username || !password) {
+            alert("빈 값이 있습니다.");
+            return;
+        }
 
+        const userInfo = { username, password };
+        dispatch(loginRequestAction(userInfo));
+    }
+    
+    useEffect(() => {
+        if (logInError) {
+            alert(logInError.message);
+        }
+    }, [logInError])
+
+    useEffect(() => {
+        if (logInDone) {
+            router.push('/feed');
+        }
+    }, [logInDone])
 
     return (
         <>
             <Head>
                 <title>P2P | login</title>
             </Head>
+            {logInLoading && <Loading />}
+
             <div className={styles.login}>
                 <h2 className={styles.logo}>
                     <img src='images/extension_icon.svg' alt='로고' />
                 </h2>
                 <div className={styles.loginWrapper}>
-                    <div className={styles.email}>
-                        <label htmlFor="email">Email</label>
-                        <Input placeholder='ptop@ptop.com' id='email' onChange={onChangeEmail} />
+                    <div className={styles.username}>
+                        <label htmlFor="username">Username</label>
+                        <Input placeholder='' id='username' onChange={onChangeUsername} />
                     </div>
                     <div className={styles.password}>
                         <label htmlFor="password">Password</label>

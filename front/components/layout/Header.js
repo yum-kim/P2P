@@ -1,15 +1,15 @@
 import React from 'react';
 import styles from './Header.module.scss';
 import Link from "next/link";
-import Button from '../common/Button';
-import Search from '../common/Search';
+import Button from '../element/Button/Button';
+import Search from '../common/Search/Search';
 import { useSelector, useDispatch } from 'react-redux';
-import { logoutAction } from '../../reducers/user';
+import { logoutRequestAction } from '../../store/actions/auth';
 
 const Header = () => {
     const dispatch = useDispatch();
     const onClickLogout = () => {
-        dispatch(logoutAction());
+        dispatch(logoutRequestAction());
     }
 
     return (

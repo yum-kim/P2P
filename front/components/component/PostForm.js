@@ -1,9 +1,9 @@
 import React, { useRef, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './PostForm.module.scss';
-import Button from '../common/Button';
-import Input from '../common/Input';
-import { addPost } from '../../reducers/post';
+import Button from '../element/Button/Button';
+import Input from '../element/Input/Input';
+import { addPost } from '../../store/reducers/post';
 
 const PostForm = () => {
     const user = useSelector((state) => state.user);

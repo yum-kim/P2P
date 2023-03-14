@@ -2,11 +2,11 @@
 import React from 'react';
 import Head from 'next/head';
 import styles from './signup.module.scss';
-import Input from '../components/common/Input';
-import Button from '../components/common/Button';
+import Input from '../../components/element/Input/Input';
+import Button from '../../components/element/Button/Button';
 import Link from 'next/link';
 
-const myPage = () => {
+const Signup = () => {
     return (
         <>
             <Head>
@@ -42,4 +42,4 @@ const myPage = () => {
     );
 };
 
-export default myPage;
+export default Signup;
