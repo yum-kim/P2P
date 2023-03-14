@@ -16,8 +16,7 @@
 - Redux-saga
 - CSS Module
 - SCSS
-- Bootstrap-icon
-
+- react-icons
 
 ### 🔍 back-end
 
@@ -30,10 +29,10 @@
 
 ## 🔨 구현할 기능들
 
-- [x] 로그인
-- [x] 회원가입
-- [x] 채팅
+- [o] 로그인
+- [o] 회원가입
 - [x] 게시글 포스트/수정/삭제
+- [x] 채팅
 
 <br />
 
