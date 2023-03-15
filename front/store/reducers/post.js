@@ -53,9 +53,14 @@ const reducer = (state = initialState, action) => {
                 draft.getPostsError = null;
                 break;
             case GET_POSTS_SUCCESS:
+                const { data, page } = action.data;
                 draft.getPostsLoading = false;
                 draft.getPostsDone = true;
-                draft.allPosts.push(...action.data);
+                if (page == 1) {
+                    draft.allPosts = data;
+                } else {
+                    draft.allPosts.push(...data);
+                }
                 break;
             case GET_POSTS_FAILURE:
                 draft.getPostsLoading = false;

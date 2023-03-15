@@ -3,10 +3,13 @@ import { GET_POSTS_REQUEST, getPostsSuccessAction, getPostsFailureAction, ADD_PO
 import boards from '../../api/boards';
 
 function* getPosts(action) {
-  const { res, error } = yield call(boards.getBoards, action.data);
+  // const { res, error } = yield call(boards.getBoards, action.data);
+  
+  //FIXME: API params 수정 시 원복
+  const { res, error } = yield call(boards.getBoards, { offset: 1, limit: 10 });
 
   if (res) {
-    yield put(getPostsSuccessAction(res));
+    yield put(getPostsSuccessAction({ data: res, ...action.data }));
   } else {
     yield put(getPostsFailureAction(error));
   }
