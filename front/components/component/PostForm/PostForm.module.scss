@@ -1,6 +1,6 @@
-@import '../../styles/mixins/flexbox';
-@import '../../styles/mixins/position';
-@import '../../styles/constants/colors';
+@import '../../../styles/mixins/flexbox';
+@import '../../../styles/mixins/position';
+@import '../../../styles/constants/colors';
 
 .postForm {
     @include flexbox(start, start);

@@ -1,7 +1,7 @@
 import React from 'react';
-import Nav from './Nav';
-import Header from './Header';
-import Footer from './Footer';
+import Nav from '../Nav/Nav';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 import styles from './AppLayout.module.scss';
 // import Login from '../../pages/login';
 // import { useSelector } from 'react-redux';

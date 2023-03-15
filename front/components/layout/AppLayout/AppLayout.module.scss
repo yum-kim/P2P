@@ -1,7 +1,7 @@
-@import '../../styles/layout/grids';
-@import '../../styles/constants/colors';
-@import '../../styles/mixins/flexbox';
-@import '../../styles/mixins/responsive';
+@import '../../../styles/layout/grids';
+@import '../../../styles/constants/colors';
+@import '../../../styles/mixins/flexbox';
+@import '../../../styles/mixins/responsive';
 
 .app {
     @include column-flexbox(start);

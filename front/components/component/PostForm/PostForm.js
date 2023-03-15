@@ -1,10 +1,10 @@
 import React, { useRef, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './PostForm.module.scss';
-import Button from '../element/Button/Button';
-import Input from '../element/Input/Input';
-import { addPostRequestAction } from '../../store/actions/post';
+import Button from '../../element/Button/Button';
+import Input from '../../element/Input/Input';
 import { BsFillPersonFill, BsFileImage, BsCloudUpload } from "react-icons/bs";
+import { addPostRequestAction } from '../../../store/actions/post';
 
 
 const PostForm = () => {

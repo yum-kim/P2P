@@ -1,9 +1,9 @@
-@import '../../styles/layout/grids';
-@import '../../styles/constants/colors';
-@import '../../styles/mixins/flexbox';
-@import '../../styles/mixins/responsive';
-@import '../../styles/mixins/position';
-@import '../../styles/mixins/text_style';
+@import '../../../styles/layout/grids';
+@import '../../../styles/constants/colors';
+@import '../../../styles/mixins/flexbox';
+@import '../../../styles/mixins/responsive';
+@import '../../../styles/mixins/position';
+@import '../../../styles/mixins/text_style';
 
 .card {
     border: 1px solid $border;
@@ -21,7 +21,7 @@
 
         .img {
             width: 30px;
-            height: 30px;            
+            height: 30px;
             position: relative;
             border-radius: 50%;
             overflow: hidden;

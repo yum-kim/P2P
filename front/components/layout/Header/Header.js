@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './Header.module.scss';
 import Link from "next/link";
-import Button from '../element/Button/Button';
-import Search from '../common/Search/Search';
+import Button from '../../element/Button/Button';
+import Search from '../../common/Search/Search';
 import { useSelector, useDispatch } from 'react-redux';
-import { logoutRequestAction } from '../../store/actions/auth';
+import { logoutRequestAction } from '../../../store/actions/auth';
 import { BsBoxArrowInRight, BsBell } from "react-icons/bs";
 
 const Header = () => {

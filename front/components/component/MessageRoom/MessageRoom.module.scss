@@ -1,0 +1,11 @@
+@import '../../../styles/layout/grids';
+@import '../../../styles/constants/colors';
+@import '../../../styles/mixins/flexbox';
+@import '../../../styles/mixins/responsive';
+@import '../../../styles/mixins/position';
+@import '../../../styles/mixins/text_style';
+
+.messageRoom {
+    height: 100%;
+    background-color: $white;
+}

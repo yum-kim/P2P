@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import styles from './Comment.module.scss';
-import Input from '../element/Input/Input';
+import Input from '../../element/Input/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCommentRequestAction } from '../../store/actions/post';
+import { addCommentRequestAction } from '../../../store/actions/post';
 import { BsSend, BsFillPersonFill } from "react-icons/bs";
 
 const Comment = ({ post }) => {

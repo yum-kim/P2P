@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import styles from './PostCard.module.scss';
-import Comment from './Comment';
 import { BsHandThumbsUpFill, BsHandThumbsUp, BsChatLeftTextFill, BsChatLeftText, BsLockFill } from "react-icons/bs";
 import { MdPublic } from "react-icons/md";
 import { BsFillPersonFill } from "react-icons/bs";
 import { useDispatch } from 'react-redux';
+import Comment from '../Comment/Comment';
 
 const PostCard = ({ post }) => {
     const [showComments, setShowComments] = useState(false);

@@ -1,10 +1,10 @@
 //메인 피드 화면
 import React from 'react';
 import Head from 'next/head';
-import AppLayout from "../../components/layout/AppLayout";
-import MessageList from '../../components/component/MessageList';
+import AppLayout from "../../components/layout/AppLayout/AppLayout";
+import MessageList from '../../components/component/MessageList/MessageList';
 import styles from './messenger.module.scss';
-import MessageRoom from '../../components/component/MessageRoom';
+import MessageRoom from '../../components/component/MessageRoom/MessageRoom';
 
 const message = () => {
 
