@@ -36,7 +36,7 @@ export class Board extends BaseEntity {
   @ApiProperty({ description: '조회수' })
   hit: number;
 
-  @Column()
+  @Column({ nullable: true })
   @ApiProperty({ description: '이미지 경로' })
   imagePath: string;
 
