@@ -26,6 +26,7 @@ const PostForm = () => {
         description: text,
         imagePath: '',
     }
+
     const onClickUploadPost = () => {
         dispatch(addPostRequestAction(dummyData));
         setText('');

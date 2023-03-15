@@ -24,29 +24,29 @@ export const initialState = {
     changePostStatusDone: false,
     changePostStatusError: null,
     allPosts: [
-        // {
-        // postId: 1,
-        // postDate: '2022.11.11 00:12:12',
-        // user: {
-        //     id: 1,
-        //     nickname: 'yumi',
-        //     profileImagePath: '/images/myProfile.jpeg'
-        // },
-        // content: 'next로 프로젝트를 하는 중인데 쉽지않아요 . .',
-        // imagePath: 'https://images.velog.io/images/jay/post/3a497590-d1b6-414c-9f3f-7b6c7eb18f6d/img.png',
-        // Comments: [
-        //     {
-        //         user: 'jemin',
-        //         content: '댓글이당당',
-        //         date: '2022.11.11 00:12:12'
-        //     },
-        //     {
-        //         user: 'jemin',
-        //         content: '댓글이당당1111',
-        //         date: '2022.11.11 00:12:15'
-        //     }
-        // ]
-        // }
+        {
+        id: 1,
+        createAt: '2022.11.11 00:12:12',
+        user: {
+            id: 1,
+            username: 'yumi',
+            profileImagePath: '/images/profile.png'
+        },
+        description: 'next로 프로젝트를 하는 중인데 쉽지않아요 . .',
+        imagePath: 'https://images.velog.io/images/jay/post/3a497590-d1b6-414c-9f3f-7b6c7eb18f6d/img.png',
+        comments: [
+            {
+                username: 'jemin',
+                commentMemo: '댓글이당당',
+                createAt: '2022.11.11 00:12:12'
+            },
+            {
+                username: 'jemin',
+                commentMemo: '댓글이당당1111',
+                createAt: '2022.11.11 00:12:15'
+            }
+        ]
+        }
     ],
 }
 
@@ -61,10 +61,10 @@ const reducer = (state = initialState, action) => {
             case GET_POSTS_SUCCESS:
                 const { data, page } = action.data;
                 if (page == 1) {
-                    draft.allPosts = data;
+                    // draft.allPosts = data;
                 } else {
-                    draft.allPosts.push(...data);
                 }
+                draft.allPosts.push(...data);
                 draft.getPostsLoading = false;
                 draft.getPostsDone = true;
                 break;

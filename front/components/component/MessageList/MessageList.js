@@ -5,7 +5,7 @@ const MessageList = ({ ...rest }) => {
     return (
         <li className={styles.list}>
             <div className={styles.profile}>
-                <img src='/images/myProfile.jpeg' alt="profile" />
+                <img src='/images/profile.png' alt="profile" />
             </div>
             <div className={styles.content}>
                 <div className={styles.user}>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './PostCard.module.scss';
 import { BsHandThumbsUpFill, BsHandThumbsUp, BsChatLeftTextFill, BsChatLeftText, BsLockFill } from "react-icons/bs";
 import { MdPublic, MdOutlineMoreHoriz } from "react-icons/md";
@@ -78,10 +78,10 @@ const PostCard = ({ post }) => {
             <div className={styles.top}>
                 <div className={styles.profile}>
                     <div className={styles.img}>
-                        {post.user?.profileImagePath ? <img src={post.user.profileImagePath} alt="프로필" /> : <BsFillPersonFill />}
+                        {post.user.profileImagePath ? <img src={post.user.profileImagePath} alt="프로필" /> : <BsFillPersonFill />}
                     </div>
                     <div className={styles.postInfo}>
-                        <p className={styles.name}>{post.user?.username}</p>
+                        <p className={styles.name}>{post.user.username}</p>
                         <div>
                             <span className={styles.date}>{post.createAt}</span>
                             <button className={styles.status} onClick={onChangePostStatus}>

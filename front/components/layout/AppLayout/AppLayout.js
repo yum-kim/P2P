@@ -3,12 +3,8 @@ import Nav from '../Nav/Nav';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import styles from './AppLayout.module.scss';
-// import Login from '../../pages/login';
-// import { useSelector } from 'react-redux';
 
 const AppLayout = ({ children }) => {
-    // const { isLoggedIn } = useSelector((state) => state.user);
-
     return (
         <div className={styles.app}>
             <Header />

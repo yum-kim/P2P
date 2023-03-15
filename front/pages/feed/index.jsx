@@ -39,7 +39,7 @@ const Feed = () => {
                 {getPostsLoading && <Loading />}
                 <PostForm />
                 {allPosts?.map((post) => (
-                    <PostCard key={post.postId} post={post} />
+                    <PostCard key={post.id} post={post} />
                 ))}
             </AppLayout>
         </>

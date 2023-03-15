@@ -19,7 +19,7 @@ const Comment = ({ post }) => {
 
         const commentObj = {
             postId: post.postId,
-            user: user?.nickname,
+            user: user.nickname,
             date: '2022',
             content: comment
         }
@@ -40,10 +40,10 @@ const Comment = ({ post }) => {
                 {post.comments.map((comment) => (
                     <li key={comment.id} className={styles.list}>
                         <div className={styles.img}>
-                            {post.user?.profileImagePath ? <img src={post.user.profileImagePath} alt="profile" /> : <BsFillPersonFill />}
+                            {post.user.profileImagePath ? <img src={post.user.profileImagePath} alt="profile" /> : <BsFillPersonFill />}
                         </div>
                         <div className={styles.content}>
-                            <p className={styles.name}>{comment.user}</p>
+                            <p className={styles.name}>{comment.username}</p>
                             <p className={styles.text}>
                                 {comment.commentMemo}
                                 <span className={styles.date}>{comment.createAt}</span>
