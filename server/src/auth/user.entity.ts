@@ -28,7 +28,7 @@ export class User extends BaseEntity {
   @ApiProperty({ description: '비밀번호' })
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   @ApiProperty({ description: '유저 이미지 url' })
   profileImagePath: string;
 
