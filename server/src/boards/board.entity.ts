@@ -36,6 +36,10 @@ export class Board extends BaseEntity {
   @ApiProperty({ description: '조회수' })
   hit: number;
 
+  @Column()
+  @ApiProperty({ description: '이미지 경로' })
+  imagePath: string;
+
   @CreateDateColumn({ name: 'created_at' })
   createAt: Date;
 
@@ -45,7 +49,7 @@ export class Board extends BaseEntity {
   @DeleteDateColumn({ name: 'deleted_at' })
   deleteAt: Date;
 
-  @ManyToOne((type) => User, (user) => user.boards, { eager: false })
+  @ManyToOne((type) => User, (user) => user.boards, { eager: true })
   user: User;
 
   @OneToMany((type) => Comment, (comment) => comment.board, { eager: true })

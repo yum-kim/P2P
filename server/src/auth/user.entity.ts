@@ -28,6 +28,10 @@ export class User extends BaseEntity {
   @ApiProperty({ description: '비밀번호' })
   password: string;
 
-  @OneToMany((type) => Board, (board) => board.user, { eager: true })
+  @Column()
+  @ApiProperty({ description: '유저 이미지 url' })
+  profileImagePath: string;
+
+  @OneToMany((type) => Board, (board) => board.user, { eager: false })
   boards: Board[];
 }

@@ -40,7 +40,7 @@ export class BoardsService {
     const query = this.boardRepository.createQueryBuilder('board');
     query.where('board.userUserid = :userId', { userId: user.userid });
 
-    const boards: Board[] = await query.getMany();
+    const boards: Board[] = await query.getRawMany();
 
     return boards;
   }
