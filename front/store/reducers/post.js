@@ -1,9 +1,9 @@
 import {
     ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
     GET_POSTS_REQUEST, GET_POSTS_FAILURE, GET_POSTS_SUCCESS,
-    ADD_COMMENT_REQUEST,
-    ADD_COMMENT_SUCCESS,
-    ADD_COMMENT_FAILURE,
+    ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
+    DELETE_POST_REQUEST, DELETE_POST_SUCCESS, DELETE_POST_FAILURE,
+    CHANGE_POST_STATUS_REQUEST, CHANGE_POST_STATUS_SUCCESS, CHANGE_POST_STATUS_FAILURE,
 } from "../actions/post";
 import produce from 'immer';
 
@@ -17,6 +17,12 @@ export const initialState = {
     addCommentLoading: false,
     addCommentDone: false,
     addCommentError: null,
+    deletePostLoading: false,
+    deletePostDone: false,
+    deletePostError: null,
+    changePostStatusLoading: false,
+    changePostStatusDone: false,
+    changePostStatusError: null,
     allPosts: [
         // {
         // postId: 1,
@@ -54,13 +60,13 @@ const reducer = (state = initialState, action) => {
                 break;
             case GET_POSTS_SUCCESS:
                 const { data, page } = action.data;
-                draft.getPostsLoading = false;
-                draft.getPostsDone = true;
                 if (page == 1) {
                     draft.allPosts = data;
                 } else {
                     draft.allPosts.push(...data);
                 }
+                draft.getPostsLoading = false;
+                draft.getPostsDone = true;
                 break;
             case GET_POSTS_FAILURE:
                 draft.getPostsLoading = false;
@@ -85,15 +91,45 @@ const reducer = (state = initialState, action) => {
                 draft.addCommentError = null;
                 break;
             case ADD_COMMENT_SUCCESS:
+                // const addedPost = draft.allPosts.find((post) => post.postId == action.data.postId);
+                // addedPost.comments.push(action.data);
                 draft.addCommentLoading = false;
                 draft.addCommentDone = true;
-                const post = draft.allPosts.find((post) => post.postId == action.data.postId);
-                post.Comments.push(action.data);
                 break;
             case ADD_COMMENT_FAILURE:
                 draft.addCommentLoading = false;
                 draft.addCommentError = action.error;
                 break;
+            case DELETE_POST_REQUEST:
+                draft.deletePostLoading = true;
+                draft.deletePostDone = false;
+                draft.deletePostError = null;
+                break;
+            case DELETE_POST_SUCCESS:
+                draft.allPosts = draft.allPosts.filter((v) => v.id !== action.data.id);
+                draft.deletePostLoading = false;
+                draft.deletePostDone = true;
+                break;
+            case DELETE_POST_FAILURE:
+                draft.deletePostLoading = false;
+                draft.deletePostError = action.error;
+                break;
+            case CHANGE_POST_STATUS_REQUEST:
+                draft.changePostStatusLoading = true;
+                draft.changePostStatusDone = false;
+                draft.changePostStatusError = null;
+                break;
+            case CHANGE_POST_STATUS_SUCCESS:
+                const changedPost = draft.allPosts.find((v) => v.id === action.data.id);
+                changedPost.status = action.data.status;
+                draft.changePostStatusLoading = false;
+                draft.changePostStatusDone = true;
+                break;
+            case CHANGE_POST_STATUS_FAILURE:
+                draft.changePostStatusLoading = false;
+                draft.changePostStatusError = action.error;
+                break;
+            
             default:
                 return state;
         }

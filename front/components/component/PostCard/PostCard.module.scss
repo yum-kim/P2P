@@ -15,45 +15,74 @@
         margin-bottom: 1rem;
     }
 
-    .profile { 
-        @include flexbox(start);
+    .top {
+        @include flexbox(between);
         margin-bottom: 20px;
 
-        .img {
-            width: 30px;
-            height: 30px;
-            position: relative;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 1rem;
-            border: 1px solid $border;
-
-            svg {
-                @include pos-center-x;
-                top: 3px;
-                font-size: 30px;
-                color: $tertiary;
+        .profile { 
+            @include flexbox(start);
+    
+            .img {
+                width: 30px;
+                height: 30px;
+                position: relative;
+                border-radius: 50%;
+                overflow: hidden;
+                margin-right: 1rem;
+                border: 1px solid $border;
+    
+                svg {
+                    @include pos-center-x;
+                    top: 3px;
+                    font-size: 30px;
+                    color: $tertiary;
+                }
+    
+                img {
+                    @include pos-center();
+                    width: 100%;
+                }
             }
 
-            img {
-                @include pos-center();
-                width: 100%;
+            .postInfo {
+                .name {
+                    @include text-style(16, $black);
+                    font-weight: 500;
+                }
+        
+                .date {
+                    @include text-style(14, $secondary);
+                    line-height: 1;
+                }
+        
+                .status {
+                    margin-left: 5px;
+                    color: $secondary;   
+                }
             }
         }
 
-        .name {
-            @include text-style(16, $black);
-            font-weight: 500;
-        }
+        .otherBtn {
+            button {
+                display: inline-block;
+                width: 30px;
+                height: 30px;
+                min-width: 100%;
+                border-radius: 50%;
+                position: relative;
+                
+                svg {
+                    @include pos-center();
+                    color: $primary;
+                    font-size: 1.3rem;
+                }
+                
+                &:hover {
+                    background-color: $border;
+                }
+            }
 
-        .date {
-            @include text-style(14, $secondary);
-            line-height: 1;
-        }
-
-        .status {
-            margin-left: 5px;
-            color: $secondary;   
+            
         }
     }
 

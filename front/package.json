@@ -10,6 +10,9 @@
   "description": "",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.13",
     "antd": "^4.23.2",
     "axios": "^1.2.1",
     "immer": "^9.0.19",

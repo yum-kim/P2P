@@ -8,10 +8,13 @@ import Loading from '../../components/common/Loading/Loading';
 import { getPostsRequestAction } from '../../store/actions/post';
 
 const Feed = () => {
-    const { getPostsLoading, getPostsDone, getPostsError, allPosts } = useSelector((state) => state.post);
+    const {
+        allPosts, getPostsLoading, getPostsError,
+    } = useSelector((state) => state.post);
     const [currentPage, setCurrentPage] = useState(1);
     const dispatch = useDispatch();
-    console.log(allPosts)
+
+    console.log('allPosts', allPosts);
 
     const getPosts = () => {
         dispatch(getPostsRequestAction({ page: currentPage }));

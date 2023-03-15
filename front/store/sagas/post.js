@@ -1,5 +1,11 @@
 import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
-import { GET_POSTS_REQUEST, getPostsSuccessAction, getPostsFailureAction, ADD_POST_REQUEST, ADD_COMMENT_REQUEST, addPostSuccessAction, addPostFailureAction, addCommentSuccessAction, addCommentFailureAction } from '../actions/post';
+import {
+  GET_POSTS_REQUEST, getPostsSuccessAction, getPostsFailureAction,
+  ADD_POST_REQUEST, addPostSuccessAction, addPostFailureAction,
+  ADD_COMMENT_REQUEST, addCommentSuccessAction, addCommentFailureAction,
+  DELETE_POST_REQUEST, deletePostSuccessAction, deletePostFailureAction,
+  CHANGE_POST_STATUS_REQUEST, changePostStatusSuccessAction, changePostStatusFailureAction, 
+} from '../actions/post';
 import boards from '../../api/boards';
 
 function* getPosts(action) {
@@ -35,6 +41,28 @@ function* addComment(action) {
   }
 }
 
+function* deletePost(action) {
+  const { res, error } = yield call(boards.deleteBoardById, action.data);
+
+  console.log('delete: ', res);
+
+  if (res) {
+    yield put(deletePostSuccessAction({ id: action.data }));
+  } else {
+    yield put(deletePostFailureAction(error));
+  }
+}
+
+function* changePostStatus(action) {
+  const { res, error } = yield call(boards.changeBoardStatus, action.data);
+
+  if (res) {
+    yield put(changePostStatusSuccessAction(res));
+  } else {
+    yield put(changePostStatusFailureAction(error));
+  }
+}
+
 function* watchGetPosts() {
   yield takeLatest(GET_POSTS_REQUEST, getPosts);
 }
@@ -47,10 +75,20 @@ function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
 
+function* watchDeletePost() {
+  yield takeLatest(DELETE_POST_REQUEST, deletePost);
+}
+
+function* watchChangePostStatus() {
+  yield takeLatest(CHANGE_POST_STATUS_REQUEST, changePostStatus);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchGetPosts),
     fork(watchAddPost),
     fork(watchAddComment),
+    fork(watchDeletePost),
+    fork(watchChangePostStatus),
   ]);
 }
