@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  db:
+    image: 'postgres:latest'
+    container_name: 'postgres'
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'postgres'
+    ports:
+      - '54321:5432'
+    volumes:
+      - 'pgdata:/var/lib/postgresql/data'
+  app:
+    build: .
+    container_name: 'nestjs'
+    command: sh -c "npm install pm2 -g && npm install && npm run start:dev"
+    depends_on:
+      - 'db'
+    ports:
+      - '3001:3001'
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+      - './config:/app/config'
+
+volumes:
+  pgdata:
