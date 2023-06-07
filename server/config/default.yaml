@@ -3,7 +3,7 @@ server:
 
 db:
   type: 'postgres'
-  database: 'TBOARD'
+  database: 'postgres'
   port: 5432
 
 jwt:
