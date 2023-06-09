@@ -7,27 +7,23 @@ import { BsSend, BsFillPersonFill } from "react-icons/bs";
 import { RootState } from '../../../store/reducers';
 import { IPost, IComment } from '../PostCard/PostCard';
 
-interface ICommentProps {
-    post: IPost
-}
-
-const Comment = ({ post } : ICommentProps) => {
+const Comment = ({ post } : { post: IPost }) => {
     const inputRef = useRef(null);
     const [comment, setComment] = useState('');
     const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
         setComment(e.currentTarget.value);
     };
 
-    const user = useSelector((state : RootState) => state.auth);
+    const { user } = useSelector((state : RootState) => state.auth);
     const dispatch = useDispatch();
     const onClickComment = () => {
         if (!comment.replace(/\s/g, "")) return;
 
+        //TODO: 댓글 추가 API 완료 시 맞추기
         const commentObj = {
-            id: post.id,
-            user: user.nickname,
-            date: '2022',
-            content: comment
+            postid: post.id,
+            userid: user.userid,
+            comment
         }
         dispatch(addCommentRequestAction(commentObj));
         setComment('');
