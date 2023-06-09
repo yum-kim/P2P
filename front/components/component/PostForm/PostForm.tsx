@@ -6,6 +6,7 @@ import Input from '../../element/Input/Input';
 import { BsFillPersonFill, BsFileImage, BsCloudUpload } from "react-icons/bs";
 import { addPostRequestAction } from '../../../store/actions/post';
 import { RootState } from '../../../store/reducers';
+import { useRouter } from 'next/dist/client/router';
 
 const PostForm = () => {
     const { user } = useSelector((state: RootState) => state.auth);
@@ -20,6 +21,7 @@ const PostForm = () => {
     }, [imageInput.current]);
 
     const dispatch = useDispatch();
+    const router = useRouter();
 
     //TODO: 게시판생성 API body값 수정되면 여기도 맞추기
     const dummyData = {
@@ -35,6 +37,11 @@ const PostForm = () => {
         dispatch(addPostRequestAction(dummyData));
         setText('');
     };
+
+    if (!user) {
+        router.push('/');
+        return null;
+    }
 
     return (
         <div className={styles.postForm}>
