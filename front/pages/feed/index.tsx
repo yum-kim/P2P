@@ -7,13 +7,16 @@ import PostCard from '../../components/component/PostCard/PostCard';
 import Loading from '../../components/common/Loading/Loading';
 import { getPostsRequestAction } from '../../store/actions/post';
 import { RootState } from '../../store/reducers';
+import { useRouter } from 'next/dist/client/router';
 
 const Feed = () => {
     const {
         allPosts, getPostsLoading, getPostsError, addPostDone
     } = useSelector((state: RootState) => state.post);
+    const { user } = useSelector((state: RootState) => state.auth);
     const [currentPage, setCurrentPage] = useState(1);
     const dispatch = useDispatch();
+    const router = useRouter();
 
     console.log('allPosts', allPosts);
 
@@ -36,6 +39,13 @@ const Feed = () => {
     useEffect(() => {
         getPosts();
     }, [currentPage]);
+
+    useEffect(() => {
+        if (!user) {
+            router.push('/');
+            return null;
+        }
+    }, []);
 
     return (
         <>

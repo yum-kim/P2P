@@ -6,11 +6,17 @@ import Search from '../../common/Search/Search';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutRequestAction } from '../../../store/actions/auth';
 import { BsBoxArrowInRight, BsBell } from "react-icons/bs";
+import { useRouter } from 'next/dist/client/router';
 
 const Header = () => {
     const dispatch = useDispatch();
+    const router = useRouter();
     const onClickLogout = () => {
-        dispatch(logoutRequestAction());
+        if (confirm("로그아웃 하시겠습니까?")) {
+            dispatch(logoutRequestAction());
+            router.push('/');
+            return null;
+        }
     }
 
     return (

@@ -16,7 +16,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const router = useRouter();
-    const { logInLoading, logInDone, logInError } = useSelector((state: RootState) => state.auth);
+    const { logInLoading, logInDone, logInError, user } = useSelector((state: RootState) => state.auth);
 
     const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
@@ -43,7 +43,7 @@ const Login = () => {
     }, [logInError])
 
     useEffect(() => {
-        if (logInDone) {
+        if (logInDone && user) {
             router.push('/feed');
         }
     }, [logInDone])
@@ -67,7 +67,7 @@ const Login = () => {
                         </div>
                         <div className={styles.password}>
                             <label htmlFor="password">Password</label>
-                            <Input type='password' id='password' onChange={onChangePassword} />
+                            <Input type='password' placeholder='password' id='password' onChange={onChangePassword} />
                         </div>
                         <Button type='submit' size='40'>Login</Button>
                     </form>
