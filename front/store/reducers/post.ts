@@ -39,11 +39,12 @@ const reducer = (state = initialState, action) => {
                 break;
             case GET_POSTS_SUCCESS:
                 const { data, page } = action.data;
+
                 if (page == 1) {
-                    // draft.allPosts = data;
+                    draft.allPosts = data;
                 } else {
                 }
-                draft.allPosts.push(...data);
+                // draft.allPosts.push(...data);
                 draft.getPostsLoading = false;
                 draft.getPostsDone = true;
                 break;
@@ -70,8 +71,8 @@ const reducer = (state = initialState, action) => {
                 draft.addCommentError = null;
                 break;
             case ADD_COMMENT_SUCCESS:
-                // const addedPost = draft.allPosts.find((post) => post.postId == action.data.postId);
-                // addedPost.comments.push(action.data);
+                const posts = draft.allPosts.find((post) => post.id == action.data.id);
+                posts.comments.push(action.data);
                 draft.addCommentLoading = false;
                 draft.addCommentDone = true;
                 break;
