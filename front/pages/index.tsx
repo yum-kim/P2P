@@ -5,16 +5,26 @@ import { useSelector } from 'react-redux';
 import Login from './login';
 import Feed from './feed';
 import { RootState } from '../store/reducers';
+import { useRouter } from 'next/dist/client/router';
 
 const Home = () => {
-    const { logInDone } = useSelector((state: RootState) => state.auth);
+    const { user } = useSelector((state: RootState) => state.auth);
+    const router = useRouter();
+
+    useEffect(() => {
+        if (user) {
+            router.push('/feed');
+        } else {
+            router.push('/login');
+        }
+    }, [])
 
     return (
         <>
             <Head>
                 <title>P2P | main</title>
             </Head>
-            {logInDone ? <Feed /> : <Login />}
+            {/* {user ? <Feed /> : <Login />} */}
         </>
     );
 }
