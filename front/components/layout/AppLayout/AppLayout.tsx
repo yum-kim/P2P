@@ -4,7 +4,11 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import styles from './AppLayout.module.scss';
 
-const AppLayout = ({ children }) => {
+interface IAppLayoutProps {
+    children: React.ReactNode
+}
+
+const AppLayout = ({ children }: IAppLayoutProps) => {
     return (
         <div className={styles.app}>
             <Header />

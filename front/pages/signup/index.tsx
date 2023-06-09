@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/common/Loading/Loading';
 import { signupRequestAction } from '../../store/actions/auth';
+import { RootState } from '../../store/reducers';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -19,9 +20,9 @@ const Signup = () => {
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
     const dispatch = useDispatch();
     const router = useRouter();
-    const { signUpLoading, signUpDone, signUpError } = useSelector((state) => state.user);
+    const { signUpLoading, signUpDone, signUpError } = useSelector((state: RootState) => state.auth);
 
-    const onChangeUsername = (e) => {
+    const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         const regType = /^[A-Za-z0-9]*$/; //영문, 숫자만 사용해서 3자 이상 체크
         if (regType.test(e.target.value) && e.target.value.length >= 3) {
             setUsernameError(false);
@@ -31,7 +32,7 @@ const Signup = () => {
         setUsername(e.target.value);
     };
 
-    const onChangePassword = (e) => {
+    const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         const regType = /^[A-Za-z0-9]*$/; //영문, 숫자만 사용해서 8자 이상 체크
         if (regType.test(e.target.value) && e.target.value.length >= 8) {
             setPasswordError(false);
@@ -41,7 +42,7 @@ const Signup = () => {
         setPassword(e.target.value);
     };
 
-    const onChangeConfirmPassword = (e) => {
+    const onChangeConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (password === e.target.value) {
             setConfirmPasswordError(false);
         } else {

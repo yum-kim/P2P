@@ -9,23 +9,25 @@ import Link from 'next/link';
 import { useRouter } from 'next/dist/client/router';
 import { loginRequestAction } from '../../store/actions/auth';
 import Loading from '../../components/common/Loading/Loading';
+import { RootState } from '../../store/reducers';
 
 const Login = () => {
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const router = useRouter();
-    const { logInLoading, logInDone, logInError } = useSelector((state) => state.auth);
+    const { logInLoading, logInDone, logInError } = useSelector((state: RootState) => state.auth);
 
-    const onChangeUsername = (e) => {
+    const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
+
     }
 
-    const onChangePassword = (e) => {
+    const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
     }
 
-    const onSubmitLogin = async (e) => {
+    const onSubmitLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!username || !password) {
             alert("빈 값이 있습니다.");
@@ -33,7 +35,7 @@ const Login = () => {
         }
         dispatch(loginRequestAction({ username, password }));
     }
-    
+
     useEffect(() => {
         if (logInError) {
             alert(logInError.message);
@@ -61,7 +63,7 @@ const Login = () => {
                     <form onSubmit={onSubmitLogin}>
                         <div className={styles.username}>
                             <label htmlFor="username">Username</label>
-                            <Input placeholder='' id='username' onChange={onChangeUsername} />
+                            <Input type='text' placeholder='username' id='username' onChange={onChangeUsername} />
                         </div>
                         <div className={styles.password}>
                             <label htmlFor="password">Password</label>
@@ -72,9 +74,7 @@ const Login = () => {
                     <Button size='36' varient='outlined'>Sign in with Google</Button>
                     <div className={styles.divider}></div>
                     <Link href='/signup'>
-                        <a>
-                            <Button size='36' varient='secondary'>Sign up</Button>
-                        </a>
+                        <a><Button size='36' varient='secondary'>Sign up</Button></a>
                     </Link>
                 </div>
             </div>

@@ -4,9 +4,10 @@ import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import Login from './login';
 import Feed from './feed';
+import { RootState } from '../store/reducers';
 
 const Home = () => {
-    const { logInDone } = useSelector((state) => state.auth);
+    const { logInDone } = useSelector((state: RootState) => state.auth);
 
     return (
         <>

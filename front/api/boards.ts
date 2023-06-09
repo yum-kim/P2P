@@ -4,7 +4,7 @@ class Boards {
     constructor() {
     }
 
-    async getBoards(params) {
+    async getBoards(params: any) {
         let option = {
             "method": "GET",
             "url": `/boards`,
@@ -14,7 +14,7 @@ class Boards {
         return await request(option);
     }
 
-    async createBoard(data) {
+    async createBoard(data: any) {
         let option = {
             "method": "POST",
             "url": `/boards`,
@@ -25,7 +25,7 @@ class Boards {
     }
 
     //TODO: API 추가 필요
-    async addComment(data) {
+    async addComment(data: any) {
         let option = {
             "method": "POST",
             "url": `/boards/comments`,
@@ -35,7 +35,7 @@ class Boards {
         return await request(option);
     }
 
-    async getBoardsByUser(params) {
+    async getBoardsByUser(params: any) {
         let option = {
             "method": "GET",
             "url": `/boards/user`,
@@ -45,7 +45,7 @@ class Boards {
         return await request(option);
     }
 
-    async getBoardById(id) {
+    async getBoardById(id:number) {
         let option = {
             "method": "GET",
             "url": `/boards/${id}`,
@@ -54,7 +54,7 @@ class Boards {
         return await request(option);
     }
 
-    async deleteBoardById(id) {
+    async deleteBoardById(id:number) {
         let option = {
             "method": "DELETE",
             "url": `/boards/${id}`,
@@ -63,10 +63,20 @@ class Boards {
         return await request(option);
     }
 
-    async changeBoardStatus(data) {
+    async changeBoardStatus(data:any) {
         let option = {
             "method": "PATCH",
             "url": `/boards/${data.id}/status`,
+            "Content-Type": "application/json",
+            "data": data.body
+        }
+        return await request(option);
+    }
+
+    async changeBoardHit(data:any) {
+        let option = {
+            "method": "PATCH",
+            "url": `/boards/${data.id}/hit`,
             "Content-Type": "application/json",
             "data": data.body
         }

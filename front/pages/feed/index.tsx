@@ -6,11 +6,12 @@ import PostForm from '../../components/component/PostForm/PostForm';
 import PostCard from '../../components/component/PostCard/PostCard';
 import Loading from '../../components/common/Loading/Loading';
 import { getPostsRequestAction } from '../../store/actions/post';
+import { RootState } from '../../store/reducers';
 
 const Feed = () => {
     const {
-        allPosts, getPostsLoading, getPostsError,
-    } = useSelector((state) => state.post);
+        allPosts, getPostsLoading, getPostsError, addPostDone
+    } = useSelector((state: RootState) => state.post);
     const [currentPage, setCurrentPage] = useState(1);
     const dispatch = useDispatch();
 
@@ -19,6 +20,12 @@ const Feed = () => {
     const getPosts = () => {
         dispatch(getPostsRequestAction({ page: currentPage }));
     }
+
+    useEffect(() => {
+        if (addPostDone) {
+            getPosts();
+        }
+    }, [addPostDone]);
 
     useEffect(() => {
         if (getPostsError) {

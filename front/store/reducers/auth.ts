@@ -21,7 +21,13 @@ export const initialState = {
     // loginData: {},
 }
 
-const reducer = (state = initialState, action) => {
+interface IActionProps {
+    type: string,
+    data: any,
+    error: any
+}
+
+const reducer = (state = initialState, action: IActionProps) => {
     return produce(state, (draft) => {
         switch (action.type) {
             case LOG_IN_REQUEST:
@@ -30,10 +36,10 @@ const reducer = (state = initialState, action) => {
                 draft.logInError = null;
                 break;
             case LOG_IN_SUCCESS:
-                const { username, userid, accessToken } = action.data;
+                const { userid, username, accessToken, profileImagePath } = action.data;
                 draft.logInLoading = false;
                 draft.logInDone = true;
-                draft.user = { username, userid };
+                draft.user = { userid, username, profileImagePath };
                 auth.setToken(accessToken);
                 break;
             case LOG_IN_FAILURE:

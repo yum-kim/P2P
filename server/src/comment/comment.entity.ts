@@ -20,7 +20,7 @@ export class Comment extends BaseEntity {
 
   @Column()
   @ApiProperty({ description: '내용', name: 'comment_memo' })
-  commentMemo: string;
+  comment: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createAt: Date;

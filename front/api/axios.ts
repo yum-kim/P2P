@@ -7,18 +7,27 @@ const axiosInstance = axios.create({
   timeout: 5000,
 });
 
-async function request(option) {
+interface IOptionProps {
+  "method": string,
+  "url": string,
+  "Content-Type": string,
+  "params"?: any,
+  "data"?: any
+}
+
+async function request(option: IOptionProps) {
   try {
     const accessToken = auth.getToken();
+    console.log(accessToken);
 
     if (accessToken) {
       axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     }
 
-    const res = await axiosInstance(option);
+    const res:any = await axiosInstance(option);
 
-    // console.log('request response');
-    // console.log(res)
+    console.log('request response');
+    console.log(res);
 
     if (![200,201].includes(res.status)) {
       throw new Error(res);

@@ -1,17 +1,50 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, ReactNode } from 'react';
 import styles from './PostCard.module.scss';
 import { BsHandThumbsUpFill, BsHandThumbsUp, BsChatLeftTextFill, BsChatLeftText, BsLockFill } from "react-icons/bs";
 import { MdPublic, MdOutlineMoreHoriz } from "react-icons/md";
 import { BsFillPersonFill } from "react-icons/bs";
 import { useSelector, useDispatch } from 'react-redux';
 import Comment from '../Comment/Comment';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+// import Button from '@mui/material/Button';
+// import Menu from '@mui/material/Menu';
+// import MenuItem from '@mui/material/MenuItem';
 import Loading from '../../common/Loading/Loading';
-import { changePostStatusRequestAction, deletePostRequestAction } from '../../../store/actions/post';
+import { changePostStatusRequestAction, deletePostRequestAction, changePostHitRequestAction } from '../../../store/actions/post';
+import { RootState } from '../../../store/reducers';
 
-const PostCard = ({ post }) => {
+interface IPostProps {
+    post: IPost
+}
+
+export interface IPost {
+    id: number,
+    user: IUser,
+    description: string,
+    imagePath: string,
+    hit: number,
+    comments: IComment[],
+    status: string, //public, private
+    createAt: string,
+    deleteAt: string,
+    updatedAt: string,
+}
+
+export interface IUser {
+    userid: number,
+    usercode: string,
+    username: string,
+    password: string
+    profileImagePath: string
+}
+
+export interface IComment {
+    id: number,
+    username: string,
+    comment: string,
+    createAt: string
+}
+
+const PostCard = ({ post }: IPostProps) => {
     const [showComments, setShowComments] = useState(false);
     const [liked, setLiked] = useState(false);
     const [open, setOpen] = useState(false);
@@ -22,7 +55,8 @@ const PostCard = ({ post }) => {
         addCommentLoading, addCommentDone, addCommentError,
         deletePostLoading, deletePostDone, deletePostError,
         changePostStatusLoading, changePostStatusDone, changePostStatusError
-    } = useSelector((state) => state.post);
+    } = useSelector((state: RootState) => state.post);
+    const { user } = useSelector((state: RootState) => state.auth);
     
     const onToggleLiked = useCallback(() => {
         setLiked((prev) => !prev);
@@ -32,33 +66,51 @@ const PostCard = ({ post }) => {
     }, []);
 
     //TODO: post status 변경
-    const onChangePostStatus = () => {
-        
+    const onChangePostStatus = (e: React.MouseEvent<HTMLButtonElement>) => {
+        const data = {
+            id: user.userid,
+            body: {
+                status: "PUBLIC"
+            }
+        }
+        dispatch(changePostStatusRequestAction(data));
+    }
+
+
+    //TODO: post hit API 추가 되면 맞추기
+    const onClickLikedButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+        const data = {
+            id: user.userid,
+            body: {
+                hit: true
+            }
+        }
+        dispatch(changePostHitRequestAction(data));
     }
     
-    const onClickOhterMenu = (e) => {
-        setOpen(true);
-        setAnchorEl(e.currentTarget);
-    }
+    // const onClickOhterMenu = (e) => {
+    //     setOpen(true);
+    //     setAnchorEl(e.currentTarget);
+    // }
         
-    const onClickOtherMenuList = (e) => {
-        const { menu } = e.currentTarget.dataset;
-        console.log(menu);
+    // const onClickOtherMenuList = (e) => {
+    //     const { menu } = e.currentTarget.dataset;
+    //     console.log(menu);
         
-        if (menu === "changePostStatus") {
-            const status = post.status === "PUBLIC" ? "PRIVATE" : "PUBLIC";
-            dispatch(changePostStatusRequestAction({id: post.id, body: { status }}))
-        } else if (menu === "deletePost") {
-            dispatch(deletePostRequestAction(post.id));
-        }
+    //     if (menu === "changePostStatus") {
+    //         const status = post.status === "PUBLIC" ? "PRIVATE" : "PUBLIC";
+    //         dispatch(changePostStatusRequestAction({id: post.id, body: { status }}))
+    //     } else if (menu === "deletePost") {
+    //         dispatch(deletePostRequestAction(post.id));
+    //     }
 
-        onCloseOtherMenu();
-    }
+    //     onCloseOtherMenu();
+    // }
 
-    const onCloseOtherMenu = () => {
-        setAnchorEl(null);
-        setOpen(false);
-    }
+    // const onCloseOtherMenu = () => {
+    //     setAnchorEl(null);
+    //     setOpen(false);
+    // }
 
     useEffect(() => {
         if (deletePostDone) {
@@ -91,7 +143,7 @@ const PostCard = ({ post }) => {
                     </div>
                 </div>
                 <div className={styles.otherBtn}>
-                    <Button
+                    {/* <Button
                         id="otherMenuBtn"
                         aria-controls={open ? 'otherMenuList' : undefined}
                         aria-haspopup="true"
@@ -109,7 +161,7 @@ const PostCard = ({ post }) => {
                     >
                         <MenuItem data-menu="changePostStatus" onClick={onClickOtherMenuList}>게시물 {post.status === "PUBLIC"? "나만보기": "전체공개"}로 변경</MenuItem>
                         <MenuItem data-menu="deletePost" onClick={onClickOtherMenuList}>게시물 삭제</MenuItem>
-                    </Menu>
+                    </Menu> */}
                 </div>
             </div>
             <div className={styles.content}>
@@ -117,9 +169,9 @@ const PostCard = ({ post }) => {
                 <p className={styles.content}>{post.description}</p>
             </div>
             <div className={styles.reaction}>
-                <button className={liked && styles.liked} onClick={onToggleLiked}>
+                <button className={liked && styles.liked} onClick={onClickLikedButton}>
                     {liked ? <BsHandThumbsUpFill /> : <BsHandThumbsUp />}
-                    좋아요
+                    좋아요 {post.hit}
                 </button>
                 <button onClick={onToggleComments}>
                     {showComments ? <BsChatLeftTextFill /> : <BsChatLeftText />}
