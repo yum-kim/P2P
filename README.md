@@ -12,6 +12,7 @@
 
 - React
 - Next.js
+- TypeScript
 - React-redux
 - Redux-saga
 - CSS Module
@@ -23,16 +24,18 @@
 - Node
 - Nest.js
 - Typescript
-- Postgresql
+- PostgreSQL
 
 <br />
 
 ## 🔨 구현할 기능들
 
-- [x] 로그인
+- [x] 로그인, 로그아웃
 - [x] 회원가입
-- [ ] 게시글 포스트/수정/삭제
-- [ ] 채팅
+- [ ] 포스트 추가/수정/삭제
+- [ ] 포스트 내 댓글 추가/수정/삭제 
+- [ ] 채팅(DM)
+- [ ] 마이페이지
 
 <br />
 
