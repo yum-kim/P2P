@@ -28,6 +28,18 @@
       }
     }
 
+    &[varient='primary-blue'] {
+        @extend %btn-base;
+        color: $white;
+        background-color: $blue;
+        // border: 1px solid $blue;
+        transition: background-color 200ms ease-in-out;
+
+        &:not(:disabled):hover {
+            background-color: $blue-dark;
+        }
+    }
+
     &[varient='outlined'] {
         @extend %btn-base;
         color: $blue;

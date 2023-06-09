@@ -52,9 +52,9 @@ const PostCard = ({ post }: IPostProps) => {
 
     const dispatch = useDispatch();
     const {
-        addCommentLoading, addCommentDone, addCommentError,
-        deletePostLoading, deletePostDone, deletePostError,
-        changePostStatusLoading, changePostStatusDone, changePostStatusError
+        addCommentLoading,
+        deletePostLoading,
+        changePostStatusLoading,
     } = useSelector((state: RootState) => state.post);
     const { user } = useSelector((state: RootState) => state.auth);
     
@@ -75,7 +75,6 @@ const PostCard = ({ post }: IPostProps) => {
         }
         dispatch(changePostStatusRequestAction(data));
     }
-
 
     //TODO: post hit API 추가 되면 맞추기
     const onClickLikedButton = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -112,21 +111,10 @@ const PostCard = ({ post }: IPostProps) => {
     //     setOpen(false);
     // }
 
-    useEffect(() => {
-        if (deletePostDone) {
-            alert("삭제가 완료되었습니다.");
-        }
-    }, [deletePostDone])
-
-    useEffect(() => {
-        if (changePostStatusDone) {
-            alert("게시물 공개범위 수정이 완료되었습니다.");
-        }
-    }, [changePostStatusDone])
-
     return (
         <article className={styles.card}>
             {(addCommentLoading || deletePostLoading || changePostStatusLoading) && <Loading />}
+
             <div className={styles.top}>
                 <div className={styles.profile}>
                     <div className={styles.img}>

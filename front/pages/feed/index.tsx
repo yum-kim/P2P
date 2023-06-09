@@ -8,15 +8,22 @@ import Loading from '../../components/common/Loading/Loading';
 import { getPostsRequestAction } from '../../store/actions/post';
 import { RootState } from '../../store/reducers';
 import { useRouter } from 'next/dist/client/router';
+import Modal from '../../components/layout/Modal/Modal';
 
 const Feed = () => {
     const {
-        allPosts, getPostsLoading, getPostsError, addPostDone
+        allPosts, getPostsLoading, getPostsError,
+        addPostLoading, addPostDone, addPostError,
+        addCommentLoading, addCommentDone, addCommentError,
+        deletePostLoading, deletePostDone, deletePostError,
+        changePostStatusLoading, changePostStatusDone, changePostStatusError
     } = useSelector((state: RootState) => state.post);
     const { user } = useSelector((state: RootState) => state.auth);
     const [currentPage, setCurrentPage] = useState(1);
     const dispatch = useDispatch();
     const router = useRouter();
+    const [isShowModal, setIsShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState(null);
 
     console.log('allPosts', allPosts);
 
@@ -26,15 +33,32 @@ const Feed = () => {
 
     useEffect(() => {
         if (addPostDone) {
+            setIsShowModal(true);
+            setModalContent("업로드가 완료되었습니다.");
             getPosts();
         }
-    }, [addPostDone]);
+    }, [addPostDone])
 
     useEffect(() => {
-        if (getPostsError) {
-            alert("게시물을 불러오는 중 오류가 발생했습니다.");
+        if (deletePostDone) {
+            setIsShowModal(true);
+            setModalContent("삭제가 완료되었습니다.");
         }
-    }, [getPostsError]);
+    }, [deletePostDone])
+
+    useEffect(() => {
+        if (changePostStatusDone) {
+            setIsShowModal(true);
+            setModalContent("게시물 공개범위 수정이 완료되었습니다.");
+        }
+    }, [changePostStatusDone])
+
+    useEffect(() => {
+        if (getPostsError || addCommentError || deletePostError || changePostStatusError) {
+            setIsShowModal(true);
+            setModalContent("데이터 통신 중 오류가 발생했습니다.");
+        }
+    }, [getPostsError, addCommentError, deletePostError, changePostStatusError])
 
     useEffect(() => {
         getPosts();
@@ -54,6 +78,12 @@ const Feed = () => {
             </Head>
             <AppLayout>
                 {getPostsLoading && <Loading />}
+                {isShowModal &&
+                    <Modal setIsShowModal={setIsShowModal}>
+                        <p>{modalContent}</p>
+                    </Modal>
+                }
+
                 <PostForm />
                 {allPosts?.map((post) => (
                     <PostCard key={post.id} post={post} />
