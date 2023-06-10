@@ -6,4 +6,10 @@ export class ResponseUserDto {
 
   @ApiProperty({ description: 'AccessToken' })
   accessToken: string;
+
+  @ApiProperty({ description: 'username' })
+  username: string;
+
+  @ApiProperty({ description: 'profileImagePath' })
+  profileImagePath: string;
 }
