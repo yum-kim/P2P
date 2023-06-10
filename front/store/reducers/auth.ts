@@ -10,9 +10,9 @@ export const initialState = {
     logInLoading: false,
     logInDone: false,
     logInError: null,
-    logOutLoading: false,
-    logOutDone: false,
-    logOutError: null,
+    // logOutLoading: false,
+    // logOutDone: false,
+    // logOutError: null,
     signUpLoading: false,
     signUpDone: false,
     signUpError: null,
@@ -21,7 +21,13 @@ export const initialState = {
     // loginData: {},
 }
 
-const reducer = (state = initialState, action) => {
+interface IActionProps {
+    type: string,
+    data: any,
+    error: any
+}
+
+const reducer = (state = initialState, action: IActionProps) => {
     return produce(state, (draft) => {
         switch (action.type) {
             case LOG_IN_REQUEST:
@@ -30,10 +36,10 @@ const reducer = (state = initialState, action) => {
                 draft.logInError = null;
                 break;
             case LOG_IN_SUCCESS:
-                const { username, userid, accessToken } = action.data;
+                const { userid, username, accessToken, profileImagePath } = action.data;
                 draft.logInLoading = false;
                 draft.logInDone = true;
-                draft.user = { username, userid };
+                draft.user = { userid, username, profileImagePath };
                 auth.setToken(accessToken);
                 break;
             case LOG_IN_FAILURE:
@@ -41,20 +47,23 @@ const reducer = (state = initialState, action) => {
                 draft.logInError = action.error;
                 break;
             case LOG_OUT_REQUEST:
-                draft.logOutLoading = true;
-                draft.logOutDone = false;
-                draft.logOutError = null;
-                break;
-            case LOG_OUT_SUCCESS:
-                draft.logOutLoading = false;
-                draft.logOutDone = true;
+                // draft.logOutLoading = true;
+                // draft.logOutDone = false;
+                // draft.logOutError = null;
+                draft.logInDone = false;
                 draft.user = null;
                 auth.setToken(null);
                 break;
-            case LOG_OUT_FAILURE:
-                draft.logOutLoading = false;
-                draft.logOutError = action.error;
-                break;
+            // case LOG_OUT_SUCCESS:
+            //     draft.logOutLoading = false;
+            //     draft.logOutDone = true;
+            //     draft.user = null;
+            //     auth.setToken(null);
+            //     break;
+            // case LOG_OUT_FAILURE:
+            //     draft.logOutLoading = false;
+            //     draft.logOutError = action.error;
+            //     break;
             case SIGN_UP_REQUEST:
                 draft.signUpLoading = true;
                 draft.signUpDone = false;

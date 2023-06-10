@@ -5,6 +5,7 @@ import {
   ADD_COMMENT_REQUEST, addCommentSuccessAction, addCommentFailureAction,
   DELETE_POST_REQUEST, deletePostSuccessAction, deletePostFailureAction,
   CHANGE_POST_STATUS_REQUEST, changePostStatusSuccessAction, changePostStatusFailureAction, 
+  CHANGE_POST_HIT_REQUEST, changePostHitSuccessAction, changePostHitFailureAction
 } from '../actions/post';
 import boards from '../../api/boards';
 
@@ -63,6 +64,16 @@ function* changePostStatus(action) {
   }
 }
 
+function* changePostHit(action) {
+  const { res, error } = yield call(boards.changeBoardHit, action.data);
+
+  if (res) {
+    yield put(changePostHitSuccessAction(res));
+  } else {
+    yield put(changePostHitFailureAction(error));
+  }
+}
+
 function* watchGetPosts() {
   yield takeLatest(GET_POSTS_REQUEST, getPosts);
 }
@@ -83,6 +94,10 @@ function* watchChangePostStatus() {
   yield takeLatest(CHANGE_POST_STATUS_REQUEST, changePostStatus);
 }
 
+function* watchChangePostHit() {
+  yield takeLatest(CHANGE_POST_HIT_REQUEST, changePostHit);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchGetPosts),
@@ -90,5 +105,6 @@ export default function* postSaga() {
     fork(watchAddComment),
     fork(watchDeletePost),
     fork(watchChangePostStatus),
+    fork(watchChangePostHit)
   ]);
 }

@@ -57,23 +57,22 @@ export const signupInitAction = () => {
     }
 };
 
-export const logoutRequestAction = (data) => {
+export const logoutRequestAction = () => {
     return {
         type: LOG_OUT_REQUEST,
-        data
     }
 };
 
-export const logoutSuccessAction = (data) => {
-    return {
-        type: LOG_OUT_SUCCESS,
-        data
-    }
-};
+// export const logoutSuccessAction = (data) => {
+//     return {
+//         type: LOG_OUT_SUCCESS,
+//         data
+//     }
+// };
 
-export const logoutFailureAction = (error) => {
-    return {
-        type: LOG_OUT_FAILURE,
-        error
-    }
-};
+// export const logoutFailureAction = (error) => {
+//     return {
+//         type: LOG_OUT_FAILURE,
+//         error
+//     }
+// };

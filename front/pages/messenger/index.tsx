@@ -7,7 +7,6 @@ import styles from './messenger.module.scss';
 import MessageRoom from '../../components/component/MessageRoom/MessageRoom';
 
 const message = () => {
-
     return (
         <>
             <Head>

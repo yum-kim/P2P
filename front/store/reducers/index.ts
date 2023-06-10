@@ -4,7 +4,7 @@ import auth from './auth';
 import post from './post';
 
 const rootReducer = combineReducers({
-    index: (state = {}, action) => {
+    index: (state: any = {}, action) => {
         switch (action.type) {
             case HYDRATE: {
                 return { ...state, ...action.payload };
@@ -18,3 +18,5 @@ const rootReducer = combineReducers({
 }) 
 
 export default rootReducer;
+
+export type RootState = ReturnType<typeof rootReducer>;

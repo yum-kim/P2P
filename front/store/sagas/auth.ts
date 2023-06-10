@@ -6,11 +6,12 @@ function* login(action) {
   const { res, error } = yield call(auth.login, action.data);
 
   if (res) {
-    yield put(loginSuccessAction({ ...res, username: action.data.username }));
+    yield put(loginSuccessAction(res));
   } else {
     yield put(loginFailureAction(error));
   }
 }
+
 
 function* signup(action) {
   const { res, error } = yield call(auth.signup, action.data);

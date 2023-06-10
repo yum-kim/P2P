@@ -9,39 +9,45 @@ import Link from 'next/link';
 import { useRouter } from 'next/dist/client/router';
 import { loginRequestAction } from '../../store/actions/auth';
 import Loading from '../../components/common/Loading/Loading';
+import { RootState } from '../../store/reducers';
+import Modal from '../../components/layout/Modal/Modal';
 
 const Login = () => {
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const router = useRouter();
-    const { logInLoading, logInDone, logInError } = useSelector((state) => state.auth);
+    const { logInLoading, logInDone, logInError, user } = useSelector((state: RootState) => state.auth);
+    const [isShowModal, setIsShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState(null);
 
-    const onChangeUsername = (e) => {
+    const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
     }
 
-    const onChangePassword = (e) => {
+    const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
     }
 
-    const onSubmitLogin = async (e) => {
+    const onSubmitLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!username || !password) {
-            alert("빈 값이 있습니다.");
+            setIsShowModal(true);
+            setModalContent("빈 값이 있습니다.");
             return;
         }
         dispatch(loginRequestAction({ username, password }));
     }
-    
+
     useEffect(() => {
         if (logInError) {
-            alert(logInError.message);
+            setIsShowModal(true);
+            setModalContent(logInError.message);
         }
     }, [logInError])
 
     useEffect(() => {
-        if (logInDone) {
+        if (logInDone && user) {
             router.push('/feed');
         }
     }, [logInDone])
@@ -53,6 +59,12 @@ const Login = () => {
             </Head>
             {logInLoading && <Loading />}
 
+            {isShowModal &&
+                <Modal setIsShowModal={setIsShowModal}>
+                    <p>{modalContent}</p>
+                </Modal>
+            }
+
             <div className={styles.login}>
                 <h2 className={styles.logo}>
                     <img src='images/extension_icon.svg' alt='로고' />
@@ -61,20 +73,18 @@ const Login = () => {
                     <form onSubmit={onSubmitLogin}>
                         <div className={styles.username}>
                             <label htmlFor="username">Username</label>
-                            <Input placeholder='' id='username' onChange={onChangeUsername} />
+                            <Input type='text' placeholder='username' id='username' onChange={onChangeUsername} />
                         </div>
                         <div className={styles.password}>
                             <label htmlFor="password">Password</label>
-                            <Input type='password' id='password' onChange={onChangePassword} />
+                            <Input type='password' placeholder='password' id='password' onChange={onChangePassword} />
                         </div>
                         <Button type='submit' size='40'>Login</Button>
                     </form>
                     <Button size='36' varient='outlined'>Sign in with Google</Button>
                     <div className={styles.divider}></div>
                     <Link href='/signup'>
-                        <a>
-                            <Button size='36' varient='secondary'>Sign up</Button>
-                        </a>
+                        <a><Button size='36' varient='secondary'>Sign up</Button></a>
                     </Link>
                 </div>
             </div>
