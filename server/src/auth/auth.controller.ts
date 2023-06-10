@@ -26,7 +26,12 @@ export class AuthController {
     description: '로그인',
     content: {
       'application/json': {
-        example: { accessToken: 'string', userid: 'number' },
+        example: {
+          accessToken: 'string',
+          userid: 'number',
+          username: 'string',
+          profileImagePath: 'string',
+        },
       },
     },
   })
