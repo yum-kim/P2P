@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from 'src/auth/user.entity';
+import { Comment } from 'src/comment/comment.entity';
 import {
   BaseEntity,
   Column,
@@ -8,6 +9,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -18,10 +20,6 @@ export class Board extends BaseEntity {
   @PrimaryGeneratedColumn()
   @ApiProperty({ description: '게시판 고유 id' })
   id: number;
-
-  @Column()
-  @ApiProperty({ description: '제목' })
-  title: string;
 
   @Column()
   @ApiProperty({ description: '내용' })
@@ -57,4 +55,7 @@ export class Board extends BaseEntity {
   @Column()
   @ApiProperty({ description: '유저ID' })
   userId: number;
+
+  @OneToMany(() => Comment, (comment) => comment.board)
+  comment: Comment[];
 }
