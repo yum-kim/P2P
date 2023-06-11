@@ -13,16 +13,12 @@ const Comment = ({ post } : { post: IPost }) => {
     const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
         setComment(e.currentTarget.value);
     };
-
-    const { user } = useSelector((state : RootState) => state.auth);
     const dispatch = useDispatch();
     const onClickComment = () => {
         if (!comment.replace(/\s/g, "")) return;
 
-        //TODO: 댓글 추가 API 완료 시 맞추기
         const commentObj = {
-            postid: post.id,
-            userid: user.userid,
+            boardId: post.id,
             comment
         }
         dispatch(addCommentRequestAction(commentObj));
