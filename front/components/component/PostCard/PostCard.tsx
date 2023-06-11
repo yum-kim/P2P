@@ -22,7 +22,7 @@ export interface IPost {
     description: string,
     imagePath: string,
     hit: number,
-    comments: IComment[],
+    comment: IComment[],
     status: string, //public, private
     createAt: string,
     deleteAt: string,

@@ -3,6 +3,7 @@ import {
   GET_POSTS_REQUEST, getPostsSuccessAction, getPostsFailureAction,
   ADD_POST_REQUEST, addPostSuccessAction, addPostFailureAction,
   ADD_COMMENT_REQUEST, addCommentSuccessAction, addCommentFailureAction,
+  UPDATE_COMMENT_REQUEST, DELETE_COMMENT_REQUEST,
   DELETE_POST_REQUEST, deletePostSuccessAction, deletePostFailureAction,
   CHANGE_POST_STATUS_REQUEST, changePostStatusSuccessAction, changePostStatusFailureAction, 
   CHANGE_POST_HIT_REQUEST, changePostHitSuccessAction, changePostHitFailureAction
@@ -13,7 +14,7 @@ function* getPosts(action) {
   // const { res, error } = yield call(boards.getBoards, action.data);
   
   //FIXME: API params 수정 시 원복
-  const { res, error } = yield call(boards.getBoards, { offset: 1, limit: 10 });
+  const { res, error } = yield call(boards.getBoards, { offset: 0, limit: 10 });
 
   if (res) {
     yield put(getPostsSuccessAction({ data: res, ...action.data }));
@@ -42,10 +43,28 @@ function* addComment(action) {
   }
 }
 
+function* updateComment(action) {
+  const { res, error } = yield call(boards.updateComment, action.data);
+
+  if (res) {
+    yield put(addCommentSuccessAction(res));
+  } else {
+    yield put(addCommentFailureAction(error));
+  }
+  }
+
+function* deleteComment(action) {
+  const { res, error } = yield call(boards.deleteCommentById, action.data);
+
+  if (res) {
+    yield put(addCommentSuccessAction({ id: action.data }));
+  } else {
+    yield put(addCommentFailureAction(error));
+  }
+}
+
 function* deletePost(action) {
   const { res, error } = yield call(boards.deleteBoardById, action.data);
-
-  console.log('delete: ', res);
 
   if (res) {
     yield put(deletePostSuccessAction({ id: action.data }));
@@ -86,6 +105,14 @@ function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
 
+function* watchUpdateComment() {
+  yield takeLatest(UPDATE_COMMENT_REQUEST, updateComment);
+}
+
+function* watchDeleteComment() {
+  yield takeLatest(DELETE_COMMENT_REQUEST, deleteComment);
+}
+
 function* watchDeletePost() {
   yield takeLatest(DELETE_POST_REQUEST, deletePost);
 }
@@ -102,9 +129,11 @@ export default function* postSaga() {
   yield all([
     fork(watchGetPosts),
     fork(watchAddPost),
-    fork(watchAddComment),
     fork(watchDeletePost),
     fork(watchChangePostStatus),
-    fork(watchChangePostHit)
+    fork(watchChangePostHit),
+    fork(watchAddComment),
+    fork(watchUpdateComment),
+    fork(watchDeleteComment),
   ]);
 }

@@ -16,18 +16,13 @@ const Comment = ({ post } : { post: IPost }) => {
     const dispatch = useDispatch();
     const onClickComment = () => {
         if (!comment.replace(/\s/g, "")) return;
-
-        const commentObj = {
-            boardId: post.id,
-            comment
-        }
-        dispatch(addCommentRequestAction(commentObj));
+        dispatch(addCommentRequestAction({ boardId: post.id, comment }));
         setComment('');
     };
 
     return (
         <div className={styles.comments}>
-            <p className={styles.length}>{post.comments.length}개의 댓글이 있습니다.</p>
+            <p className={styles.length}>{post.comment.length}개의 댓글이 있습니다.</p>
             <div className={styles.form}>
                 <Input type="text" placeholder="댓글을 입력하세요." varient="primary" ref={inputRef} value={comment} onChange={onChangeForm} />
                 <button onClick={onClickComment}>
@@ -35,7 +30,7 @@ const Comment = ({ post } : { post: IPost }) => {
                 </button>
             </div>
             <ul>
-                {post.comments.map((comment: IComment) => (
+                {post.comment.map((comment: IComment) => (
                     <li key={comment.id} className={styles.list}>
                         <div className={styles.img}>
                             {post.user.profileImagePath ? <img src={post.user.profileImagePath} alt="profile" /> : <BsFillPersonFill />}
