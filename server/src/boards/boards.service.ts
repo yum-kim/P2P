@@ -33,13 +33,13 @@ export class BoardsService {
       order: sortby,
       skip: offset,
       take: limit,
-      relations: ['user', 'comment'],
+      relations: ['user', 'comment', 'comment.user'],
     });
   }
 
   async getAllBoardByUserId(user: User): Promise<Board[]> {
     const query = this.boardRepository.createQueryBuilder('board');
-    query.where('board.userUserid = :userId', { userId: user.id });
+    query.where('board.userId = :userId', { userId: user.id });
 
     const boards: Board[] = await query.getRawMany();
 
