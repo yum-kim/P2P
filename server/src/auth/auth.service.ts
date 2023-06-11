@@ -21,11 +21,11 @@ export class AuthService {
     const user = await this.userRepository.findOne({ where: { username } });
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      const payload: any = { username: user.username, userid: user.id };
+      const payload: any = { username: user.username, id: user.id };
       const accessToken: string = await this.jwtService.sign(payload);
       return {
         accessToken,
-        userid: user.id,
+        id: user.id,
         username: user.username,
         profileImagePath: user.profileImagePath,
       };

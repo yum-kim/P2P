@@ -1,10 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Board } from 'src/boards/board.entity';
 import {
   BaseEntity,
   Column,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';

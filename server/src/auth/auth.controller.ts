@@ -28,7 +28,7 @@ export class AuthController {
       'application/json': {
         example: {
           accessToken: 'string',
-          userid: 'number',
+          id: 'number',
           username: 'string',
           profileImagePath: 'string',
         },
