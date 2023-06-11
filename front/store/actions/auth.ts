@@ -62,17 +62,3 @@ export const logoutRequestAction = () => {
         type: LOG_OUT_REQUEST,
     }
 };
-
-// export const logoutSuccessAction = (data) => {
-//     return {
-//         type: LOG_OUT_SUCCESS,
-//         data
-//     }
-// };
-
-// export const logoutFailureAction = (error) => {
-//     return {
-//         type: LOG_OUT_FAILURE,
-//         error
-//     }
-// };

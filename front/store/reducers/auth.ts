@@ -10,15 +10,10 @@ export const initialState = {
     logInLoading: false,
     logInDone: false,
     logInError: null,
-    // logOutLoading: false,
-    // logOutDone: false,
-    // logOutError: null,
     signUpLoading: false,
     signUpDone: false,
     signUpError: null,
     user: null,
-    // signUpData: {},
-    // loginData: {},
 }
 
 interface IActionProps {
@@ -47,23 +42,10 @@ const reducer = (state = initialState, action: IActionProps) => {
                 draft.logInError = action.error;
                 break;
             case LOG_OUT_REQUEST:
-                // draft.logOutLoading = true;
-                // draft.logOutDone = false;
-                // draft.logOutError = null;
                 draft.logInDone = false;
                 draft.user = null;
                 auth.setToken(null);
                 break;
-            // case LOG_OUT_SUCCESS:
-            //     draft.logOutLoading = false;
-            //     draft.logOutDone = true;
-            //     draft.user = null;
-            //     auth.setToken(null);
-            //     break;
-            // case LOG_OUT_FAILURE:
-            //     draft.logOutLoading = false;
-            //     draft.logOutError = action.error;
-            //     break;
             case SIGN_UP_REQUEST:
                 draft.signUpLoading = true;
                 draft.signUpDone = false;
@@ -78,6 +60,7 @@ const reducer = (state = initialState, action: IActionProps) => {
                 draft.signUpError = action.error;
                 break;
             case SIGN_UP_INIT:
+                draft.logInError = null;
                 draft.signUpDone = false;
                 draft.signUpError = null;
                 break;
