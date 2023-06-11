@@ -12,18 +12,18 @@ services:
       - '54321:5432'
     volumes:
       - 'pgdata:/var/lib/postgresql/data'
-  # app:
-  #   build: .
-  #   container_name: 'nestjs'
-  #   command: sh -c "npm install pm2 -g && npm install && npm run start:dev"
-  #   depends_on:
-  #     - 'db'
-  #   ports:
-  #     - '3001:3001'
-  #   volumes:
-  #     - '.:/app'
-  #     - '/app/node_modules'
-  #     - './config:/app/config'
+  app:
+    build: .
+    container_name: 'nestjs'
+    command: sh -c "npm install pm2 -g && npm install && npm run start:dev"
+    depends_on:
+      - 'db'
+    ports:
+      - '3001:3001'
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+      - './config:/app/config'
 
 volumes:
   pgdata:
