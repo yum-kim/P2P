@@ -4,7 +4,8 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import styles from './AppLayout.module.scss';
 
-const AppLayout = ({ children }) => {
+
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <div className={styles.app}>
             <Header />

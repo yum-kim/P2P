@@ -4,7 +4,6 @@ import styles from './MessageRoom.module.scss';
 const MessageRoom = () => {
     return (
         <div className={styles.messageRoom}>
-            
         </div>
     );
 };

@@ -1,6 +1,8 @@
 import request from './axios';
 
 class Auth {
+    accessToken: string | null;
+
     constructor() {
         this.accessToken = null;
     }
@@ -9,11 +11,12 @@ class Auth {
         return this.accessToken;
     }
 
-    setToken(data) {
+    setToken(data: string) {
         this.accessToken = data;
+        console.log(this.accessToken);
     }
 
-    async login(data) {
+    async login(data: any) {
         let option = {
             "method": "POST",
             "url": `/auth/signin`,
@@ -23,7 +26,7 @@ class Auth {
         return await request(option);
     }
 
-    async signup(data) {
+    async signup(data: any) {
         let option = {
             "method": "POST",
             "url": `/auth/signup`,

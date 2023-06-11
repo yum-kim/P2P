@@ -19,6 +19,10 @@ export const CHANGE_POST_STATUS_REQUEST = 'CHANGE_POST_STATUS_REQUEST';
 export const CHANGE_POST_STATUS_SUCCESS = 'CHANGE_POST_STATUS_SUCCESS';
 export const CHANGE_POST_STATUS_FAILURE = 'CHANGE_POST_STATUS_FAILURE';
 
+export const CHANGE_POST_HIT_REQUEST = 'CHANGE_POST_HIT_REQUEST';
+export const CHANGE_POST_HIT_SUCCESS = 'CHANGE_POST_HIT_SUCCESS';
+export const CHANGE_POST_HIT_FAILURE = 'CHANGE_POST_HIT_FAILURE';
+
 export const getPostsRequestAction = (data) => {
     return {
         type: GET_POSTS_REQUEST,
@@ -120,6 +124,27 @@ export const deletePostSuccessAction = (data) => {
 export const deletePostFailureAction = (error) => {
     return {
         type: DELETE_POST_FAILURE,
+        error
+    }
+}
+
+export const changePostHitRequestAction = (data) => {
+    return {
+        type: CHANGE_POST_HIT_REQUEST,
+        data
+    }
+}
+
+export const changePostHitSuccessAction = (data) => {
+    return {
+        type: CHANGE_POST_HIT_SUCCESS,
+        data: data
+    }
+}
+
+export const changePostHitFailureAction = (error) => {
+    return {
+        type: CHANGE_POST_HIT_FAILURE,
         error
     }
 }

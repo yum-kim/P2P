@@ -1,11 +1,15 @@
 import React from 'react';
 import Head from 'next/head';
-import propTypes from 'prop-types';
 import '../styles/global.scss';
 import wrapper from '../store/configureStore';
 import { Provider } from 'react-redux';
+import { NextPage } from 'next';
 
-const App = ({ Component, ...rest }) => {
+interface AppProps {
+    Component: NextPage
+}
+
+const App: React.FC<AppProps> = ({ Component, ...rest }) => {
     const { store, props } = wrapper.useWrappedStore(rest);
 
     return (
@@ -24,9 +28,5 @@ const App = ({ Component, ...rest }) => {
         </>
     )
 }
-
-App.propTypes = {
-    Component: propTypes.elementType.isRequired
-} 
 
 export default App;

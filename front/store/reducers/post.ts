@@ -3,7 +3,7 @@ import {
     GET_POSTS_REQUEST, GET_POSTS_FAILURE, GET_POSTS_SUCCESS,
     ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
     DELETE_POST_REQUEST, DELETE_POST_SUCCESS, DELETE_POST_FAILURE,
-    CHANGE_POST_STATUS_REQUEST, CHANGE_POST_STATUS_SUCCESS, CHANGE_POST_STATUS_FAILURE,
+    CHANGE_POST_STATUS_REQUEST, CHANGE_POST_STATUS_SUCCESS, CHANGE_POST_STATUS_FAILURE, CHANGE_POST_HIT_REQUEST, CHANGE_POST_HIT_SUCCESS, CHANGE_POST_HIT_FAILURE,
 } from "../actions/post";
 import produce from 'immer';
 
@@ -23,31 +23,10 @@ export const initialState = {
     changePostStatusLoading: false,
     changePostStatusDone: false,
     changePostStatusError: null,
-    allPosts: [
-        {
-        id: 1,
-        createAt: '2022.11.11 00:12:12',
-        user: {
-            id: 1,
-            username: 'yumi',
-            profileImagePath: '/images/profile.png'
-        },
-        description: 'next로 프로젝트를 하는 중인데 쉽지않아요 . .',
-        imagePath: 'https://images.velog.io/images/jay/post/3a497590-d1b6-414c-9f3f-7b6c7eb18f6d/img.png',
-        comments: [
-            {
-                username: 'jemin',
-                commentMemo: '댓글이당당',
-                createAt: '2022.11.11 00:12:12'
-            },
-            {
-                username: 'jemin',
-                commentMemo: '댓글이당당1111',
-                createAt: '2022.11.11 00:12:15'
-            }
-        ]
-        }
-    ],
+    changePostHitLoading: false,
+    changePostHitDone: false,
+    changePostHitError: null,
+    allPosts: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -60,11 +39,12 @@ const reducer = (state = initialState, action) => {
                 break;
             case GET_POSTS_SUCCESS:
                 const { data, page } = action.data;
+
                 if (page == 1) {
-                    // draft.allPosts = data;
+                    draft.allPosts = data;
                 } else {
                 }
-                draft.allPosts.push(...data);
+                // draft.allPosts.push(...data);
                 draft.getPostsLoading = false;
                 draft.getPostsDone = true;
                 break;
@@ -91,8 +71,8 @@ const reducer = (state = initialState, action) => {
                 draft.addCommentError = null;
                 break;
             case ADD_COMMENT_SUCCESS:
-                // const addedPost = draft.allPosts.find((post) => post.postId == action.data.postId);
-                // addedPost.comments.push(action.data);
+                const posts = draft.allPosts.find((post) => post.id == action.data.id);
+                posts.comments.push(action.data);
                 draft.addCommentLoading = false;
                 draft.addCommentDone = true;
                 break;
@@ -129,7 +109,21 @@ const reducer = (state = initialState, action) => {
                 draft.changePostStatusLoading = false;
                 draft.changePostStatusError = action.error;
                 break;
-            
+            case CHANGE_POST_HIT_REQUEST:
+                draft.changePostHitLoading = true;
+                draft.changePostHitDone = false;
+                draft.changePostHitError = null;
+                break;
+            case CHANGE_POST_HIT_SUCCESS:
+                const hitedPost = draft.allPosts.find((v) => v.id === action.data.id);
+                hitedPost.hit = action.data.hit;
+                draft.changePostHitLoading = false;
+                draft.changePostHitDone = true;
+                break;
+            case CHANGE_POST_HIT_FAILURE:
+                draft.changePostHitLoading = false;
+                draft.changePostHitError = action.error;
+                break;            
             default:
                 return state;
         }

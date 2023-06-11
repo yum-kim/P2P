@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/common/Loading/Loading';
 import { signupRequestAction } from '../../store/actions/auth';
+import { RootState } from '../../store/reducers';
+import Modal from '../../components/layout/Modal/Modal';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -19,9 +21,11 @@ const Signup = () => {
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
     const dispatch = useDispatch();
     const router = useRouter();
-    const { signUpLoading, signUpDone, signUpError } = useSelector((state) => state.user);
+    const { signUpLoading, signUpDone, signUpError } = useSelector((state: RootState) => state.auth);
+    const [isShowModal, setIsShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState(null);
 
-    const onChangeUsername = (e) => {
+    const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         const regType = /^[A-Za-z0-9]*$/; //영문, 숫자만 사용해서 3자 이상 체크
         if (regType.test(e.target.value) && e.target.value.length >= 3) {
             setUsernameError(false);
@@ -31,7 +35,7 @@ const Signup = () => {
         setUsername(e.target.value);
     };
 
-    const onChangePassword = (e) => {
+    const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         const regType = /^[A-Za-z0-9]*$/; //영문, 숫자만 사용해서 8자 이상 체크
         if (regType.test(e.target.value) && e.target.value.length >= 8) {
             setPasswordError(false);
@@ -41,7 +45,7 @@ const Signup = () => {
         setPassword(e.target.value);
     };
 
-    const onChangeConfirmPassword = (e) => {
+    const onChangeConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (password === e.target.value) {
             setConfirmPasswordError(false);
         } else {
@@ -52,7 +56,8 @@ const Signup = () => {
 
     const onClickSignup = () => {
         if (usernameError || passwordError || confirmPasswordError) {
-            alert("입력된 정보를 확인해주세요.");
+            setIsShowModal(true);
+            setModalContent("입력된 정보를 확인해주세요.");
             return;
         }
         dispatch(signupRequestAction({ username, password }));
@@ -60,13 +65,15 @@ const Signup = () => {
 
     useEffect(() => {
         if (signUpError) {
-            alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
+            setIsShowModal(true);
+            setModalContent("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
     }, [signUpError]);
 
     useEffect(() => {
         if (signUpDone) {
-            alert("회원가입이 완료되었습니다. 로그인 후 이용해주세요.");
+            setIsShowModal(true);
+            setModalContent("회원가입이 완료되었습니다. 로그인 후 이용해주세요.");
             router.push('/login');
         }
     }, [signUpDone]);
@@ -77,6 +84,13 @@ const Signup = () => {
                 <title>P2P | 회원가입</title>
             </Head>
             {signUpLoading && <Loading />}
+
+            {isShowModal &&
+                <Modal setIsShowModal={setIsShowModal}>
+                    <p>{modalContent}</p>
+                </Modal>
+            }
+
             <div className={styles.signup}>
                 <h2 className={styles.logo}>
                     <img src='images/extension_icon.svg' alt='로고' />
