@@ -38,7 +38,7 @@ export class BoardsService {
 
   async getAllBoardByUserId(user: User): Promise<Board[]> {
     const query = this.boardRepository.createQueryBuilder('board');
-    query.where('board.userUserid = :userId', { userId: user.userid });
+    query.where('board.userUserid = :userId', { userId: user.id });
 
     const boards: Board[] = await query.getRawMany();
 
@@ -70,7 +70,7 @@ export class BoardsService {
     const result: any = await query
       .delete()
       .where('board.id = :id', { id })
-      .andWhere('userUserid = :userId', { userId: user.userid })
+      .andWhere('userUserid = :userId', { userId: user.id })
       .execute();
 
     if (result.affected === 0)

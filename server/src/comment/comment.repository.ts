@@ -13,9 +13,9 @@ export class CommentRepository extends Repository<Comment> {
     const { boardId, comment } = createCommentDto;
 
     const comments = this.create({
-      board: boardId,
+      boardId,
       comment,
-      user,
+      userId: user.id,
     });
     await this.save(comments);
     return comments;

@@ -7,6 +7,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -31,9 +32,15 @@ export class Comment extends BaseEntity {
   @DeleteDateColumn({ name: 'deleted_at' })
   deleteAt: Date;
 
-  @ManyToOne((type) => User, { eager: false })
+  @ManyToOne(() => User)
+  @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
+  @Column()
+  userId: number;
 
-  @ManyToOne((type) => Board, (board) => board.comments, { eager: false })
+  @ManyToOne(() => Board)
+  @JoinColumn([{ name: 'board_id', referencedColumnName: 'id' }])
   board: Board;
+  @Column()
+  boardId: number;
 }

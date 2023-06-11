@@ -26,7 +26,7 @@ export class CommentService {
     const result: any = await query
       .delete()
       .where('comment.id = :id', { id })
-      .andWhere('userUserid = :userId', { userId: user.userid })
+      .andWhere('userUserid = :userId', { userId: user.id })
       .execute();
 
     if (result.affected === 0)
