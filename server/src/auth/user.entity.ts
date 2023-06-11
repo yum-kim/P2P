@@ -14,7 +14,7 @@ import {
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   @ApiProperty({ description: '사용자 고유 id' })
-  userid: number;
+  id: number;
 
   @Column()
   @ApiProperty({ description: '계정 코드' })
@@ -31,7 +31,4 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   @ApiProperty({ description: '유저 이미지 url' })
   profileImagePath: string;
-
-  @OneToMany((type) => Board, (board) => board.user, { eager: false })
-  boards: Board[];
 }
