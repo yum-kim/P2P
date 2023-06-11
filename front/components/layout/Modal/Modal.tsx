@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import ReactModal from 'react-modal';
 import Button from '../../element/Button/Button';
 import { BsXLg } from "react-icons/bs";
 import { FcAbout, FcHighPriority } from "react-icons/fc";
 import styles from "./Modal.module.scss";
 
-interface IModalProps {
-  title?: string;
-  children: React.ReactNode;
-  btnType?: string;
-  setIsShowModal: (isShow: boolean) => void;
+export interface IModalProps {
+    title?: string;
+    children: React.ReactNode;
+    onCloseModal: () => void;
 }
 
-const Modal:React.FC<IModalProps> = ({ title, children, btnType, setIsShowModal }) => {
-    const onCloseModal = () => {
-        setIsShowModal(false);
-    }
-
+const Modal:React.FC<IModalProps> = ({ title, children, onCloseModal }) => {
     return (
         <div
             className={styles.modalContainer}
@@ -32,7 +26,7 @@ const Modal:React.FC<IModalProps> = ({ title, children, btnType, setIsShowModal 
                     {children}
                 </div>
                 <div className={styles.buttons}>
-                    <Button varient="primary-blue" onClick={onCloseModal}>close</Button>
+                    <Button varient="primary-blue" onClick={onCloseModal}>확인</Button>
                 </div>
             </div>
         </div>
