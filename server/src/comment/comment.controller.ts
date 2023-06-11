@@ -49,13 +49,13 @@ export class CommentController {
     summary: '댓글 수정 API',
     description: '댓글을 변경한다.',
   })
-  // @ApiBody({
-  //   schema: {
-  //     properties: {
-  //       status: { enum: ['PUBLIC', 'PRIVATE'] },
-  //     },
-  //   },
-  // })
+  @ApiBody({
+    schema: {
+      properties: {
+        comment: { type: 'string' },
+      },
+    },
+  })
   @ApiResponse({
     status: 200,
     description: '댓글을 변경한다',
