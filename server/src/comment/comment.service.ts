@@ -26,10 +26,10 @@ export class CommentService {
     const result: any = await query
       .delete()
       .where('comment.id = :id', { id })
-      .andWhere('userUserid = :userId', { userId: user.id })
+      .andWhere('userId = :userid', { userid: user.id })
       .execute();
 
     if (result.affected === 0)
-      throw new NotFoundException(`Can not find Board`);
+      throw new NotFoundException(`Can not find Comment`);
   }
 }

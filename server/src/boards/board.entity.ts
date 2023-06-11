@@ -40,17 +40,21 @@ export class Board extends BaseEntity {
   imagePath: string;
 
   @CreateDateColumn({ name: 'created_at' })
+  @ApiProperty({ description: '생성일자' })
   createAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
+  @ApiProperty({ description: '수정일자' })
   updatedAt: Date;
 
   @DeleteDateColumn({ name: 'deleted_at' })
+  @ApiProperty({ description: '삭제일자' })
   deleteAt: Date;
 
   @ManyToOne(() => User)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
   @Column()
+  @ApiProperty({ description: '유저ID' })
   userId: number;
 }

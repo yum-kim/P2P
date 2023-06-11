@@ -14,5 +14,6 @@ export const typeORMConfig: TypeOrmModuleOptions = {
   database: dbConfig.database, // [AWS RDB 용]process.env.RDS_DB_NAME
   entities: [__dirname + '/../**/*.entity.{js,ts}', Board],
   namingStrategy: new SnakeNamingStrategy(),
+  logger: 'advanced-console',
   synchronize: dbConfig.synchronize,
 };

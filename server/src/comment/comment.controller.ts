@@ -70,8 +70,8 @@ export class CommentController {
   }
 
   @ApiOperation({
-    summary: '게시판 삭제 API',
-    description: '게시판 삭제',
+    summary: '댓글 삭제 API',
+    description: '댓글 삭제',
   })
   @Delete('/:id')
   deleteBoard(
