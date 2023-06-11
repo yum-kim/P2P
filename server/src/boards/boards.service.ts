@@ -21,18 +21,19 @@ export class BoardsService {
     if (filter) {
       try {
         filter = JSON.parse(filter);
-        if (filter.title) whereObj.title = Like(`%${filter.title}%`);
         if (filter.description)
           whereObj.description = Like(`%${filter.description}%`);
       } catch (e) {
         Logger.error(e);
       }
     }
+
     return await this.boardRepository.find({
       where: whereObj,
       order: sortby,
       skip: offset,
       take: limit,
+      relations: ['user', 'comment'],
     });
   }
 
@@ -48,6 +49,7 @@ export class BoardsService {
   async getBoardById(id: number): Promise<Board> {
     const boardData: Board = await this.boardRepository.findOne({
       where: { id },
+      relations: ['user', 'comment'],
     });
 
     if (!boardData) throw new NotFoundException(`Can not find Board`);
