@@ -36,10 +36,10 @@ const reducer = (state = initialState, action: IActionProps) => {
                 draft.logInError = null;
                 break;
             case LOG_IN_SUCCESS:
-                const { userid, username, accessToken, profileImagePath } = action.data;
+                const { id, username, accessToken, profileImagePath } = action.data;
                 draft.logInLoading = false;
                 draft.logInDone = true;
-                draft.user = { userid, username, profileImagePath };
+                draft.user = { id, username, profileImagePath };
                 auth.setToken(accessToken);
                 break;
             case LOG_IN_FAILURE:

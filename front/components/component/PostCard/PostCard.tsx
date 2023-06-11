@@ -30,7 +30,7 @@ export interface IPost {
 }
 
 export interface IUser {
-    userid: number,
+    id: number,
     usercode: string,
     username: string,
     password: string
@@ -68,7 +68,7 @@ const PostCard = ({ post }: IPostProps) => {
     //TODO: post status 변경
     const onChangePostStatus = (e: React.MouseEvent<HTMLButtonElement>) => {
         const data = {
-            id: user.userid,
+            id: user.id,
             body: {
                 status: "PUBLIC"
             }
@@ -79,7 +79,7 @@ const PostCard = ({ post }: IPostProps) => {
     //TODO: post hit API 추가 되면 맞추기
     const onClickLikedButton = (e: React.MouseEvent<HTMLButtonElement>) => {
         const data = {
-            id: user.userid,
+            id: user.id,
             body: {
                 hit: true
             }
