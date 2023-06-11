@@ -8,7 +8,7 @@ import Loading from '../../components/common/Loading/Loading';
 import { getPostsRequestAction } from '../../store/actions/post';
 import { RootState } from '../../store/reducers';
 import { useRouter } from 'next/dist/client/router';
-import Modal from '../../components/layout/Modal/Modal';
+import useModal from '../../hooks/useModal';
 
 const Feed = () => {
     const {
@@ -22,8 +22,7 @@ const Feed = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const dispatch = useDispatch();
     const router = useRouter();
-    const [isShowModal, setIsShowModal] = useState(false);
-    const [modalContent, setModalContent] = useState(null);
+    const { Modal, onShowModal, onCloseModal, modalContent, setModalContent } = useModal(false);
 
     console.log('allPosts', allPosts);
 
@@ -33,7 +32,7 @@ const Feed = () => {
 
     useEffect(() => {
         if (addPostDone) {
-            setIsShowModal(true);
+            onShowModal();
             setModalContent("업로드가 완료되었습니다.");
             getPosts();
         }
@@ -41,21 +40,21 @@ const Feed = () => {
 
     useEffect(() => {
         if (deletePostDone) {
-            setIsShowModal(true);
+            onShowModal();
             setModalContent("삭제가 완료되었습니다.");
         }
     }, [deletePostDone])
 
     useEffect(() => {
         if (changePostStatusDone) {
-            setIsShowModal(true);
+            onShowModal();
             setModalContent("게시물 공개범위 수정이 완료되었습니다.");
         }
     }, [changePostStatusDone])
 
     useEffect(() => {
         if (getPostsError || addCommentError || deletePostError || changePostStatusError) {
-            setIsShowModal(true);
+            onShowModal();
             setModalContent("데이터 통신 중 오류가 발생했습니다.");
         }
     }, [getPostsError, addCommentError, deletePostError, changePostStatusError])
@@ -78,11 +77,10 @@ const Feed = () => {
             </Head>
             <AppLayout>
                 {getPostsLoading && <Loading />}
-                {isShowModal &&
-                    <Modal setIsShowModal={setIsShowModal}>
-                        <p>{modalContent}</p>
-                    </Modal>
-                }
+                <Modal
+                    onCloseModal={onCloseModal}>
+                    <p>{modalContent}</p>
+                </Modal>
 
                 <PostForm />
                 {allPosts?.map((post) => (

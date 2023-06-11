@@ -10,7 +10,7 @@ import { useRouter } from 'next/dist/client/router';
 import { loginRequestAction } from '../../store/actions/auth';
 import Loading from '../../components/common/Loading/Loading';
 import { RootState } from '../../store/reducers';
-import Modal from '../../components/layout/Modal/Modal';
+import useModal from '../../hooks/useModal';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -18,8 +18,7 @@ const Login = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { logInLoading, logInDone, logInError, user } = useSelector((state: RootState) => state.auth);
-    const [isShowModal, setIsShowModal] = useState(false);
-    const [modalContent, setModalContent] = useState(null);
+    const { Modal, onShowModal, onCloseModal, modalContent, setModalContent } = useModal(false);
 
     const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
@@ -32,7 +31,7 @@ const Login = () => {
     const onSubmitLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!username || !password) {
-            setIsShowModal(true);
+            onShowModal();
             setModalContent("빈 값이 있습니다.");
             return;
         }
@@ -41,7 +40,7 @@ const Login = () => {
 
     useEffect(() => {
         if (logInError) {
-            setIsShowModal(true);
+            onShowModal();
             setModalContent(logInError.message);
         }
     }, [logInError])
@@ -59,11 +58,10 @@ const Login = () => {
             </Head>
             {logInLoading && <Loading />}
 
-            {isShowModal &&
-                <Modal setIsShowModal={setIsShowModal}>
-                    <p>{modalContent}</p>
-                </Modal>
-            }
+            <Modal
+                onCloseModal={onCloseModal}>
+                <p>{modalContent}</p>
+            </Modal>
 
             <div className={styles.login}>
                 <h2 className={styles.logo}>
