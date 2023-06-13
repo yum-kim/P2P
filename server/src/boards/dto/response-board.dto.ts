@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BoardStatus } from '../board-status.enum';
+import { BoardStatus } from '../board.enum';
 import { User } from 'src/auth/user.entity';
 
 export class ResponseBoardDto {

@@ -13,7 +13,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BoardStatus } from './board-status.enum';
+import { BoardStatus } from './board.enum';
 
 @Entity()
 export class Board extends BaseEntity {
