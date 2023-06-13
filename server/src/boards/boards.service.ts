@@ -19,6 +19,7 @@ export class BoardsService {
     { description, sortColumn, orderby }: SearchBoardDto,
     page: number,
     size: number,
+    user: User,
   ): Promise<[Board[], number]> {
     let descriptionOption: any;
     if (description) descriptionOption = Like(description);
@@ -47,7 +48,7 @@ export class BoardsService {
       boardAndCount[0].map(async (x) => {
         x.heart = !!(await this.heartService.getHeartByBoardUserId(
           x.id,
-          x.user.id,
+          user.id,
         ));
         return x;
       }),

@@ -33,7 +33,6 @@ export class HeartService {
     if (heart) throw new HttpException(`이미 좋아요를 한 상태 입니다`, 500);
     await this.updateBoardHeart(
       createHeartDto.boardId,
-      user.id,
       BoardHeartTypeEnum.increment,
     );
     return await this.heartRepository.createHeart(createHeartDto, user);
@@ -49,12 +48,11 @@ export class HeartService {
 
     if (result.affected === 0)
       throw new NotFoundException(`좋아요를 하고 있지 않습니다`);
-    await this.updateBoardHeart(id, user.id, BoardHeartTypeEnum.decrement);
+    await this.updateBoardHeart(id, BoardHeartTypeEnum.decrement);
   }
 
   async updateBoardHeart(
     boardId: number,
-    userId: number,
     type: BoardHeartTypeEnum,
   ): Promise<void> {
     let countType: string;
@@ -64,7 +62,6 @@ export class HeartService {
       .createQueryBuilder()
       .update(Board)
       .where('id = :boardId', { boardId })
-      .andWhere('userId = :userId', { userId })
       .set({ heartCount: () => countType })
       .execute();
   }
