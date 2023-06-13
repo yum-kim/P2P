@@ -24,17 +24,6 @@ class Boards {
         return await request(option);
     }
 
-    //TODO: API 추가 필요
-    async addComment(data: any) {
-        let option = {
-            "method": "POST",
-            "url": `/boards/comments`,
-            "Content-Type": "application/json",
-            "data": data
-        }
-        return await request(option);
-    }
-
     async getBoardsByUser(params: any) {
         let option = {
             "method": "GET",
@@ -83,6 +72,34 @@ class Boards {
         return await request(option);
     }
 
+    async addComment(data: any) {
+        let option = {
+            "method": "POST",
+            "url": `/comment`,
+            "Content-Type": "application/json",
+            "data": data
+        }
+        return await request(option);
+    }
+
+    async updateComment(data: any) {
+        let option = {
+            "method": "PUT",
+            "url": `/comment/${data.id}`,
+            "Content-Type": "application/json",
+            "data": data.body
+        }
+        return await request(option);
+    }
+
+    async deleteCommentById(id: number) {
+        let option = {
+            "method": "PUT",
+            "url": `/comment/${id}`,
+            "Content-Type": "application/json",
+        }
+        return await request(option);
+    }
 }
 
 const boards = new Boards();

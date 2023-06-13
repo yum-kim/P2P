@@ -27,10 +27,8 @@ const PostForm = () => {
     const dummyData = {
         title: '타이틀요',
         description: text
-        // userid: user.userid,
-        // username: user.username,
-        // description: text,
-        // imagePath: '',
+        // userId: user.id,
+        // imagePaths: [],
     }
 
     const onClickUploadPost = () => {
