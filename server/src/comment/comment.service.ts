@@ -30,6 +30,6 @@ export class CommentService {
       .execute();
 
     if (result.affected === 0)
-      throw new NotFoundException(`Can not find Comment`);
+      throw new NotFoundException(`삭제할 댓글을 찾을 수 없습니다`);
   }
 }

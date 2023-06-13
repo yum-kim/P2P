@@ -70,7 +70,7 @@ export class BoardsService {
       relations: ['user', 'comment'],
     });
 
-    if (!boardData) throw new NotFoundException(`Can not find Board`);
+    if (!boardData) throw new NotFoundException(`게시글을 찾을 수 없습니다`);
     return boardData;
   }
 
@@ -99,10 +99,10 @@ export class BoardsService {
     const result: any = await query
       .delete()
       .where('board.id = :id', { id })
-      .andWhere('userUserid = :userId', { userId: user.id })
+      .andWhere('userId = :userId', { userId: user.id })
       .execute();
 
     if (result.affected === 0)
-      throw new NotFoundException(`Can not find Board`);
+      throw new NotFoundException(`삭제할 게시글을 찾을 수 없습니다`);
   }
 }
