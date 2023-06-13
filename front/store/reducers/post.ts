@@ -34,6 +34,7 @@ export const initialState = {
     changePostHitDone: false,
     changePostHitError: null,
     allPosts: [],
+    allPostsCnt: 0,
 }
 
 const reducer = (state = initialState, action) => {
@@ -46,12 +47,13 @@ const reducer = (state = initialState, action) => {
                 draft.getPostsError = null;
                 break;
             case GET_POSTS_SUCCESS:
-                const { data, page } = action.data;
+                const { posts, page } = action.data;
 
                 if (page == 1) {
-                    draft.allPosts = data;
+                    draft.allPosts = posts[0];
                 } else {
                 }
+                draft.allPostsCnt = posts[1];
                 // draft.allPosts.push(...data);
                 draft.getPostsLoading = false;
                 draft.getPostsDone = true;
@@ -126,8 +128,8 @@ const reducer = (state = initialState, action) => {
                 draft.addCommentError = null;
                 break;
             case ADD_COMMENT_SUCCESS:
-                const commentPost = draft.allPosts.find((post) => post.id == action.data.id);
-                commentPost.comment.push(action.data);
+                const addedPost = draft.allPosts.find((post) => post.id == action.data.boardId);
+                addedPost.comment.push(action.data);
                 draft.addCommentLoading = false;
                 draft.addCommentDone = true;
                 break;
@@ -141,10 +143,10 @@ const reducer = (state = initialState, action) => {
                 draft.updateCommentError = null;
                 break;
             case UPDATE_COMMENT_SUCCESS:
-                const post = draft.allPosts.find((post) => post.id == action.data.boardId);
-                const comment = post.comment.find((comment) => comment.id == action.data.id);
-                comment.comment = action.comment;
-                comment.updatedAt = action.updatedAt;
+                const updatedPost = draft.allPosts.find((post) => post.id == action.data.boardId);
+                const updatedComment = updatedPost.comment.find((comment) => comment.id == action.data.id);
+                updatedComment.comment = action.data.comment;
+                updatedComment.updatedAt = action.data.updatedAt;
                 draft.updateCommentLoading = false;
                 draft.updateCommentDone = true;
                 break;
@@ -158,7 +160,9 @@ const reducer = (state = initialState, action) => {
                 draft.deleteCommentError = null;
                 break;
             case DELETE_COMMENT_SUCCESS:
-                draft.allPosts = draft.allPosts.filter((v) => v.id !== action.data.id);
+                const deletedPost = draft.allPosts.find((post) => post.id === action.data.boardId);
+                const deletedComment = deletedPost.comment.filter((comment) => comment.id !== action.data.id);
+                deletedPost.comment = deletedComment;
                 draft.deleteCommentLoading = false;
                 draft.deleteCommentDone = true;
                 break;

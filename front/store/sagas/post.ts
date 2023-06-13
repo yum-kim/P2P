@@ -1,3 +1,4 @@
+import { updateCommentSuccessAction, updateCommentFailureAction, deleteCommentSuccessAction, deleteCommentFailureAction } from './../actions/post';
 import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
 import {
   GET_POSTS_REQUEST, getPostsSuccessAction, getPostsFailureAction,
@@ -11,13 +12,10 @@ import {
 import boards from '../../api/boards';
 
 function* getPosts(action) {
-  // const { res, error } = yield call(boards.getBoards, action.data);
-  
-  //FIXME: API params 수정 시 원복
-  const { res, error } = yield call(boards.getBoards, { offset: 0, limit: 10 });
+  const { res, error } = yield call(boards.getBoards, action.data);
 
   if (res) {
-    yield put(getPostsSuccessAction({ data: res, ...action.data }));
+    yield put(getPostsSuccessAction({ posts: res, page: action.data.page }));
   } else {
     yield put(getPostsFailureAction(error));
   }
@@ -37,29 +35,31 @@ function* addComment(action) {
   const { res, error } = yield call(boards.addComment, action.data);
 
   if (res) {
-    yield put(addCommentSuccessAction(res));
+    yield put(addCommentSuccessAction({ ...res, user: action.data.user }));
   } else {
     yield put(addCommentFailureAction(error));
   }
 }
 
 function* updateComment(action) {
-  const { res, error } = yield call(boards.updateComment, action.data);
+  const { res, error } = yield call(boards.updateComment, action.data.data);
 
   if (res) {
-    yield put(addCommentSuccessAction(res));
+    yield put(updateCommentSuccessAction({ ...res, boardId: action.data.boardId } ));
   } else {
-    yield put(addCommentFailureAction(error));
+    yield put(updateCommentFailureAction(error));
   }
-  }
+}
 
 function* deleteComment(action) {
-  const { res, error } = yield call(boards.deleteCommentById, action.data);
+  const { res, error } = yield call(boards.deleteCommentById, action.data.id);
+
+  console.log(res);
 
   if (res) {
-    yield put(addCommentSuccessAction({ id: action.data }));
+    yield put(deleteCommentSuccessAction(action.data));
   } else {
-    yield put(addCommentFailureAction(error));
+    yield put(deleteCommentFailureAction(error));
   }
 }
 
