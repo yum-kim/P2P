@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../../element/Button/Button';
 import { BsXLg } from "react-icons/bs";
-import { FcAbout, FcHighPriority } from "react-icons/fc";
+import { FcAbout, FcHighPriority, FcInfo } from "react-icons/fc";
 import styles from "./Modal.module.scss";
 
 export interface IModalProps {
@@ -19,7 +19,7 @@ const Modal:React.FC<IModalProps> = ({ title, children, onCloseModal }) => {
             <div className={styles.modal}>
                 <span className={styles.ico}>
                     {/* <FcAbout /> */}
-                    <FcHighPriority />
+                    <FcInfo />
                 </span>
                 <h3 className={styles.title}>{title}</h3>
                 <div className={styles.content}>
