@@ -6,3 +6,8 @@ export enum BoardStatus {
 export enum BoardSortTypeEnum {
   createAt = 'createAt',
 }
+
+export enum BoardHeartTypeEnum {
+  increment = 'increment',
+  decrement = 'decrement',
+}

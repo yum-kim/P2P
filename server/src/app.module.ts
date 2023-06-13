@@ -6,9 +6,8 @@ import { BoardsModule } from './boards/boards.module';
 import { typeORMConfig } from './config/typeorm.config';
 import { AuthModule } from './auth/auth.module';
 import { CommentModule } from './comment/comment.module';
-import { BoardImageController } from './board-image/board-image.controller';
-import { BoardImageService } from './board-image/board-image.service';
 import { BoardImageModule } from './board-image/board-image.module';
+import { HeartModule } from './heart/heart.module';
 
 @Module({
   imports: [
@@ -17,8 +16,9 @@ import { BoardImageModule } from './board-image/board-image.module';
     CommentModule,
     AuthModule,
     BoardImageModule,
+    HeartModule,
   ],
-  controllers: [AppController, BoardImageController],
-  providers: [AppService, BoardImageService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

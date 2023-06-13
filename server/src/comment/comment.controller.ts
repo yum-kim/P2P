@@ -35,7 +35,7 @@ export class CommentController {
   })
   @Post()
   @UsePipes(ValidationPipe)
-  createBoard(
+  createComment(
     @Body() createCommentDto: CreateCommentDto,
     @GetUser() user: User,
   ): Promise<Comment> {
@@ -59,7 +59,7 @@ export class CommentController {
     type: Comment,
   })
   @Put('/:id')
-  updateBoardStatus(
+  updateComment(
     @Param('id', ParseIntPipe) id: number,
     @Body('comment') comment: string,
   ): Promise<Comment> {
@@ -71,7 +71,7 @@ export class CommentController {
     description: '댓글 삭제',
   })
   @Delete('/:id')
-  deleteBoard(
+  deleteComment(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,
   ): Promise<void> {

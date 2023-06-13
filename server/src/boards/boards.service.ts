@@ -1,4 +1,3 @@
-import { Logger } from '@nestjs/common';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BoardStatus } from './board.enum';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -7,10 +6,14 @@ import { Board } from './board.entity';
 import { User } from 'src/auth/user.entity';
 import { Like } from 'typeorm';
 import { SearchBoardDto } from './dto/search-board.dto';
+import { HeartService } from 'src/heart/heart.service';
 
 @Injectable()
 export class BoardsService {
-  constructor(private boardRepository: BoardRepository) {}
+  constructor(
+    private boardRepository: BoardRepository,
+    private heartService: HeartService,
+  ) {}
 
   async getAllBoards(
     { description, sortColumn, orderby }: SearchBoardDto,
@@ -20,17 +23,36 @@ export class BoardsService {
     let descriptionOption: any;
     if (description) descriptionOption = Like(description);
 
-    return await this.boardRepository.findAndCount({
+    const boardAndCount: any = await this.boardRepository.findAndCount({
       where: {
         description: descriptionOption,
       },
       order: {
         [sortColumn]: orderby,
       },
+      select: {
+        user: {
+          id: true,
+          usercode: true,
+          username: true,
+          profileImagePath: true,
+        },
+      },
       skip: (page - 1) * size,
       take: size,
       relations: ['user', 'comment', 'comment.user'],
     });
+
+    boardAndCount[0] = await Promise.all(
+      boardAndCount[0].map(async (x) => {
+        x.heart = !!(await this.heartService.getHeartByBoardUserId(
+          x.id,
+          x.user.id,
+        ));
+        return x;
+      }),
+    );
+    return boardAndCount;
   }
 
   async getAllBoardByUserId(user: User): Promise<Board[]> {
@@ -52,8 +74,11 @@ export class BoardsService {
     return boardData;
   }
 
-  createBoard(createBoardDto: CreateBoardDto, user: User): Promise<Board> {
-    return this.boardRepository.createBoard(createBoardDto, user);
+  async createBoard(
+    createBoardDto: CreateBoardDto,
+    user: User,
+  ): Promise<Board> {
+    return await this.boardRepository.createBoard(createBoardDto, user);
   }
 
   async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
