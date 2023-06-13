@@ -20,7 +20,11 @@ export class AuthService {
     const { username, password } = authCredentialDto;
     const user = await this.userRepository.findOne({ where: { username } });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user) {
+      const passwordVerify = await bcrypt.compare(password, user.password);
+      if (!passwordVerify)
+        throw new UnauthorizedException('비밀번호가 맞지 않습니다');
+
       const payload: any = { username: user.username, id: user.id };
       const accessToken: string = await this.jwtService.sign(payload);
       return {
@@ -30,7 +34,7 @@ export class AuthService {
         profileImagePath: user.profileImagePath,
       };
     } else {
-      throw new UnauthorizedException('login failed');
+      throw new UnauthorizedException('유저 정보가 존재하지 않습니다');
     }
   }
 }
