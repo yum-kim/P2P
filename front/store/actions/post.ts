@@ -11,6 +11,14 @@ export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
+export const UPDATE_COMMENT_REQUEST = 'UPDATE_COMMENT_REQUEST';
+export const UPDATE_COMMENT_SUCCESS = 'UPDATE_COMMENT_SUCCESS';
+export const UPDATE_COMMENT_FAILURE = 'UPDATE_COMMENT_FAILURE';
+
+export const DELETE_COMMENT_REQUEST = 'DELETE_COMMENT_REQUEST';
+export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS';
+export const DELETE_COMMENT_FAILURE = 'DELETE_COMMENT_FAILURE';
+
 export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST';
 export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
 export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE';
@@ -82,6 +90,48 @@ export const addCommentSuccessAction = (data) => {
 export const addCommentFailureAction = (error) => {
     return {
         type: ADD_COMMENT_FAILURE,
+        error
+    }
+}
+
+export const updateCommentRequestAction = (data) => {
+    return {
+        type: UPDATE_COMMENT_REQUEST,
+        data: data
+    }
+}
+
+export const updateCommentSuccessAction = (data) => {
+    return {
+        type: UPDATE_COMMENT_SUCCESS,
+        data
+    }
+}
+
+export const updateCommentFailureAction = (error) => {
+    return {
+        type: UPDATE_COMMENT_FAILURE,
+        error
+    }
+}
+
+export const deleteCommentRequestAction = (data) => {
+    return {
+        type: DELETE_COMMENT_REQUEST,
+        data: data
+    }
+}
+
+export const deleteCommentSuccessAction = (data) => {
+    return {
+        type: DELETE_COMMENT_SUCCESS,
+        data
+    }
+}
+
+export const deleteCommentFailureAction = (error) => {
+    return {
+        type: DELETE_COMMENT_FAILURE,
         error
     }
 }

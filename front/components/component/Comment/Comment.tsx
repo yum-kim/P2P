@@ -1,55 +1,131 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import styles from './Comment.module.scss';
 import Input from '../../element/Input/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCommentRequestAction } from '../../../store/actions/post';
-import { BsSend, BsFillPersonFill } from "react-icons/bs";
-import { RootState } from '../../../store/reducers';
+import { addCommentRequestAction, updateCommentRequestAction, deleteCommentRequestAction } from '../../../store/actions/post';
+import { BsSend, BsFillPersonFill, BsPencil, BsTrash3 } from "react-icons/bs";
 import { IPost, IComment } from '../PostCard/PostCard';
+import { RootState } from '../../../store/reducers';
 
 const Comment = ({ post } : { post: IPost }) => {
-    const inputRef = useRef(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const updateInputRef = useRef<HTMLInputElement>(null);
     const [comment, setComment] = useState('');
-    const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setComment(e.currentTarget.value);
-    };
-
-    const { user } = useSelector((state : RootState) => state.auth);
+    const [updateComment, setUpdateComment] = useState({ id: null, comment: null });
+    const [showCommentInput, setShowCommentInput] = useState(false);
+    const { user } = useSelector((state: RootState) => state.auth);
+    const { addCommentLoading } = useSelector((state: RootState) => state.post);
     const dispatch = useDispatch();
-    const onClickComment = () => {
-        if (!comment.replace(/\s/g, "")) return;
 
-        //TODO: 댓글 추가 API 완료 시 맞추기
-        const commentObj = {
-            postid: post.id,
-            userid: user.userid,
-            comment
-        }
-        dispatch(addCommentRequestAction(commentObj));
+    const onChangeForm = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setComment(e.currentTarget.value);
+    }, []);
+
+    const onChangeUpdateForm = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setUpdateComment({ id: updateComment.id, comment: e.currentTarget.value });
+        console.log(updateComment);
+    }, [updateComment]);
+    
+    const onSubmitComment = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!comment.replace(/\s/g, "") || addCommentLoading) return;
+        dispatch(addCommentRequestAction({ boardId: post.id, comment, user: user }));
         setComment('');
-    };
+    }, [comment]);
+    
+    const onActiveUpdateCommentInput = useCallback((id: number, comment: string) => {
+        //TODO: 이미 활성화된 수정 input이 있을 때 block 처리 추가
+        // if (showCommentInput) {
+        //     onShowModal();
+        //     setModalContent("이미 수정 중인 댓글이 있습니다.");
+        //     return;
+        // }
+
+        setShowCommentInput(true);
+        setUpdateComment({ id: id, comment: comment });
+
+        if (updateInputRef.current) {
+            updateInputRef.current.focus();
+        }
+    }, []);
+
+    const onSubmitUpdateComment = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!updateComment.id) return;
+
+        dispatch(updateCommentRequestAction({
+            data: { id: updateComment.id, body: { comment: updateComment.comment } },
+            boardId: post.id
+        }));
+        setShowCommentInput(false);
+        setUpdateComment({ id: null, comment: null});
+    }, [updateComment]);
+
+    const onClickDeleteComment = useCallback((id: number) => {
+        if (!id) return;
+
+        //TODO: 삭제 확인 confirm 창 띄우기
+
+        dispatch(deleteCommentRequestAction({ id: id, boardId: post.id }));
+    }, []);
+
+    const onCancelUpdateComment = useCallback(() => {
+        setShowCommentInput(false);
+        setUpdateComment({ id: null, comment: null});
+    }, []);
+
+    console.log(post.comment)
 
     return (
         <div className={styles.comments}>
-            <p className={styles.length}>{post.comments.length}개의 댓글이 있습니다.</p>
-            <div className={styles.form}>
-                <Input type="text" placeholder="댓글을 입력하세요." varient="primary" ref={inputRef} value={comment} onChange={onChangeForm} />
-                <button onClick={onClickComment}>
+            <p className={styles.length}>{post.comment.length}개의 댓글이 있습니다.</p>
+            <form className={styles.form} onSubmit={onSubmitComment}>
+                <Input type="text" placeholder="댓글을 입력하세요." varient="background" ref={inputRef} value={comment} onChange={onChangeForm} />
+                <button type="submit">
                     <BsSend />
                 </button>
-            </div>
+            </form>
             <ul>
-                {post.comments.map((comment: IComment) => (
+                {post.comment.map((comment: IComment) => (
                     <li key={comment.id} className={styles.list}>
                         <div className={styles.img}>
-                            {post.user.profileImagePath ? <img src={post.user.profileImagePath} alt="profile" /> : <BsFillPersonFill />}
+                            {comment.user.profileImagePath ? <img src={comment.user.profileImagePath} alt="profile" /> : <BsFillPersonFill />}
                         </div>
-                        <div className={styles.content}>
-                            <p className={styles.name}>{comment.username}</p>
-                            <p className={styles.text}>
-                                {comment.comment}
-                                <span className={styles.date}>{comment.createAt}</span>
-                            </p>
+                        <div className={styles.rhtBox}>
+                            <p className={styles.name}>{comment.user.username}</p>
+                            <div className={styles.content}>
+                                {!showCommentInput || updateComment.id !== comment.id ? (
+                                    <>
+                                        <span className={styles.description}>
+                                            {comment.comment}
+                                            <span className={styles.date}>{comment.updatedAt} {comment.createAt !== comment.updatedAt && (<span>(수정됨)</span>)}</span>
+                                        </span>
+
+                                        {comment.user.id === user.id && (
+                                            <span className={styles.myCommentBtns}>
+                                                <button onClick={() => onActiveUpdateCommentInput(comment.id, comment.comment)}>
+                                                    <BsPencil />
+                                                </button>
+                                                <button onClick={() => onClickDeleteComment(comment.id)}>
+                                                    <BsTrash3 />
+                                                </button>
+                                            </span>
+                                        )}
+                                    </>
+                                ) : (
+                                    <>
+                                        <form className={styles.form} onSubmit={onSubmitUpdateComment} style={{ padding: `0.3rem 0` }}>
+                                            <Input type="text" varient="primary" ref={updateInputRef} value={updateComment.comment} onChange={onChangeUpdateForm} />
+                                            <button type="submit">
+                                                <BsSend />
+                                            </button>
+                                        </form>
+                                        <button onClick={onCancelUpdateComment}>취소</button>
+                                    </>
+                                    )
+                                }
+
+                            </div>
                         </div>
                     </li>
                 ))}

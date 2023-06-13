@@ -1,8 +1,10 @@
+import { updateCommentSuccessAction, updateCommentFailureAction, deleteCommentSuccessAction, deleteCommentFailureAction } from './../actions/post';
 import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
 import {
   GET_POSTS_REQUEST, getPostsSuccessAction, getPostsFailureAction,
   ADD_POST_REQUEST, addPostSuccessAction, addPostFailureAction,
   ADD_COMMENT_REQUEST, addCommentSuccessAction, addCommentFailureAction,
+  UPDATE_COMMENT_REQUEST, DELETE_COMMENT_REQUEST,
   DELETE_POST_REQUEST, deletePostSuccessAction, deletePostFailureAction,
   CHANGE_POST_STATUS_REQUEST, changePostStatusSuccessAction, changePostStatusFailureAction, 
   CHANGE_POST_HIT_REQUEST, changePostHitSuccessAction, changePostHitFailureAction
@@ -10,13 +12,10 @@ import {
 import boards from '../../api/boards';
 
 function* getPosts(action) {
-  // const { res, error } = yield call(boards.getBoards, action.data);
-  
-  //FIXME: API params 수정 시 원복
-  const { res, error } = yield call(boards.getBoards, { offset: 1, limit: 10 });
+  const { res, error } = yield call(boards.getBoards, action.data);
 
   if (res) {
-    yield put(getPostsSuccessAction({ data: res, ...action.data }));
+    yield put(getPostsSuccessAction({ posts: res, page: action.data.page }));
   } else {
     yield put(getPostsFailureAction(error));
   }
@@ -36,16 +35,36 @@ function* addComment(action) {
   const { res, error } = yield call(boards.addComment, action.data);
 
   if (res) {
-    yield put(addCommentSuccessAction(res));
+    yield put(addCommentSuccessAction({ ...res, user: action.data.user }));
   } else {
     yield put(addCommentFailureAction(error));
   }
 }
 
+function* updateComment(action) {
+  const { res, error } = yield call(boards.updateComment, action.data.data);
+
+  if (res) {
+    yield put(updateCommentSuccessAction({ ...res, boardId: action.data.boardId } ));
+  } else {
+    yield put(updateCommentFailureAction(error));
+  }
+}
+
+function* deleteComment(action) {
+  const { res, error } = yield call(boards.deleteCommentById, action.data.id);
+
+  console.log(res);
+
+  if (res) {
+    yield put(deleteCommentSuccessAction(action.data));
+  } else {
+    yield put(deleteCommentFailureAction(error));
+  }
+}
+
 function* deletePost(action) {
   const { res, error } = yield call(boards.deleteBoardById, action.data);
-
-  console.log('delete: ', res);
 
   if (res) {
     yield put(deletePostSuccessAction({ id: action.data }));
@@ -86,6 +105,14 @@ function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
 
+function* watchUpdateComment() {
+  yield takeLatest(UPDATE_COMMENT_REQUEST, updateComment);
+}
+
+function* watchDeleteComment() {
+  yield takeLatest(DELETE_COMMENT_REQUEST, deleteComment);
+}
+
 function* watchDeletePost() {
   yield takeLatest(DELETE_POST_REQUEST, deletePost);
 }
@@ -102,9 +129,11 @@ export default function* postSaga() {
   yield all([
     fork(watchGetPosts),
     fork(watchAddPost),
-    fork(watchAddComment),
     fork(watchDeletePost),
     fork(watchChangePostStatus),
-    fork(watchChangePostHit)
+    fork(watchChangePostHit),
+    fork(watchAddComment),
+    fork(watchUpdateComment),
+    fork(watchDeleteComment),
   ]);
 }

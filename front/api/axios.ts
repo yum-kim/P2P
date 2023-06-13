@@ -18,7 +18,6 @@ interface IOptionProps {
 async function request(option: IOptionProps) {
   try {
     const accessToken = auth.getToken();
-    console.log(accessToken);
 
     if (accessToken) {
       axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
@@ -35,7 +34,7 @@ async function request(option: IOptionProps) {
 
     return { res: res.data };
   } catch (e) {
-    return { error: e };
+    return { error: e.response.data };
   }
 }
 

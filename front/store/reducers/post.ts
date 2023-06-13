@@ -1,3 +1,4 @@
+import { UPDATE_COMMENT_REQUEST, UPDATE_COMMENT_SUCCESS, UPDATE_COMMENT_FAILURE, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE } from './../actions/post';
 import {
     ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
     GET_POSTS_REQUEST, GET_POSTS_FAILURE, GET_POSTS_SUCCESS,
@@ -17,6 +18,12 @@ export const initialState = {
     addCommentLoading: false,
     addCommentDone: false,
     addCommentError: null,
+    updateCommentLoading: false,
+    updateCommentDone: false,
+    updateCommentError: null,
+    deleteCommentLoading: false,
+    deleteCommentDone: false,
+    deleteCommentError: null,
     deletePostLoading: false,
     deletePostDone: false,
     deletePostError: null,
@@ -27,23 +34,26 @@ export const initialState = {
     changePostHitDone: false,
     changePostHitError: null,
     allPosts: [],
+    allPostsCnt: 0,
 }
 
 const reducer = (state = initialState, action) => {
     return produce(state, (draft) => {
         switch (action.type) {
+            //게시글
             case GET_POSTS_REQUEST:
                 draft.getPostsLoading = true;
                 draft.getPostsDone = false;
                 draft.getPostsError = null;
                 break;
             case GET_POSTS_SUCCESS:
-                const { data, page } = action.data;
+                const { posts, page } = action.data;
 
                 if (page == 1) {
-                    draft.allPosts = data;
+                    draft.allPosts = posts[0];
                 } else {
                 }
+                draft.allPostsCnt = posts[1];
                 // draft.allPosts.push(...data);
                 draft.getPostsLoading = false;
                 draft.getPostsDone = true;
@@ -65,21 +75,6 @@ const reducer = (state = initialState, action) => {
                 draft.addPostLoading = false;
                 draft.addPostError = action.error;
                 break;
-            case ADD_COMMENT_REQUEST:
-                draft.addCommentLoading = true;
-                draft.addCommentDone = false;
-                draft.addCommentError = null;
-                break;
-            case ADD_COMMENT_SUCCESS:
-                const posts = draft.allPosts.find((post) => post.id == action.data.id);
-                posts.comments.push(action.data);
-                draft.addCommentLoading = false;
-                draft.addCommentDone = true;
-                break;
-            case ADD_COMMENT_FAILURE:
-                draft.addCommentLoading = false;
-                draft.addCommentError = action.error;
-                break;
             case DELETE_POST_REQUEST:
                 draft.deletePostLoading = true;
                 draft.deletePostDone = false;
@@ -94,6 +89,7 @@ const reducer = (state = initialState, action) => {
                 draft.deletePostLoading = false;
                 draft.deletePostError = action.error;
                 break;
+            //게시물 공개여부
             case CHANGE_POST_STATUS_REQUEST:
                 draft.changePostStatusLoading = true;
                 draft.changePostStatusDone = false;
@@ -109,6 +105,7 @@ const reducer = (state = initialState, action) => {
                 draft.changePostStatusLoading = false;
                 draft.changePostStatusError = action.error;
                 break;
+            // 게시글 좋아요
             case CHANGE_POST_HIT_REQUEST:
                 draft.changePostHitLoading = true;
                 draft.changePostHitDone = false;
@@ -123,7 +120,56 @@ const reducer = (state = initialState, action) => {
             case CHANGE_POST_HIT_FAILURE:
                 draft.changePostHitLoading = false;
                 draft.changePostHitError = action.error;
-                break;            
+                break;
+            //댓글
+            case ADD_COMMENT_REQUEST:
+                draft.addCommentLoading = true;
+                draft.addCommentDone = false;
+                draft.addCommentError = null;
+                break;
+            case ADD_COMMENT_SUCCESS:
+                const addedPost = draft.allPosts.find((post) => post.id == action.data.boardId);
+                addedPost.comment.push(action.data);
+                draft.addCommentLoading = false;
+                draft.addCommentDone = true;
+                break;
+            case ADD_COMMENT_FAILURE:
+                draft.addCommentLoading = false;
+                draft.addCommentError = action.error;
+                break;
+            case UPDATE_COMMENT_REQUEST:
+                draft.updateCommentLoading = true;
+                draft.updateCommentDone = false;
+                draft.updateCommentError = null;
+                break;
+            case UPDATE_COMMENT_SUCCESS:
+                const updatedPost = draft.allPosts.find((post) => post.id == action.data.boardId);
+                const updatedComment = updatedPost.comment.find((comment) => comment.id == action.data.id);
+                updatedComment.comment = action.data.comment;
+                updatedComment.updatedAt = action.data.updatedAt;
+                draft.updateCommentLoading = false;
+                draft.updateCommentDone = true;
+                break;
+            case UPDATE_COMMENT_FAILURE:
+                draft.updateCommentLoading = false;
+                draft.updateCommentError = action.error;
+                break;
+            case DELETE_COMMENT_REQUEST:
+                draft.deleteCommentLoading = true;
+                draft.deleteCommentDone = false;
+                draft.deleteCommentError = null;
+                break;
+            case DELETE_COMMENT_SUCCESS:
+                const deletedPost = draft.allPosts.find((post) => post.id === action.data.boardId);
+                const deletedComment = deletedPost.comment.filter((comment) => comment.id !== action.data.id);
+                deletedPost.comment = deletedComment;
+                draft.deleteCommentLoading = false;
+                draft.deleteCommentDone = true;
+                break;
+            case DELETE_COMMENT_FAILURE:
+                draft.deleteCommentLoading = false;
+                draft.deleteCommentError = action.error;
+                break;
             default:
                 return state;
         }

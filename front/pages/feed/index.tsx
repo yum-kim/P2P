@@ -9,12 +9,24 @@ import { getPostsRequestAction } from '../../store/actions/post';
 import { RootState } from '../../store/reducers';
 import { useRouter } from 'next/dist/client/router';
 import useModal from '../../hooks/useModal';
+import styles from './feed.module.scss';
+
+interface IPostParams {
+    description?: string,
+    sortColumn?: "createAt",
+    orderby?: "ASC" | "DESC",
+    page: number,
+    size: number
+}
 
 const Feed = () => {
     const {
-        allPosts, getPostsLoading, getPostsError,
+        allPosts, allPostsCnt,
+        getPostsLoading, getPostsError,
         addPostLoading, addPostDone, addPostError,
         addCommentLoading, addCommentDone, addCommentError,
+        updateCommentLoading, updateCommentDone, updateCommentError,
+        deleteCommentLoading, deleteCommentDone, deleteCommentError,
         deletePostLoading, deletePostDone, deletePostError,
         changePostStatusLoading, changePostStatusDone, changePostStatusError
     } = useSelector((state: RootState) => state.post);
@@ -27,7 +39,13 @@ const Feed = () => {
     console.log('allPosts', allPosts);
 
     const getPosts = () => {
-        dispatch(getPostsRequestAction({ page: currentPage }));
+        const params: IPostParams = {
+            page: currentPage,
+            size: 10,
+            sortColumn: "createAt",
+            orderby: "DESC"
+        }
+        dispatch(getPostsRequestAction(params));
     }
 
     useEffect(() => {
@@ -53,11 +71,11 @@ const Feed = () => {
     }, [changePostStatusDone])
 
     useEffect(() => {
-        if (getPostsError || addCommentError || deletePostError || changePostStatusError) {
+        if (getPostsError || addPostError || addCommentError || deletePostError || changePostStatusError) {
             onShowModal();
             setModalContent("데이터 통신 중 오류가 발생했습니다.");
         }
-    }, [getPostsError, addCommentError, deletePostError, changePostStatusError])
+    }, [getPostsError, addPostError, addCommentError, deletePostError, changePostStatusError])
 
     useEffect(() => {
         getPosts();
@@ -76,13 +94,14 @@ const Feed = () => {
                 <title>P2P | feed</title>
             </Head>
             <AppLayout>
-                {getPostsLoading && <Loading />}
+                {(getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading) && <Loading />}
                 <Modal
                     onCloseModal={onCloseModal}>
                     <p>{modalContent}</p>
                 </Modal>
 
                 <PostForm />
+                {allPostsCnt == 0 && <p className={styles.cnt}>등록된 게시물이 없어요.🥲</p>}
                 {allPosts?.map((post) => (
                     <PostCard key={post.id} post={post} />
                 ))}
