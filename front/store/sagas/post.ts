@@ -54,8 +54,6 @@ function* updateComment(action) {
 function* deleteComment(action) {
   const { res, error } = yield call(boards.deleteCommentById, action.data.id);
 
-  console.log(res);
-
   if (res) {
     yield put(deleteCommentSuccessAction(action.data));
   } else {
@@ -65,8 +63,8 @@ function* deleteComment(action) {
 
 function* deletePost(action) {
   const { res, error } = yield call(boards.deleteBoardById, action.data);
-
-  if (res) {
+  
+  if (!error) {
     yield put(deletePostSuccessAction({ id: action.data }));
   } else {
     yield put(deletePostFailureAction(error));
