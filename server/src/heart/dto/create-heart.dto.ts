@@ -5,4 +5,8 @@ export class CreateHeartDto {
   @IsNotEmpty()
   @ApiProperty({ description: '게시글 정보' })
   boardId: number;
+
+  @IsNotEmpty()
+  @ApiProperty({ description: '게시글 정보' })
+  heart: boolean;
 }

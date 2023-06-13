@@ -14,6 +14,15 @@ export class HeartService {
     return await this.heartRepository.findOne({ where: { boardId, userId } });
   }
 
+  async changeHeart(
+    createHeartDto: CreateHeartDto,
+    user: User,
+  ): Promise<Heart | void> {
+    if (createHeartDto.heart)
+      return await this.createHeart(createHeartDto, user);
+    else return await this.deleteHeart(createHeartDto.boardId, user);
+  }
+
   async createHeart(
     createHeartDto: CreateHeartDto,
     user: User,
