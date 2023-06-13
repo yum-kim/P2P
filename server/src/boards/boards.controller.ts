@@ -17,11 +17,12 @@ import { ApiBody, ApiCreatedResponse } from '@nestjs/swagger/dist';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/auth/user.entity';
-import { BoardStatus } from './board-status.enum';
+import { BoardStatus } from './board.enum';
 import { Board } from './board.entity';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardStatusValidationPipe } from './pipes/board-status-validataion.pipe';
+import { SearchBoardDto } from './dto/search-board.dto';
 
 @Controller('boards')
 @ApiBearerAuth('access-token')
@@ -41,12 +42,11 @@ export class BoardsController {
   })
   @Get()
   getAllBoards(
-    @Query('filter') filter: any,
-    @Query('sortby') sortby: any,
-    @Query('offset') offset: number,
-    @Query('limit') limit: number,
-  ): Promise<Board[]> {
-    return this.boardService.getAllBoards(filter, sortby, offset, limit);
+    @Query() searchQuery: SearchBoardDto,
+    @Query('page') page: number,
+    @Query('size') size: number,
+  ): Promise<[Board[], number]> {
+    return this.boardService.getAllBoards(searchQuery, page, size);
   }
 
   @ApiOperation({

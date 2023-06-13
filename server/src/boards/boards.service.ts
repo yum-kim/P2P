@@ -1,38 +1,34 @@
 import { Logger } from '@nestjs/common';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { BoardStatus } from './board-status.enum';
+import { BoardStatus } from './board.enum';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardRepository } from './board.repository';
 import { Board } from './board.entity';
 import { User } from 'src/auth/user.entity';
 import { Like } from 'typeorm';
+import { SearchBoardDto } from './dto/search-board.dto';
 
 @Injectable()
 export class BoardsService {
   constructor(private boardRepository: BoardRepository) {}
 
   async getAllBoards(
-    filter: any,
-    sortby: any,
-    offset: number,
-    limit: number,
-  ): Promise<Board[]> {
-    const whereObj: any = {};
-    if (filter) {
-      try {
-        filter = JSON.parse(filter);
-        if (filter.description)
-          whereObj.description = Like(`%${filter.description}%`);
-      } catch (e) {
-        Logger.error(e);
-      }
-    }
+    { description, sortColumn, orderby }: SearchBoardDto,
+    page: number,
+    size: number,
+  ): Promise<[Board[], number]> {
+    let descriptionOption: any;
+    if (description) descriptionOption = Like(description);
 
-    return await this.boardRepository.find({
-      where: whereObj,
-      order: sortby,
-      skip: offset,
-      take: limit,
+    return await this.boardRepository.findAndCount({
+      where: {
+        description: descriptionOption,
+      },
+      order: {
+        [sortColumn]: orderby,
+      },
+      skip: (page - 1) * size,
+      take: size,
       relations: ['user', 'comment', 'comment.user'],
     });
   }
