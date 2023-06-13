@@ -25,6 +25,7 @@ const Feed = () => {
         getPostsLoading, getPostsError,
         addPostLoading, addPostDone, addPostError,
         addCommentLoading, addCommentDone, addCommentError,
+        updatePostHeartLoading, updatePostHeartDone, updatePostHeartError,
         updateCommentLoading, updateCommentDone, updateCommentError,
         deleteCommentLoading, deleteCommentDone, deleteCommentError,
         deletePostLoading, deletePostDone, deletePostError,
@@ -71,11 +72,28 @@ const Feed = () => {
     }, [changePostStatusDone])
 
     useEffect(() => {
-        if (getPostsError || addPostError || addCommentError || deletePostError || changePostStatusError) {
+        let errMsg = '';
+        if (getPostsError || addPostError || addCommentError || deletePostError || changePostStatusError || updatePostHeartError) {
             onShowModal();
-            setModalContent("데이터 통신 중 오류가 발생했습니다.");
+            
+            if (getPostsError) {
+                errMsg = getPostsError.message;
+            } else if (addPostError) {
+                errMsg = addPostError.message;
+            } else if (addCommentError) {
+                errMsg = addCommentError.message;
+            } else if (deletePostError) {
+                errMsg = deletePostError.message;
+            } else if (changePostStatusError) {
+                errMsg = changePostStatusError.message;
+            } else if (updatePostHeartError) {
+                errMsg = updatePostHeartError.message;
+            }
+            
+            setModalContent(errMsg);
         }
-    }, [getPostsError, addPostError, addCommentError, deletePostError, changePostStatusError])
+
+    }, [getPostsError, addPostError, addCommentError, deletePostError, changePostStatusError, updatePostHeartError])
 
     useEffect(() => {
         getPosts();
@@ -94,7 +112,7 @@ const Feed = () => {
                 <title>P2P | feed</title>
             </Head>
             <AppLayout>
-                {(getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading) && <Loading />}
+                {(getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading || updatePostHeartLoading) && <Loading />}
                 <Modal
                     onCloseModal={onCloseModal}>
                     <p>{modalContent}</p>

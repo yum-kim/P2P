@@ -27,9 +27,9 @@ export const CHANGE_POST_STATUS_REQUEST = 'CHANGE_POST_STATUS_REQUEST';
 export const CHANGE_POST_STATUS_SUCCESS = 'CHANGE_POST_STATUS_SUCCESS';
 export const CHANGE_POST_STATUS_FAILURE = 'CHANGE_POST_STATUS_FAILURE';
 
-export const CHANGE_POST_HIT_REQUEST = 'CHANGE_POST_HIT_REQUEST';
-export const CHANGE_POST_HIT_SUCCESS = 'CHANGE_POST_HIT_SUCCESS';
-export const CHANGE_POST_HIT_FAILURE = 'CHANGE_POST_HIT_FAILURE';
+export const UPDATE_HEART_REQUEST = 'UPDATE_HEART_REQUEST';
+export const UPDATE_HEART_SUCCESS = 'UPDATE_HEART_SUCCESS';
+export const UPDATE_HEART_FAILURE = 'UPDATE_HEART_FAILURE';
 
 export const getPostsRequestAction = (data) => {
     return {
@@ -178,23 +178,23 @@ export const deletePostFailureAction = (error) => {
     }
 }
 
-export const changePostHitRequestAction = (data) => {
+export const updatePostHeartRequestAction = (data) => {
     return {
-        type: CHANGE_POST_HIT_REQUEST,
+        type: UPDATE_HEART_REQUEST,
         data
     }
 }
 
-export const changePostHitSuccessAction = (data) => {
+export const updatePostHeartSuccessAction = (data) => {
     return {
-        type: CHANGE_POST_HIT_SUCCESS,
+        type: UPDATE_HEART_SUCCESS,
         data: data
     }
 }
 
-export const changePostHitFailureAction = (error) => {
+export const updatePostHeartFailureAction = (error) => {
     return {
-        type: CHANGE_POST_HIT_FAILURE,
+        type: UPDATE_HEART_FAILURE,
         error
     }
 }

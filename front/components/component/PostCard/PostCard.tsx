@@ -5,7 +5,7 @@ import { MdPublic, MdOutlineMoreHoriz } from "react-icons/md";
 import { BsFillPersonFill, BsThreeDots } from "react-icons/bs";
 import { useSelector, useDispatch } from 'react-redux';
 import Comment from '../Comment/Comment';
-import { changePostStatusRequestAction, deletePostRequestAction, changePostHitRequestAction } from '../../../store/actions/post';
+import { changePostStatusRequestAction, deletePostRequestAction, updatePostHeartRequestAction } from '../../../store/actions/post';
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 
 interface IPostProps {
@@ -46,7 +46,7 @@ export interface IComment {
 
 const PostCard = ({ post }: IPostProps) => {
     const [showComments, setShowComments] = useState(false);
-    const [liked, setLiked] = useState(post.heart);
+    const [heart, setHeart] = useState(post.heart);
     const [status, setStatus] = useState(post.status);
     const [isShowOtherMenu, setIsShowOtherMenu] = useState(false);
     const dispatch = useDispatch();
@@ -80,11 +80,10 @@ const PostCard = ({ post }: IPostProps) => {
         setIsShowOtherMenu(false);
     }, [])
 
-    //TODO: post hit API 추가 되면 맞추기
-    const onClickLikedButton = useCallback(() => {
-        setLiked((prev) => !prev);
-        // dispatch(changePostHitRequestAction({ id: post.id, body: { hit: true }}));
-    }, [liked]);
+    const onClickHeartButton = useCallback(() => {
+        setHeart((prev) => !prev);
+        dispatch(updatePostHeartRequestAction({ boardId: post.id, heart: !heart }));
+    }, [heart]);
 
     const onShowOtherMenu = useCallback(() => {
         if (isShowOtherMenu) {
@@ -157,8 +156,8 @@ const PostCard = ({ post }: IPostProps) => {
                 <p className={styles.content}>{post.description}</p>
             </div>
             <div className={styles.reaction}>
-                <button className={`${liked && styles.liked} ${styles.likedBtn}`} onClick={onClickLikedButton}>
-                    {liked ? <FcLike /> : <FcLikePlaceholder />} {post.heartCount}
+                <button className={`${heart && styles.liked} ${styles.likedBtn}`} onClick={onClickHeartButton}>
+                    {heart ? <FcLike /> : <FcLikePlaceholder />} {post.heartCount}
                 </button>
                 <button className={styles.commentBtn} onClick={onToggleComments}>
                     {showComments ? <BsChatLeftTextFill /> : <BsChatLeftText />}

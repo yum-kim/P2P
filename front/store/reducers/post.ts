@@ -4,7 +4,7 @@ import {
     GET_POSTS_REQUEST, GET_POSTS_FAILURE, GET_POSTS_SUCCESS,
     ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
     DELETE_POST_REQUEST, DELETE_POST_SUCCESS, DELETE_POST_FAILURE,
-    CHANGE_POST_STATUS_REQUEST, CHANGE_POST_STATUS_SUCCESS, CHANGE_POST_STATUS_FAILURE, CHANGE_POST_HIT_REQUEST, CHANGE_POST_HIT_SUCCESS, CHANGE_POST_HIT_FAILURE,
+    CHANGE_POST_STATUS_REQUEST, CHANGE_POST_STATUS_SUCCESS, CHANGE_POST_STATUS_FAILURE, UPDATE_HEART_REQUEST, UPDATE_HEART_SUCCESS, UPDATE_HEART_FAILURE,
 } from "../actions/post";
 import produce from 'immer';
 
@@ -30,9 +30,9 @@ export const initialState = {
     changePostStatusLoading: false,
     changePostStatusDone: false,
     changePostStatusError: null,
-    changePostHitLoading: false,
-    changePostHitDone: false,
-    changePostHitError: null,
+    updatePostHeartLoading: false,
+    updatePostHeartDone: false,
+    updatePostHeartError: null,
     allPosts: [],
     allPostsCnt: 0,
 }
@@ -106,20 +106,21 @@ const reducer = (state = initialState, action) => {
                 draft.changePostStatusError = action.error;
                 break;
             // 게시글 좋아요
-            case CHANGE_POST_HIT_REQUEST:
-                draft.changePostHitLoading = true;
-                draft.changePostHitDone = false;
-                draft.changePostHitError = null;
+            case UPDATE_HEART_REQUEST:
+                draft.updatePostHeartLoading = true;
+                draft.updatePostHeartDone = false;
+                draft.updatePostHeartError = null;
                 break;
-            case CHANGE_POST_HIT_SUCCESS:
-                const hitedPost = draft.allPosts.find((v) => v.id === action.data.id);
-                hitedPost.hit = action.data.hit;
-                draft.changePostHitLoading = false;
-                draft.changePostHitDone = true;
+            case UPDATE_HEART_SUCCESS:
+                const heartedPost = draft.allPosts.find((v) => v.id === action.data.boardId);
+                heartedPost.heart = action.data.heart;
+                heartedPost.heartCount = action.data.heart ? heartedPost.heartCount + 1 : heartedPost.heartCount - 1;
+                draft.updatePostHeartLoading = false;
+                draft.updatePostHeartDone = true;
                 break;
-            case CHANGE_POST_HIT_FAILURE:
-                draft.changePostHitLoading = false;
-                draft.changePostHitError = action.error;
+            case UPDATE_HEART_FAILURE:
+                draft.updatePostHeartLoading = false;
+                draft.updatePostHeartError = action.error;
                 break;
             //댓글
             case ADD_COMMENT_REQUEST:

@@ -62,12 +62,12 @@ class Boards {
         return await request(option);
     }
 
-    async changeBoardHit(data:any) {
+    async updatePostHeart(data:any) {
         let option = {
-            "method": "PATCH",
-            "url": `/boards/${data.id}/hit`,
+            "method": "POST",
+            "url": `/heart`,
             "Content-Type": "application/json",
-            "data": data.body
+            "data": data
         }
         return await request(option);
     }
