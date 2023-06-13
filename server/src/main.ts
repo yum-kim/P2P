@@ -5,13 +5,11 @@ import { setupSwagger } from './config/swagger.config';
 import * as config from 'config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    logger: ['debug', 'log', 'verbose', 'error', 'warn'],
-  });
+  const app = await NestFactory.create(AppModule);
   const serverConfig = config.get('server');
   const port = serverConfig.port;
-  setupSwagger(app);
   app.enableCors();
+  setupSwagger(app);
   await app.listen(port);
   Logger.log(`Application running on port ${port}`);
 }
