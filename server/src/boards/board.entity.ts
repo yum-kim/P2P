@@ -37,6 +37,10 @@ export class Board extends BaseEntity {
   @ApiProperty({ description: '이미지 경로' })
   imagePath: string;
 
+  @Column({ default: 0 })
+  @ApiProperty({ description: '좋아요 개수' })
+  heartCount: number;
+
   @CreateDateColumn({ name: 'created_at' })
   @ApiProperty({ description: '생성일자' })
   createAt: Date;

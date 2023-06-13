@@ -41,12 +41,12 @@ export class BoardsController {
     isArray: true,
   })
   @Get()
-  getAllBoards(
+  async getAllBoards(
     @Query() searchQuery: SearchBoardDto,
     @Query('page') page: number,
     @Query('size') size: number,
   ): Promise<[Board[], number]> {
-    return this.boardService.getAllBoards(searchQuery, page, size);
+    return await this.boardService.getAllBoards(searchQuery, page, size);
   }
 
   @ApiOperation({
@@ -60,8 +60,8 @@ export class BoardsController {
     isArray: true,
   })
   @Get('/user')
-  getAllBoard(@GetUser() user: User): Promise<Board[]> {
-    return this.boardService.getAllBoardByUserId(user);
+  async getAllBoard(@GetUser() user: User): Promise<Board[]> {
+    return await this.boardService.getAllBoardByUserId(user);
   }
 
   @ApiOperation({
@@ -74,8 +74,8 @@ export class BoardsController {
     type: Board,
   })
   @Get('/:id')
-  getBoardById(@Param('id') id: number): Promise<Board> {
-    return this.boardService.getBoardById(id);
+  async getBoardById(@Param('id') id: number): Promise<Board> {
+    return await this.boardService.getBoardById(id);
   }
 
   @ApiOperation({
@@ -88,11 +88,11 @@ export class BoardsController {
   })
   @Post()
   @UsePipes(ValidationPipe)
-  createBoard(
+  async createBoard(
     @Body() createBoardDto: CreateBoardDto,
     @GetUser() user: User,
   ): Promise<Board> {
-    return this.boardService.createBoard(createBoardDto, user);
+    return await this.boardService.createBoard(createBoardDto, user);
   }
 
   @ApiOperation({
@@ -112,11 +112,11 @@ export class BoardsController {
     type: Board,
   })
   @Patch('/:id/status')
-  updateBoardStatus(
+  async updateBoardStatus(
     @Param('id', ParseIntPipe) id: number,
     @Body('status', BoardStatusValidationPipe) status: BoardStatus,
   ): Promise<Board> {
-    return this.boardService.updateBoardStatus(id, status);
+    return await this.boardService.updateBoardStatus(id, status);
   }
 
   @ApiOperation({
@@ -124,10 +124,10 @@ export class BoardsController {
     description: '게시판 삭제',
   })
   @Delete('/:id')
-  deleteBoard(
+  async deleteBoard(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,
   ): Promise<void> {
-    return this.boardService.deleteBoard(id, user);
+    return await this.boardService.deleteBoard(id, user);
   }
 }

@@ -5,7 +5,9 @@ import { setupSwagger } from './config/swagger.config';
 import * as config from 'config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['debug', 'log', 'verbose', 'error', 'warn'],
+  });
   const serverConfig = config.get('server');
   const port = serverConfig.port;
   setupSwagger(app);

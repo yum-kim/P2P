@@ -8,11 +8,11 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 export class CommentService {
   constructor(private commentRepository: CommentRepository) {}
 
-  createComment(
+  async createComment(
     createCommentDto: CreateCommentDto,
     user: User,
   ): Promise<Comment> {
-    return this.commentRepository.createComment(createCommentDto, user);
+    return await this.commentRepository.createComment(createCommentDto, user);
   }
 
   async updateComment(id: number, comment: string): Promise<Comment> {
