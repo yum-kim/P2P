@@ -88,6 +88,12 @@ export class BoardsService {
     return boardData;
   }
 
+  async updateBoard(id: number, description: string): Promise<Board> {
+    const boardData = { id, description } as Board;
+    await this.boardRepository.save(boardData);
+    return boardData;
+  }
+
   async deleteBoard(id: number, user: User): Promise<void> {
     const query = this.boardRepository.createQueryBuilder('board');
     const result: any = await query

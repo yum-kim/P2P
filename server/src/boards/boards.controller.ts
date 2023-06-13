@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Put,
   Query,
   UseGuards,
   UsePipes,
@@ -117,6 +118,30 @@ export class BoardsController {
     @Body('status', BoardStatusValidationPipe) status: BoardStatus,
   ): Promise<Board> {
     return await this.boardService.updateBoardStatus(id, status);
+  }
+
+  @ApiOperation({
+    summary: '게시판 수정 API',
+    description: '게시판 수정',
+  })
+  @ApiBody({
+    schema: {
+      properties: {
+        description: { type: 'string' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    description: '게시판 수정',
+    type: Board,
+  })
+  @Put('/:id')
+  async updateBoard(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('description') description: string,
+  ): Promise<Board> {
+    return await this.boardService.updateBoard(id, description);
   }
 
   @ApiOperation({
