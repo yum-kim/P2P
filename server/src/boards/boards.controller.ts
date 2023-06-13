@@ -46,8 +46,9 @@ export class BoardsController {
     @Query() searchQuery: SearchBoardDto,
     @Query('page') page: number,
     @Query('size') size: number,
+    @GetUser() user: User,
   ): Promise<[Board[], number]> {
-    return await this.boardService.getAllBoards(searchQuery, page, size);
+    return await this.boardService.getAllBoards(searchQuery, page, size, user);
   }
 
   @ApiOperation({
@@ -93,6 +94,7 @@ export class BoardsController {
     @Body() createBoardDto: CreateBoardDto,
     @GetUser() user: User,
   ): Promise<Board> {
+    console.log('aa 와따');
     return await this.boardService.createBoard(createBoardDto, user);
   }
 
