@@ -21,6 +21,6 @@ import { BoardImageModule } from 'src/board-image/board-image.module';
     BoardImageModule,
   ],
   controllers: [BoardsController],
-  providers: [BoardsService, JwtService],
+  providers: [BoardsService],
 })
 export class BoardsModule {}

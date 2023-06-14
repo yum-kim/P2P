@@ -44,7 +44,7 @@ export class BoardsController {
     type: Board,
     isArray: true,
   })
-  @Get()
+  @Get('')
   async getAllBoards(
     @Query() searchQuery: SearchBoardDto,
     @Query('page') page: number,

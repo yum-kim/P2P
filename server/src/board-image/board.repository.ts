@@ -1,4 +1,3 @@
-import { User } from 'src/auth/user.entity';
 import { CustomRepository } from 'src/typeorm-ex.decorator';
 import { Repository } from 'typeorm';
 import { BoardImage } from './board-image.entity';
