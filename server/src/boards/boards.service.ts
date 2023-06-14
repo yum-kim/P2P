@@ -23,51 +23,47 @@ export class BoardsService {
     size: number,
     user: User,
   ): Promise<[Board[], number]> {
-    try {
-      const queryBuilder = this.boardRepository
-        .createQueryBuilder('board')
-        .leftJoinAndSelect('board.user', 'user')
-        .addSelect([
-          'user.id',
-          'user.usercode',
-          'user.username',
-          'user.profileImagePath',
-        ])
-        .leftJoinAndSelect('board.comment', 'comment')
-        .leftJoinAndSelect('comment.user', 'commentUser')
-        .leftJoinAndSelect('board.boardImage', 'boardImage')
-        .skip((page - 1) * size)
-        .take(size);
+    const queryBuilder = this.boardRepository
+      .createQueryBuilder('board')
+      .leftJoinAndSelect('board.user', 'user')
+      .addSelect([
+        'user.id',
+        'user.usercode',
+        'user.username',
+        'user.profileImagePath',
+      ])
+      .leftJoinAndSelect('board.comment', 'comment')
+      .leftJoinAndSelect('comment.user', 'commentUser')
+      .leftJoinAndSelect('board.boardImage', 'boardImage')
+      .skip((page - 1) * size)
+      .take(size);
 
-      if (description) {
-        queryBuilder.where('board.description LIKE :description', {
-          description: `%${description}%`,
-        });
-      }
-
-      if (username) {
-        queryBuilder.orWhere('user.username LIKE :username', {
-          username: `%${username}%`,
-        });
-      }
-
-      queryBuilder.orderBy(`board.${sortColumn}`, orderby);
-
-      const boardAndCount: any = await queryBuilder.getManyAndCount();
-
-      boardAndCount[0] = await Promise.all(
-        boardAndCount[0].map(async (x) => {
-          x.heart = !!(await this.heartService.getHeartByBoardUserId(
-            x.id,
-            user.id,
-          ));
-          return x;
-        }),
-      );
-      return boardAndCount;
-    } catch (e) {
-      console.log(e);
+    if (description) {
+      queryBuilder.where('board.description LIKE :description', {
+        description: `%${description}%`,
+      });
     }
+
+    if (username) {
+      queryBuilder.orWhere('user.username LIKE :username', {
+        username: `%${username}%`,
+      });
+    }
+
+    queryBuilder.orderBy(`board.${sortColumn}`, orderby);
+
+    const boardAndCount: any = await queryBuilder.getManyAndCount();
+
+    boardAndCount[0] = await Promise.all(
+      boardAndCount[0].map(async (x) => {
+        x.heart = !!(await this.heartService.getHeartByBoardUserId(
+          x.id,
+          user.id,
+        ));
+        return x;
+      }),
+    );
+    return boardAndCount;
   }
 
   async getAllBoardByUserId(user: User): Promise<Board[]> {
