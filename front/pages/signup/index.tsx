@@ -8,9 +8,9 @@ import Button from '../../components/element/Button/Button';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/common/Loading/Loading';
-import { signupRequestAction } from '../../store/actions/auth';
-import { RootState } from '../../store/reducers';
+import { RootState } from '../../store/configureStore';
 import useModal from '../../hooks/useModal';
+import { signUpRequest } from '../../store/slices/auth';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -59,7 +59,7 @@ const Signup = () => {
             setModalContent("입력된 정보를 확인해주세요.");
             return;
         }
-        dispatch(signupRequestAction({ username, password }));
+        dispatch(signUpRequest({ username, password }));
     }
 
     useEffect(() => {

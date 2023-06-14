@@ -7,10 +7,10 @@ import Button from '../../components/element/Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/dist/client/router';
-import { loginRequestAction } from '../../store/actions/auth';
 import Loading from '../../components/common/Loading/Loading';
-import { RootState } from '../../store/reducers';
 import useModal from '../../hooks/useModal';
+import { RootState } from '../../store/configureStore';
+import { logInRequest } from '../../store/slices/auth';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -35,7 +35,7 @@ const Login = () => {
             setModalContent("빈 값이 있습니다.");
             return;
         }
-        dispatch(loginRequestAction({ username, password }));
+        dispatch(logInRequest({ username, password }));
     }
 
     useEffect(() => {

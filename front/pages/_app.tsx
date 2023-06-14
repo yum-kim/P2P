@@ -1,16 +1,17 @@
 import React from 'react';
 import Head from 'next/head';
 import '../styles/global.scss';
-import wrapper from '../store/configureStore';
+// import wrapper from '../store/configureStore';
 import { Provider } from 'react-redux';
 import { NextPage } from 'next';
+import { store } from '../store/configureStore';
 
 interface AppProps {
     Component: NextPage
 }
 
-const App: React.FC<AppProps> = ({ Component, ...rest }) => {
-    const { store, props } = wrapper.useWrappedStore(rest);
+const App: React.FC<AppProps> = ({ Component }) => {
+    // const { store, props } = wrapper.useWrappedStore(rest);
 
     return (
         <>
@@ -23,7 +24,7 @@ const App: React.FC<AppProps> = ({ Component, ...rest }) => {
                 <title>P2P</title>
             </Head>
             <Provider store={store}>
-                <Component {...props.pageProps} />
+                <Component />
             </Provider>
         </>
     )

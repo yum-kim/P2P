@@ -35,7 +35,7 @@
 
     ul {
         .list {
-            @include flexbox(start);
+            @include flexbox(start,start);
 
             &:not(:last-child) {
                 margin-bottom: 1rem;
@@ -47,7 +47,7 @@
                 position: relative;
                 border-radius: 50%;
                 overflow: hidden;
-                margin-right: 0.5rem;
+                margin: 5px 0.5rem 0;
                 border: 1px solid $border;
                 flex-shrink: 0;
 
