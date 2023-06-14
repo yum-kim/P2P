@@ -29,7 +29,7 @@ export class BoardImage extends BaseEntity {
   @ApiProperty({ description: '삭제일자' })
   deleteAt: Date;
 
-  @ManyToOne(() => Board)
+  @ManyToOne(() => Board, { onDelete: 'CASCADE' })
   @JoinColumn([{ name: 'board_id', referencedColumnName: 'id' }])
   board: Board;
   @Column()

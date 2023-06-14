@@ -35,14 +35,14 @@ export class Comment extends BaseEntity {
   @ApiProperty({ description: '삭제일자' })
   deleteAt: Date;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
   @Column()
   @ApiProperty({ description: '유저ID' })
   userId: number;
 
-  @ManyToOne(() => Board)
+  @ManyToOne(() => Board, { onDelete: 'CASCADE' })
   @JoinColumn([{ name: 'board_id', referencedColumnName: 'id' }])
   board: Board;
   @Column()

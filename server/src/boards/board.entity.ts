@@ -50,7 +50,7 @@ export class Board extends BaseEntity {
   @ApiProperty({ description: '삭제일자' })
   deleteAt: Date;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
   @Column()
