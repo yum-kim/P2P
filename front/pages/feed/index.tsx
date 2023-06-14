@@ -34,8 +34,7 @@ const Feed = () => {
     console.log('allPosts', allPosts);
 
     const getPosts = () => {
-        // dispatch(getPostsRequest({ page: currentPage, size: 10, sortColumn: "createAt", orderby: "DESC" }));
-        dispatch(getPostsRequest({ page: currentPage, size: 10 }));
+        dispatch(getPostsRequest({ page: currentPage, size: 10, sortColumn: "createAt", orderby: "DESC" }));
     }
 
     const completeMsgMap = {
@@ -77,13 +76,6 @@ const Feed = () => {
     useEffect(() => {
         getPosts();
     }, [currentPage]);
-
-    useEffect(() => {
-        if (!user) {
-            router.push('/login');
-            return null;
-        }
-    }, []);
 
     return (
         <>
