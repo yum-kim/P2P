@@ -1,4 +1,4 @@
-import { updateCommentSuccessAction, updateCommentFailureAction, deleteCommentSuccessAction, deleteCommentFailureAction } from './../actions/post';
+import { updateCommentSuccessAction, updateCommentFailureAction, deleteCommentSuccessAction, deleteCommentFailureAction, UPDATE_POST_REQUEST, updatePostSuccessAction, updatePostFailureAction } from './../actions/post';
 import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
 import {
   GET_POSTS_REQUEST, getPostsSuccessAction, getPostsFailureAction,
@@ -25,9 +25,29 @@ function* addPost(action) {
   const { res, error } = yield call(boards.createBoard, action.data);
 
   if (res) {
-    yield put(addPostSuccessAction(res));
+    yield put(addPostSuccessAction({ ...res, user: action.data.user, comment: [] }));
   } else {
     yield put(addPostFailureAction(error));
+  }
+}
+
+function* updatePost(action) {
+  const { res, error } = yield call(boards.updateBoard, action.data);
+
+  if (res) {
+    yield put(updatePostSuccessAction(res));
+  } else {
+    yield put(updatePostFailureAction(error));
+  }
+}
+
+function* deletePost(action) {
+  const { res, error } = yield call(boards.deleteBoardById, action.data);
+  
+  if (!error) {
+    yield put(deletePostSuccessAction({ id: action.data }));
+  } else {
+    yield put(deletePostFailureAction(error));
   }
 }
 
@@ -61,16 +81,6 @@ function* deleteComment(action) {
   }
 }
 
-function* deletePost(action) {
-  const { res, error } = yield call(boards.deleteBoardById, action.data);
-  
-  if (!error) {
-    yield put(deletePostSuccessAction({ id: action.data }));
-  } else {
-    yield put(deletePostFailureAction(error));
-  }
-}
-
 function* changePostStatus(action) {
   const { res, error } = yield call(boards.changeBoardStatus, action.data);
 
@@ -97,6 +107,10 @@ function* watchGetPosts() {
 
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost);
+}
+
+function* watchUpdatePost() {
+  yield takeLatest(UPDATE_POST_REQUEST, updatePost);
 }
 
 function* watchAddComment() {
@@ -127,6 +141,7 @@ export default function* postSaga() {
   yield all([
     fork(watchGetPosts),
     fork(watchAddPost),
+    fork(watchUpdatePost),
     fork(watchDeletePost),
     fork(watchChangePostStatus),
     fork(watchupdatePostHeart),

@@ -23,7 +23,6 @@ const Comment = ({ post } : { post: IPost }) => {
 
     const onChangeUpdateForm = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setUpdateComment({ id: updateComment.id, comment: e.currentTarget.value });
-        console.log(updateComment);
     }, [updateComment]);
     
     const onSubmitComment = useCallback((e: React.FormEvent<HTMLFormElement>) => {
@@ -73,8 +72,6 @@ const Comment = ({ post } : { post: IPost }) => {
         setShowCommentInput(false);
         setUpdateComment({ id: null, comment: null});
     }, []);
-
-    console.log(post.comment)
 
     return (
         <div className={styles.comments}>

@@ -1,10 +1,12 @@
-import { UPDATE_COMMENT_REQUEST, UPDATE_COMMENT_SUCCESS, UPDATE_COMMENT_FAILURE, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE } from './../actions/post';
 import {
     ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
     GET_POSTS_REQUEST, GET_POSTS_FAILURE, GET_POSTS_SUCCESS,
     ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
     DELETE_POST_REQUEST, DELETE_POST_SUCCESS, DELETE_POST_FAILURE,
-    CHANGE_POST_STATUS_REQUEST, CHANGE_POST_STATUS_SUCCESS, CHANGE_POST_STATUS_FAILURE, UPDATE_HEART_REQUEST, UPDATE_HEART_SUCCESS, UPDATE_HEART_FAILURE,
+    CHANGE_POST_STATUS_REQUEST, CHANGE_POST_STATUS_SUCCESS, CHANGE_POST_STATUS_FAILURE, UPDATE_HEART_REQUEST, UPDATE_HEART_SUCCESS, UPDATE_HEART_FAILURE, 
+    UPDATE_COMMENT_REQUEST, UPDATE_COMMENT_SUCCESS, UPDATE_COMMENT_FAILURE,
+    DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE,
+    UPDATE_POST_REQUEST, UPDATE_POST_SUCCESS, UPDATE_POST_FAILURE
 } from "../actions/post";
 import produce from 'immer';
 
@@ -15,6 +17,12 @@ export const initialState = {
     addPostLoading: false,
     addPostDone: false,
     addPostError: null,
+    updatePostLoading: false,
+    updatePostDone: false,
+    updatePostError: null,
+    deletePostLoading: false,
+    deletePostDone: false,
+    deletePostError: null,
     addCommentLoading: false,
     addCommentDone: false,
     addCommentError: null,
@@ -24,9 +32,6 @@ export const initialState = {
     deleteCommentLoading: false,
     deleteCommentDone: false,
     deleteCommentError: null,
-    deletePostLoading: false,
-    deletePostDone: false,
-    deletePostError: null,
     changePostStatusLoading: false,
     changePostStatusDone: false,
     changePostStatusError: null,
@@ -52,9 +57,9 @@ const reducer = (state = initialState, action) => {
                 if (page == 1) {
                     draft.allPosts = posts[0];
                 } else {
+                    draft.allPosts.push(...posts[0]);
                 }
                 draft.allPostsCnt = posts[1];
-                // draft.allPosts.push(...data);
                 draft.getPostsLoading = false;
                 draft.getPostsDone = true;
                 break;
@@ -68,12 +73,28 @@ const reducer = (state = initialState, action) => {
                 draft.addPostError = null;
                 break;
             case ADD_POST_SUCCESS:
+                draft.allPosts.unshift(action.data);
                 draft.addPostLoading = false;
                 draft.addPostDone = true;
                 break;
             case ADD_POST_FAILURE:
                 draft.addPostLoading = false;
                 draft.addPostError = action.error;
+                break;
+            case UPDATE_POST_REQUEST:
+                draft.updatePostLoading = true;
+                draft.updatePostDone = false;
+                draft.updatePostError = null;
+                break;
+            case UPDATE_POST_SUCCESS:
+                const updatedPost = draft.allPosts.find((v) => v.id === action.data.id);
+                updatedPost.description = action.data.description;
+                draft.updatePostLoading = false;
+                draft.updatePostDone = true;
+                break;
+            case UPDATE_POST_FAILURE:
+                draft.updatePostLoading = false;
+                draft.updatePostError = action.error;
                 break;
             case DELETE_POST_REQUEST:
                 draft.deletePostLoading = true;
@@ -144,8 +165,8 @@ const reducer = (state = initialState, action) => {
                 draft.updateCommentError = null;
                 break;
             case UPDATE_COMMENT_SUCCESS:
-                const updatedPost = draft.allPosts.find((post) => post.id == action.data.boardId);
-                const updatedComment = updatedPost.comment.find((comment) => comment.id == action.data.id);
+                const updated = draft.allPosts.find((post) => post.id == action.data.boardId);
+                const updatedComment = updated.comment.find((comment) => comment.id == action.data.id);
                 updatedComment.comment = action.data.comment;
                 updatedComment.updatedAt = action.data.updatedAt;
                 draft.updateCommentLoading = false;

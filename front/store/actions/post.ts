@@ -7,6 +7,14 @@ export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
 
+export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST';
+export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS';
+export const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE';
+
+export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST';
+export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
+export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE';
+
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
@@ -18,10 +26,6 @@ export const UPDATE_COMMENT_FAILURE = 'UPDATE_COMMENT_FAILURE';
 export const DELETE_COMMENT_REQUEST = 'DELETE_COMMENT_REQUEST';
 export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS';
 export const DELETE_COMMENT_FAILURE = 'DELETE_COMMENT_FAILURE';
-
-export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST';
-export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
-export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE';
 
 export const CHANGE_POST_STATUS_REQUEST = 'CHANGE_POST_STATUS_REQUEST';
 export const CHANGE_POST_STATUS_SUCCESS = 'CHANGE_POST_STATUS_SUCCESS';
@@ -69,6 +73,48 @@ export const addPostSuccessAction = (data) => {
 export const addPostFailureAction = (error) => {
     return {
         type: ADD_POST_FAILURE,
+        error
+    }
+}
+
+export const updatePostRequestAction = (data) => {
+    return {
+        type: UPDATE_POST_REQUEST,
+        data
+    }
+}
+
+export const updatePostSuccessAction = (data) => {
+    return {
+        type: UPDATE_POST_SUCCESS,
+        data: data
+    }
+}
+
+export const updatePostFailureAction = (error) => {
+    return {
+        type: UPDATE_POST_FAILURE,
+        error
+    }
+}
+
+export const deletePostRequestAction = (data) => {
+    return {
+        type: DELETE_POST_REQUEST,
+        data
+    }
+}
+
+export const deletePostSuccessAction = (data) => {
+    return {
+        type: DELETE_POST_SUCCESS,
+        data: data
+    }
+}
+
+export const deletePostFailureAction = (error) => {
+    return {
+        type: DELETE_POST_FAILURE,
         error
     }
 }
@@ -153,27 +199,6 @@ export const changePostStatusSuccessAction = (data) => {
 export const changePostStatusFailureAction = (error) => {
     return {
         type: CHANGE_POST_STATUS_FAILURE,
-        error
-    }
-}
-
-export const deletePostRequestAction = (data) => {
-    return {
-        type: DELETE_POST_REQUEST,
-        data
-    }
-}
-
-export const deletePostSuccessAction = (data) => {
-    return {
-        type: DELETE_POST_SUCCESS,
-        data: data
-    }
-}
-
-export const deletePostFailureAction = (error) => {
-    return {
-        type: DELETE_POST_FAILURE,
         error
     }
 }

@@ -5,8 +5,10 @@ import { MdPublic, MdOutlineMoreHoriz } from "react-icons/md";
 import { BsFillPersonFill, BsThreeDots } from "react-icons/bs";
 import { useSelector, useDispatch } from 'react-redux';
 import Comment from '../Comment/Comment';
-import { changePostStatusRequestAction, deletePostRequestAction, updatePostHeartRequestAction } from '../../../store/actions/post';
+import { changePostStatusRequestAction, deletePostRequestAction, updatePostHeartRequestAction, updatePostRequestAction } from '../../../store/actions/post';
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
+import Input from '../../element/Input/Input';
+import Button from '../../element/Button/Button';
 
 interface IPostProps {
     post: IPost
@@ -51,7 +53,10 @@ const PostCard = ({ post }: IPostProps) => {
     const [isShowOtherMenu, setIsShowOtherMenu] = useState(false);
     const dispatch = useDispatch();
     const otherMenuRef = useRef(null);
-
+    const [description, setDescription] = useState(post.description);
+    const [showPostInput, setShowPostInput] = useState(false);
+    const updateDescRef = useRef<HTMLTextAreaElement>(null);
+    
     const onToggleComments = useCallback(() => {
         setShowComments((prev) => !prev);
     }, []);
@@ -63,20 +68,28 @@ const PostCard = ({ post }: IPostProps) => {
         setIsShowOtherMenu(false);
     }, [status]);
 
-    const onUpdatePost = useCallback((id) => {
+    const onShowPostInput = useCallback(() => {
+        setShowPostInput(true);
+        setIsShowOtherMenu(false);
+
+        console.log(updateDescRef.current);
+        updateDescRef.current && updateDescRef.current.focus();
+    }, [showPostInput]);
+    
+    const updatePost = useCallback(() => {
         //TODO: 게시물 수정 confirm 추가
         // if () {
         // }
+        dispatch(updatePostRequestAction({ id: post.id, body: { description: description } }))
+        setShowPostInput(false);
+    }, [description]);
 
-        setIsShowOtherMenu(false);
-    }, [])
-    
-    const onDeletePost = useCallback((id) => {
+    const onDeletePost = useCallback(() => {
         //TODO: 게시물 삭제 confirm 추가
         // if () {
         // }
 
-        dispatch(deletePostRequestAction(id));
+        dispatch(deletePostRequestAction(post.id));
         setIsShowOtherMenu(false);
     }, [])
 
@@ -95,10 +108,14 @@ const PostCard = ({ post }: IPostProps) => {
 
     const handleOutsideClick = (e) => {
         if (otherMenuRef.current && !otherMenuRef.current.contains(e.target)) {
-            setIsShowOtherMenu(false);    
+            setIsShowOtherMenu(false);
         }
     }
 
+    const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setDescription(e.target.value);
+    }, []);
+        
     useEffect(() => {
         if (post.comment.length > 0) {
             setShowComments(true);   
@@ -139,13 +156,13 @@ const PostCard = ({ post }: IPostProps) => {
                     {isShowOtherMenu && 
                         <ul ref={otherMenuRef}>
                             <li>
-                                <button onClick={() => onUpdatePost(post.id)}>게시물 수정</button>
+                                <button onClick={onShowPostInput}>게시물 수정</button>
                             </li>
                             <li>
                                 <button onClick={onChangePostStatus}>공개 대상 수정</button>
                             </li>
                             <li>
-                                <button onClick={() => onDeletePost(post.id)}>게시물 삭제</button>
+                                <button onClick={onDeletePost}>게시물 삭제</button>
                             </li>
                         </ul>
                     }
@@ -153,7 +170,14 @@ const PostCard = ({ post }: IPostProps) => {
             </div>
             <div className={styles.content}>
                 {post.imagePath && <img src={post.imagePath} alt="attached image" />}
-                <p className={styles.content}>{post.description}</p>
+
+                {showPostInput ? 
+                    <div className={styles.updateBox}>
+                        <Input type="textarea" value={description} height='100' onChange={onChangeText} ref={updateDescRef} />
+                        <Button varient="primary-blue" onClick={updatePost}>수정</Button>
+                    </div>
+                    : <p className={styles.content}>{post.description}</p>
+                }
             </div>
             <div className={styles.reaction}>
                 <button className={`${heart && styles.liked} ${styles.likedBtn}`} onClick={onClickHeartButton}>

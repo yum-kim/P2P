@@ -24,6 +24,25 @@ class Boards {
         return await request(option);
     }
 
+    async updateBoard(data: any) {
+        let option = {
+            "method": "PUT",
+            "url": `/boards/${data.id}`,
+            "Content-Type": "application/json",
+            "data": data.body
+        }
+        return await request(option);
+    }
+
+    async deleteBoardById(id:number) {
+        let option = {
+            "method": "DELETE",
+            "url": `/boards/${id}`,
+            "Content-Type": "application/json",
+        }
+        return await request(option);
+    }
+
     async getBoardsByUser(params: any) {
         let option = {
             "method": "GET",
@@ -37,15 +56,6 @@ class Boards {
     async getBoardById(id:number) {
         let option = {
             "method": "GET",
-            "url": `/boards/${id}`,
-            "Content-Type": "application/json",
-        }
-        return await request(option);
-    }
-
-    async deleteBoardById(id:number) {
-        let option = {
-            "method": "DELETE",
             "url": `/boards/${id}`,
             "Content-Type": "application/json",
         }

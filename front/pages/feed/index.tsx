@@ -24,6 +24,7 @@ const Feed = () => {
         allPosts, allPostsCnt,
         getPostsLoading, getPostsError,
         addPostLoading, addPostDone, addPostError,
+        updatePostLoading, updatePostDone, updatePostError,
         addCommentLoading, addCommentDone, addCommentError,
         updatePostHeartLoading, updatePostHeartDone, updatePostHeartError,
         updateCommentLoading, updateCommentDone, updateCommentError,
@@ -50,30 +51,27 @@ const Feed = () => {
     }
 
     useEffect(() => {
-        if (addPostDone) {
+        let completeMsg = '';
+        if (addPostDone || deletePostDone || changePostStatusDone || updatePostDone) {
             onShowModal();
-            setModalContent("업로드가 완료되었습니다.");
-            getPosts();
-        }
-    }, [addPostDone])
 
-    useEffect(() => {
-        if (deletePostDone) {
-            onShowModal();
-            setModalContent("삭제가 완료되었습니다.");
-        }
-    }, [deletePostDone])
+            if (addPostDone) {
+                completeMsg = "업로드";
+            } else if (deletePostDone) {
+                completeMsg = "삭제";
+            } else if (changePostStatusDone) {
+                completeMsg = "게시물 공개범위 수정";
+            } else if (updatePostDone) {
+                completeMsg = "게시물 수정";
+            }
 
-    useEffect(() => {
-        if (changePostStatusDone) {
-            onShowModal();
-            setModalContent("게시물 공개범위 수정이 완료되었습니다.");
+            setModalContent(`${completeMsg}이(가) 완료되었습니다.`);
         }
-    }, [changePostStatusDone])
+    }, [addPostDone, deletePostDone, changePostStatusDone, updatePostDone])
 
     useEffect(() => {
         let errMsg = '';
-        if (getPostsError || addPostError || addCommentError || deletePostError || changePostStatusError || updatePostHeartError) {
+        if (getPostsError || addPostError || addCommentError || deletePostError || changePostStatusError || updatePostHeartError || updatePostError || updateCommentError || deleteCommentError) {
             onShowModal();
             
             if (getPostsError) {
@@ -88,12 +86,18 @@ const Feed = () => {
                 errMsg = changePostStatusError.message;
             } else if (updatePostHeartError) {
                 errMsg = updatePostHeartError.message;
+            } else if (updatePostError) {
+                errMsg = updatePostError.message;
+            } else if (updateCommentError) {
+                errMsg = updateCommentError.message;
+            } else if (deleteCommentError) {
+                errMsg = deleteCommentError.message;
             }
-            
+
             setModalContent(errMsg);
         }
 
-    }, [getPostsError, addPostError, addCommentError, deletePostError, changePostStatusError, updatePostHeartError])
+    }, [getPostsError, addPostError, addCommentError, deletePostError, changePostStatusError, updatePostHeartError, updateCommentError, deleteCommentError])
 
     useEffect(() => {
         getPosts();
@@ -112,7 +116,7 @@ const Feed = () => {
                 <title>P2P | feed</title>
             </Head>
             <AppLayout>
-                {(getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading || updatePostHeartLoading) && <Loading />}
+                {(getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading || updatePostHeartLoading || updatePostLoading) && <Loading />}
                 <Modal
                     onCloseModal={onCloseModal}>
                     <p>{modalContent}</p>
