@@ -7,12 +7,14 @@ import { User } from 'src/auth/user.entity';
 import { Like } from 'typeorm';
 import { SearchBoardDto } from './dto/search-board.dto';
 import { HeartService } from 'src/heart/heart.service';
+import { BoardImageService } from 'src/board-image/board-image.service';
 
 @Injectable()
 export class BoardsService {
   constructor(
     private boardRepository: BoardRepository,
     private heartService: HeartService,
+    private boardImageService: BoardImageService,
   ) {}
 
   async getAllBoards(
@@ -21,13 +23,11 @@ export class BoardsService {
     size: number,
     user: User,
   ): Promise<[Board[], number]> {
-    let descriptionOption: any;
-    if (description) descriptionOption = Like(description);
+    let where = {};
+    if (description) where = { description: Like(`%${description}%`) };
 
     const boardAndCount: any = await this.boardRepository.findAndCount({
-      where: {
-        description: descriptionOption,
-      },
+      where,
       order: {
         [sortColumn]: orderby,
       },
@@ -41,7 +41,7 @@ export class BoardsService {
       },
       skip: (page - 1) * size,
       take: size,
-      relations: ['user', 'comment', 'comment.user'],
+      relations: ['user', 'comment', 'comment.user', 'boardImage'],
     });
 
     boardAndCount[0] = await Promise.all(
@@ -77,9 +77,16 @@ export class BoardsService {
 
   async createBoard(
     createBoardDto: CreateBoardDto,
+    files: Express.Multer.File[],
     user: User,
   ): Promise<Board> {
-    return await this.boardRepository.createBoard(createBoardDto, user);
+    const boardData = await this.boardRepository.createBoard(
+      createBoardDto,
+      user,
+    );
+
+    await this.boardImageService.createBoardImage(files, boardData.id);
+    return boardData;
   }
 
   async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
