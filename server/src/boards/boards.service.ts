@@ -18,42 +18,56 @@ export class BoardsService {
   ) {}
 
   async getAllBoards(
-    { description, sortColumn, orderby }: SearchBoardDto,
+    { username, description, sortColumn, orderby }: SearchBoardDto,
     page: number,
     size: number,
     user: User,
   ): Promise<[Board[], number]> {
-    let where = {};
-    if (description) where = { description: Like(`%${description}%`) };
+    try {
+      const queryBuilder = this.boardRepository
+        .createQueryBuilder('board')
+        .leftJoinAndSelect('board.user', 'user')
+        .addSelect([
+          'user.id',
+          'user.usercode',
+          'user.username',
+          'user.profileImagePath',
+        ])
+        .leftJoinAndSelect('board.comment', 'comment')
+        .leftJoinAndSelect('comment.user', 'commentUser')
+        .leftJoinAndSelect('board.boardImage', 'boardImage')
+        .skip((page - 1) * size)
+        .take(size);
 
-    const boardAndCount: any = await this.boardRepository.findAndCount({
-      where,
-      order: {
-        [sortColumn]: orderby,
-      },
-      select: {
-        user: {
-          id: true,
-          usercode: true,
-          username: true,
-          profileImagePath: true,
-        },
-      },
-      skip: (page - 1) * size,
-      take: size,
-      relations: ['user', 'comment', 'comment.user', 'boardImage'],
-    });
+      if (description) {
+        queryBuilder.where('board.description LIKE :description', {
+          description: `%${description}%`,
+        });
+      }
 
-    boardAndCount[0] = await Promise.all(
-      boardAndCount[0].map(async (x) => {
-        x.heart = !!(await this.heartService.getHeartByBoardUserId(
-          x.id,
-          user.id,
-        ));
-        return x;
-      }),
-    );
-    return boardAndCount;
+      if (username) {
+        queryBuilder.orWhere('user.username LIKE :username', {
+          username: `%${username}%`,
+        });
+      }
+
+      queryBuilder.orderBy(`board.${sortColumn}`, orderby);
+
+      const boardAndCount: any = await queryBuilder.getManyAndCount();
+
+      boardAndCount[0] = await Promise.all(
+        boardAndCount[0].map(async (x) => {
+          x.heart = !!(await this.heartService.getHeartByBoardUserId(
+            x.id,
+            user.id,
+          ));
+          return x;
+        }),
+      );
+      return boardAndCount;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async getAllBoardByUserId(user: User): Promise<Board[]> {

@@ -4,6 +4,12 @@ import { SortTypeEnum } from 'src/common/common.enum';
 
 export class SearchBoardDto {
   @ApiProperty({
+    description: '유저 명',
+    required: false,
+  })
+  readonly username?: string;
+
+  @ApiProperty({
     description: '게시판 내용',
     required: false,
   })
