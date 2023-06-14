@@ -24,6 +24,25 @@ class Boards {
         return await request(option);
     }
 
+    async updateBoard(data: any) {
+        let option = {
+            "method": "PUT",
+            "url": `/boards/${data.id}`,
+            "Content-Type": "application/json",
+            "data": data.body
+        }
+        return await request(option);
+    }
+
+    async deleteBoardById(id:number) {
+        let option = {
+            "method": "DELETE",
+            "url": `/boards/${id}`,
+            "Content-Type": "application/json",
+        }
+        return await request(option);
+    }
+
     async getBoardsByUser(params: any) {
         let option = {
             "method": "GET",
@@ -43,15 +62,6 @@ class Boards {
         return await request(option);
     }
 
-    async deleteBoardById(id:number) {
-        let option = {
-            "method": "DELETE",
-            "url": `/boards/${id}`,
-            "Content-Type": "application/json",
-        }
-        return await request(option);
-    }
-
     async changeBoardStatus(data:any) {
         let option = {
             "method": "PATCH",
@@ -62,12 +72,12 @@ class Boards {
         return await request(option);
     }
 
-    async changeBoardHit(data:any) {
+    async updatePostHeart(data:any) {
         let option = {
-            "method": "PATCH",
-            "url": `/boards/${data.id}/hit`,
+            "method": "POST",
+            "url": `/heart`,
             "Content-Type": "application/json",
-            "data": data.body
+            "data": data
         }
         return await request(option);
     }

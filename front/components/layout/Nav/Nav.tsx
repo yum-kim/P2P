@@ -10,7 +10,7 @@ const Nav = () => {
     return (
         <nav className={styles.nav}>
             <Link href="/feed">
-                <a className={router.pathname == '/' && styles.active}>
+                <a className={router.pathname == '/feed' && styles.active}>
                     <BsHouseDoor />
                     Feed
                 </a>

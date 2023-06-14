@@ -4,17 +4,17 @@ import Link from "next/link";
 import Button from '../../element/Button/Button';
 import Search from '../../common/Search/Search';
 import { useSelector, useDispatch } from 'react-redux';
-import { logoutRequestAction } from '../../../store/actions/auth';
 import { BsBoxArrowInRight, BsBell } from "react-icons/bs";
 import { useRouter } from 'next/dist/client/router';
+import { logOutRequest } from '../../../store/slices/auth';
 
 const Header = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const onClickLogout = () => {
         if (confirm("로그아웃 하시겠습니까?")) {
-            dispatch(logoutRequestAction());
-            router.push('/');
+            dispatch(logOutRequest());
+            router.push('/login');
             return null;
         }
     }

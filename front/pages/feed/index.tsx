@@ -5,30 +5,25 @@ import AppLayout from '../../components/layout/AppLayout/AppLayout';
 import PostForm from '../../components/component/PostForm/PostForm';
 import PostCard from '../../components/component/PostCard/PostCard';
 import Loading from '../../components/common/Loading/Loading';
-import { getPostsRequestAction } from '../../store/actions/post';
-import { RootState } from '../../store/reducers';
+import { RootState } from '../../store/configureStore';
 import { useRouter } from 'next/dist/client/router';
 import useModal from '../../hooks/useModal';
 import styles from './feed.module.scss';
-
-interface IPostParams {
-    description?: string,
-    sortColumn?: "createAt",
-    orderby?: "ASC" | "DESC",
-    page: number,
-    size: number
-}
+import { getPostsRequest } from '../../store/slices/post';
 
 const Feed = () => {
     const {
         allPosts, allPostsCnt,
         getPostsLoading, getPostsError,
         addPostLoading, addPostDone, addPostError,
+        updatePostLoading, updatePostDone, updatePostError,
         addCommentLoading, addCommentDone, addCommentError,
+        updatePostHeartLoading, updatePostHeartDone, updatePostHeartError,
         updateCommentLoading, updateCommentDone, updateCommentError,
         deleteCommentLoading, deleteCommentDone, deleteCommentError,
         deletePostLoading, deletePostDone, deletePostError,
-        changePostStatusLoading, changePostStatusDone, changePostStatusError
+        changePostStatusLoading, changePostStatusDone, changePostStatusError,
+        modalMessage,
     } = useSelector((state: RootState) => state.post);
     const { user } = useSelector((state: RootState) => state.auth);
     const [currentPage, setCurrentPage] = useState(1);
@@ -39,43 +34,45 @@ const Feed = () => {
     console.log('allPosts', allPosts);
 
     const getPosts = () => {
-        const params: IPostParams = {
-            page: currentPage,
-            size: 10,
-            sortColumn: "createAt",
-            orderby: "DESC"
-        }
-        dispatch(getPostsRequestAction(params));
+        // dispatch(getPostsRequest({ page: currentPage, size: 10, sortColumn: "createAt", orderby: "DESC" }));
+        dispatch(getPostsRequest({ page: currentPage, size: 10 }));
+    }
+
+    const completeMsgMap = {
+        addPostDone,
+        deletePostDone,
+        changePostStatusDone,
+        updatePostDone,
     }
 
     useEffect(() => {
-        if (addPostDone) {
+        const doneStates = Object.keys(completeMsgMap).filter((key) => completeMsgMap[key]);
+        if (doneStates.length > 0) {
             onShowModal();
-            setModalContent("업로드가 완료되었습니다.");
-            getPosts();
+            setModalContent(`${modalMessage}이(가) 완료되었습니다.`);
         }
-    }, [addPostDone])
+    }, Object.values(completeMsgMap))
+
+    const errMsgMap = {
+        getPostsError,
+        addPostError,
+        addCommentError,
+        changePostStatusError,
+        updatePostHeartError,
+        updatePostError,
+        updateCommentError,
+        deleteCommentError
+    }
 
     useEffect(() => {
-        if (deletePostDone) {
-            onShowModal();
-            setModalContent("삭제가 완료되었습니다.");
-        }
-    }, [deletePostDone])
+        const doneStates = Object.keys(errMsgMap).filter((key) => errMsgMap[key]);
+        const errMsg = doneStates.length > 0 && errMsgMap[doneStates[0]].message;
 
-    useEffect(() => {
-        if (changePostStatusDone) {
+        if (errMsg) {
             onShowModal();
-            setModalContent("게시물 공개범위 수정이 완료되었습니다.");
+            setModalContent(`${errMsg}`);
         }
-    }, [changePostStatusDone])
-
-    useEffect(() => {
-        if (getPostsError || addPostError || addCommentError || deletePostError || changePostStatusError) {
-            onShowModal();
-            setModalContent("데이터 통신 중 오류가 발생했습니다.");
-        }
-    }, [getPostsError, addPostError, addCommentError, deletePostError, changePostStatusError])
+    }, Object.values(errMsgMap))
 
     useEffect(() => {
         getPosts();
@@ -83,7 +80,7 @@ const Feed = () => {
 
     useEffect(() => {
         if (!user) {
-            router.push('/');
+            router.push('/login');
             return null;
         }
     }, []);
@@ -94,7 +91,7 @@ const Feed = () => {
                 <title>P2P | feed</title>
             </Head>
             <AppLayout>
-                {(getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading) && <Loading />}
+                {(getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading || updatePostHeartLoading || updatePostLoading) && <Loading />}
                 <Modal
                     onCloseModal={onCloseModal}>
                     <p>{modalContent}</p>

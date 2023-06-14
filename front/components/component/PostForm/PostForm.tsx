@@ -4,14 +4,14 @@ import styles from './PostForm.module.scss';
 import Button from '../../element/Button/Button';
 import Input from '../../element/Input/Input';
 import { BsFillPersonFill, BsFileImage, BsCloudUpload } from "react-icons/bs";
-import { addPostRequestAction } from '../../../store/actions/post';
-import { RootState } from '../../../store/reducers';
 import { useRouter } from 'next/dist/client/router';
+import { RootState } from '../../../store/configureStore';
+import { addPostRequest } from '../../../store/slices/post';
 
 const PostForm = () => {
     const { user } = useSelector((state: RootState) => state.auth);
     const [text, setText] = useState('');
-    const onChangeText = useCallback((e:React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeText = useCallback((e:React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);
     }, []);
 
@@ -23,21 +23,14 @@ const PostForm = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
-    //TODO: 게시판생성 API body값 수정되면 여기도 맞추기
-    const dummyData = {
-        title: '타이틀요',
-        description: text
-        // userId: user.id,
-        // imagePaths: [],
-    }
-
+    //TODO: 이미지 업로드 기능 추가 시 imagePaths 값 추가 송신
     const onClickUploadPost = () => {
-        dispatch(addPostRequestAction(dummyData));
+        dispatch(addPostRequest({ description: text, user }));
         setText('');
     };
 
     if (!user) {
-        router.push('/');
+        router.push('/login');
         return null;
     }
 
