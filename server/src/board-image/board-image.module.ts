@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from 'src/auth/auth.module';
 import { BoardImageController } from './board-image.controller';
 import { BoardImageService } from './board-image.service';
-import { JwtService } from '@nestjs/jwt';
+import { BoardImageRepository } from './board.repository';
+import { TypeOrmExModule } from 'src/typeorm-ex.module';
 
 @Module({
-  imports: [AuthModule],
+  imports: [TypeOrmExModule.forCustomRepository([BoardImageRepository])],
   controllers: [BoardImageController],
-  providers: [BoardImageService, JwtService],
+  providers: [BoardImageService],
+  exports: [BoardImageService],
 })
 export class BoardImageModule {}

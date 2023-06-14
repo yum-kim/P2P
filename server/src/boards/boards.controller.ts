@@ -9,12 +9,14 @@ import {
   Post,
   Put,
   Query,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ApiBody, ApiCreatedResponse } from '@nestjs/swagger/dist';
+import { ApiBody, ApiConsumes, ApiCreatedResponse } from '@nestjs/swagger/dist';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/auth/user.entity';
@@ -24,6 +26,7 @@ import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardStatusValidationPipe } from './pipes/board-status-validataion.pipe';
 import { SearchBoardDto } from './dto/search-board.dto';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('boards')
 @ApiBearerAuth('access-token')
@@ -90,12 +93,14 @@ export class BoardsController {
   })
   @Post()
   @UsePipes(ValidationPipe)
+  @UseInterceptors(FilesInterceptor('files'))
+  @ApiConsumes('multipart/form-data')
   async createBoard(
     @Body() createBoardDto: CreateBoardDto,
+    @UploadedFiles() files: Express.Multer.File[],
     @GetUser() user: User,
   ): Promise<Board> {
-    console.log('aa 와따');
-    return await this.boardService.createBoard(createBoardDto, user);
+    return await this.boardService.createBoard(createBoardDto, files, user);
   }
 
   @ApiOperation({

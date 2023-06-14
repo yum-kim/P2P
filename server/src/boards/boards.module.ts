@@ -5,15 +5,20 @@ import { TypeOrmExModule } from 'src/typeorm-ex.module';
 import { BoardRepository } from './board.repository';
 import { BoardsController } from './boards.controller';
 import { BoardsService } from './boards.service';
-// import { HeartRepository } from 'src/heart/heart.repository';
-// import { HeartService } from 'src/heart/heart.service';
 import { HeartModule } from 'src/heart/heart.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { multerOptionsFactory } from 'src/common/multer.option.factory';
+import { BoardImageModule } from 'src/board-image/board-image.module';
 
 @Module({
   imports: [
     TypeOrmExModule.forCustomRepository([BoardRepository]),
+    MulterModule.registerAsync({
+      useFactory: multerOptionsFactory,
+    }),
     AuthModule,
     HeartModule,
+    BoardImageModule,
   ],
   controllers: [BoardsController],
   providers: [BoardsService, JwtService],

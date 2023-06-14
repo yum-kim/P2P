@@ -14,6 +14,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { BoardStatus } from './board.enum';
+import { BoardImage } from 'src/board-image/board-image.entity';
 
 @Entity()
 export class Board extends BaseEntity {
@@ -32,10 +33,6 @@ export class Board extends BaseEntity {
   @Column()
   @ApiProperty({ description: '조회수' })
   hit: number;
-
-  @Column({ nullable: true })
-  @ApiProperty({ description: '이미지 경로' })
-  imagePath: string;
 
   @Column({ default: 0 })
   @ApiProperty({ description: '좋아요 개수' })
@@ -62,4 +59,7 @@ export class Board extends BaseEntity {
 
   @OneToMany(() => Comment, (comment) => comment.board)
   comment: Comment[];
+
+  @OneToMany(() => BoardImage, (boardImage) => boardImage.board)
+  boardImage: BoardImage[];
 }
