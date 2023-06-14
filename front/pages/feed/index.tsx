@@ -5,19 +5,11 @@ import AppLayout from '../../components/layout/AppLayout/AppLayout';
 import PostForm from '../../components/component/PostForm/PostForm';
 import PostCard from '../../components/component/PostCard/PostCard';
 import Loading from '../../components/common/Loading/Loading';
-import { getPostsRequestAction } from '../../store/actions/post';
-import { RootState } from '../../store/reducers';
+import { RootState } from '../../store/configureStore';
 import { useRouter } from 'next/dist/client/router';
 import useModal from '../../hooks/useModal';
 import styles from './feed.module.scss';
-
-interface IPostParams {
-    description?: string,
-    sortColumn?: "createAt",
-    orderby?: "ASC" | "DESC",
-    page: number,
-    size: number
-}
+import { getPostsRequest } from '../../store/slices/post';
 
 const Feed = () => {
     const {
@@ -42,13 +34,8 @@ const Feed = () => {
     console.log('allPosts', allPosts);
 
     const getPosts = () => {
-        const params: IPostParams = {
-            page: currentPage,
-            size: 10,
-            sortColumn: "createAt",
-            orderby: "DESC"
-        }
-        dispatch(getPostsRequestAction(params));
+        // dispatch(getPostsRequest({ page: currentPage, size: 10, sortColumn: "createAt", orderby: "DESC" }));
+        dispatch(getPostsRequest({ page: currentPage, size: 10 }));
     }
 
     const completeMsgMap = {
@@ -93,7 +80,7 @@ const Feed = () => {
 
     useEffect(() => {
         if (!user) {
-            router.push('/');
+            router.push('/login');
             return null;
         }
     }, []);

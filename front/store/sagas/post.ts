@@ -1,140 +1,131 @@
-import { updateCommentSuccessAction, updateCommentFailureAction, deleteCommentSuccessAction, deleteCommentFailureAction, UPDATE_POST_REQUEST, updatePostSuccessAction, updatePostFailureAction } from './../actions/post';
 import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
-import {
-  GET_POSTS_REQUEST, getPostsSuccessAction, getPostsFailureAction,
-  ADD_POST_REQUEST, addPostSuccessAction, addPostFailureAction,
-  ADD_COMMENT_REQUEST, addCommentSuccessAction, addCommentFailureAction,
-  UPDATE_COMMENT_REQUEST, DELETE_COMMENT_REQUEST,
-  DELETE_POST_REQUEST, deletePostSuccessAction, deletePostFailureAction,
-  CHANGE_POST_STATUS_REQUEST, changePostStatusSuccessAction, changePostStatusFailureAction, 
-  UPDATE_HEART_REQUEST, updatePostHeartSuccessAction, updatePostHeartFailureAction
-} from '../actions/post';
 import boards from '../../api/boards';
+import { getPostsSuccess, getPostsFailure, addPostSuccess, addPostFailure, updatePostSuccess, updatePostFailure, deletePostSuccess, deletePostFailure, addCommentSuccess, addCommentFailure, updateCommentSuccess, updateCommentFailure, deleteCommentSuccess, deleteCommentFailure, changePostStatusSuccess, changePostStatusFailure, updatePostHeartSuccess, getPostsRequest, addPostRequest, updatePostRequest, addCommentRequest, updateCommentRequest, deleteCommentRequest, deletePostRequest, changePostStatusRequest, updatePostHeartRequest, updatePostHeartFailure } from '../slices/post';
 
 function* getPosts(action) {
-  const { res, error } = yield call(boards.getBoards, action.data);
+  const { res, error } = yield call(boards.getBoards, action.payload);
 
   if (res) {
-    yield put(getPostsSuccessAction({ posts: res, page: action.data.page }));
+    yield put(getPostsSuccess({ posts: res, page: action.payload.page }));
   } else {
-    yield put(getPostsFailureAction(error));
+    yield put(getPostsFailure(error));
   }
 }
 
 function* addPost(action) {
-  const { res, error } = yield call(boards.createBoard, action.data);
+  const { res, error } = yield call(boards.createBoard, action.payload);
 
   if (res) {
-    yield put(addPostSuccessAction({ ...res, user: action.data.user, comment: [] }));
+    yield put(addPostSuccess({ ...res, user: action.payload.user, comment: [] }));
   } else {
-    yield put(addPostFailureAction(error));
+    yield put(addPostFailure(error));
   }
 }
 
 function* updatePost(action) {
-  const { res, error } = yield call(boards.updateBoard, action.data);
+  const { res, error } = yield call(boards.updateBoard, action.payload);
 
   if (res) {
-    yield put(updatePostSuccessAction(res));
+    yield put(updatePostSuccess(res));
   } else {
-    yield put(updatePostFailureAction(error));
+    yield put(updatePostFailure(error));
   }
 }
 
 function* deletePost(action) {
-  const { res, error } = yield call(boards.deleteBoardById, action.data);
+  const { res, error } = yield call(boards.deleteBoardById, action.payload);
   
   if (!error) {
-    yield put(deletePostSuccessAction({ id: action.data }));
+    yield put(deletePostSuccess({ id: action.payload }));
   } else {
-    yield put(deletePostFailureAction(error));
+    yield put(deletePostFailure(error));
   }
 }
 
 function* addComment(action) {
-  const { res, error } = yield call(boards.addComment, action.data);
+  const { res, error } = yield call(boards.addComment, action.payload);
 
   if (res) {
-    yield put(addCommentSuccessAction({ ...res, user: action.data.user }));
+    yield put(addCommentSuccess({ ...res, user: action.payload.user }));
   } else {
-    yield put(addCommentFailureAction(error));
+    yield put(addCommentFailure(error));
   }
 }
 
 function* updateComment(action) {
-  const { res, error } = yield call(boards.updateComment, action.data.data);
+  const { res, error } = yield call(boards.updateComment, action.payload.data);
 
   if (res) {
-    yield put(updateCommentSuccessAction({ ...res, boardId: action.data.boardId } ));
+    yield put(updateCommentSuccess({ ...res, boardId: action.payload.boardId } ));
   } else {
-    yield put(updateCommentFailureAction(error));
+    yield put(updateCommentFailure(error));
   }
 }
 
 function* deleteComment(action) {
-  const { res, error } = yield call(boards.deleteCommentById, action.data.id);
+  const { res, error } = yield call(boards.deleteCommentById, action.payload.id);
 
   if (res) {
-    yield put(deleteCommentSuccessAction(action.data));
+    yield put(deleteCommentSuccess(action.payload));
   } else {
-    yield put(deleteCommentFailureAction(error));
+    yield put(deleteCommentFailure(error));
   }
 }
 
 function* changePostStatus(action) {
-  const { res, error } = yield call(boards.changeBoardStatus, action.data);
+  const { res, error } = yield call(boards.changeBoardStatus, action.payload);
 
   if (res) {
-    yield put(changePostStatusSuccessAction(res));
+    yield put(changePostStatusSuccess(res));
   } else {
-    yield put(changePostStatusFailureAction(error));
+    yield put(changePostStatusFailure(error));
   }
 }
 
 function* updatePostHeart(action) {
-  const { res, error } = yield call(boards.updatePostHeart, action.data);
+  const { res, error } = yield call(boards.updatePostHeart, action.payload);
 
   if (!error) {
-    yield put(updatePostHeartSuccessAction(action.data));
+    yield put(updatePostHeartSuccess(action.payload));
   } else {
-    yield put(updatePostHeartFailureAction(error));
+    yield put(updatePostHeartFailure(error));
   }
 }
 
 function* watchGetPosts() {
-  yield takeLatest(GET_POSTS_REQUEST, getPosts);
+  yield takeLatest(getPostsRequest.type, getPosts);
 }
 
 function* watchAddPost() {
-  yield takeLatest(ADD_POST_REQUEST, addPost);
+  yield takeLatest(addPostRequest.type, addPost);
 }
 
 function* watchUpdatePost() {
-  yield takeLatest(UPDATE_POST_REQUEST, updatePost);
+  yield takeLatest(updatePostRequest.type, updatePost);
 }
 
 function* watchAddComment() {
-  yield takeLatest(ADD_COMMENT_REQUEST, addComment);
+  yield takeLatest(addCommentRequest.type, addComment);
 }
 
 function* watchUpdateComment() {
-  yield takeLatest(UPDATE_COMMENT_REQUEST, updateComment);
+  yield takeLatest(updateCommentRequest.type, updateComment);
 }
 
 function* watchDeleteComment() {
-  yield takeLatest(DELETE_COMMENT_REQUEST, deleteComment);
+  yield takeLatest(deleteCommentRequest.type, deleteComment);
 }
 
 function* watchDeletePost() {
-  yield takeLatest(DELETE_POST_REQUEST, deletePost);
+  yield takeLatest(deletePostRequest.type, deletePost);
 }
 
 function* watchChangePostStatus() {
-  yield takeLatest(CHANGE_POST_STATUS_REQUEST, changePostStatus);
+  yield takeLatest(changePostStatusRequest.type, changePostStatus);
 }
 
 function* watchupdatePostHeart() {
-  yield takeLatest(UPDATE_HEART_REQUEST, updatePostHeart);
+  yield takeLatest(updatePostHeartRequest.type, updatePostHeart);
 }
 
 export default function* postSaga() {

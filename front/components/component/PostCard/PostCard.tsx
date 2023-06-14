@@ -5,10 +5,10 @@ import { MdPublic, MdOutlineMoreHoriz } from "react-icons/md";
 import { BsFillPersonFill, BsThreeDots } from "react-icons/bs";
 import { useSelector, useDispatch } from 'react-redux';
 import Comment from '../Comment/Comment';
-import { changePostStatusRequestAction, deletePostRequestAction, updatePostHeartRequestAction, updatePostRequestAction } from '../../../store/actions/post';
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import Input from '../../element/Input/Input';
 import Button from '../../element/Button/Button';
+import { changePostStatusRequest, updatePostRequest, deletePostRequest, updatePostHeartRequest } from '../../../store/slices/post';
 
 interface IPostProps {
     post: IPost
@@ -31,10 +31,11 @@ export interface IPost {
 
 export interface IUser {
     id: number,
-    usercode: string,
+    usercode?: string,
     username: string,
-    password: string
-    profileImagePath: string
+    password?: string
+    profileImagePath: string,
+    accessToken?:string
 }
 
 export interface IComment {
@@ -64,7 +65,7 @@ const PostCard = ({ post }: IPostProps) => {
     const onChangePostStatus = useCallback(() => {
         const changeStatus = status == "PUBLIC" ? "PRIVATE" : "PUBLIC";
         setStatus(changeStatus);
-        dispatch(changePostStatusRequestAction({ id: post.id, body: { status: changeStatus } }));
+        dispatch(changePostStatusRequest({ id: post.id, body: { status: changeStatus } }));
         setIsShowOtherMenu(false);
     }, [status]);
 
@@ -72,7 +73,7 @@ const PostCard = ({ post }: IPostProps) => {
         setShowPostInput(true);
         setIsShowOtherMenu(false);
 
-        console.log(updateDescRef.current);
+        //FIXME: focus 안됨
         updateDescRef.current && updateDescRef.current.focus();
     }, [showPostInput]);
     
@@ -80,7 +81,7 @@ const PostCard = ({ post }: IPostProps) => {
         //TODO: 게시물 수정 confirm 추가
         // if () {
         // }
-        dispatch(updatePostRequestAction({ id: post.id, body: { description: description } }))
+        dispatch(updatePostRequest({ id: post.id, body: { description: description } }))
         setShowPostInput(false);
     }, [description]);
 
@@ -89,13 +90,13 @@ const PostCard = ({ post }: IPostProps) => {
         // if () {
         // }
 
-        dispatch(deletePostRequestAction(post.id));
+        dispatch(deletePostRequest(post.id));
         setIsShowOtherMenu(false);
     }, [])
 
     const onClickHeartButton = useCallback(() => {
         setHeart((prev) => !prev);
-        dispatch(updatePostHeartRequestAction({ boardId: post.id, heart: !heart }));
+        dispatch(updatePostHeartRequest({ boardId: post.id, heart: !heart }));
     }, [heart]);
 
     const onShowOtherMenu = useCallback(() => {
@@ -106,11 +107,11 @@ const PostCard = ({ post }: IPostProps) => {
         }
     }, [isShowOtherMenu]);
 
-    const handleOutsideClick = (e) => {
+    const handleOutsideClick = useCallback((e: React.MouseEvent) => {
         if (otherMenuRef.current && !otherMenuRef.current.contains(e.target)) {
             setIsShowOtherMenu(false);
         }
-    }
+    }, []);
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDescription(e.target.value);

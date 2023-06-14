@@ -4,9 +4,9 @@ import styles from './PostForm.module.scss';
 import Button from '../../element/Button/Button';
 import Input from '../../element/Input/Input';
 import { BsFillPersonFill, BsFileImage, BsCloudUpload } from "react-icons/bs";
-import { addPostRequestAction } from '../../../store/actions/post';
-import { RootState } from '../../../store/reducers';
 import { useRouter } from 'next/dist/client/router';
+import { RootState } from '../../../store/configureStore';
+import { addPostRequest } from '../../../store/slices/post';
 
 const PostForm = () => {
     const { user } = useSelector((state: RootState) => state.auth);
@@ -25,12 +25,12 @@ const PostForm = () => {
 
     //TODO: 이미지 업로드 기능 추가 시 imagePaths 값 추가 송신
     const onClickUploadPost = () => {
-        dispatch(addPostRequestAction({ description: text, user }));
+        dispatch(addPostRequest({ description: text, user }));
         setText('');
     };
 
     if (!user) {
-        router.push('/');
+        router.push('/login');
         return null;
     }
 

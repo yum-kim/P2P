@@ -2,10 +2,10 @@ import React, { useRef, useState, useCallback, useEffect } from 'react';
 import styles from './Comment.module.scss';
 import Input from '../../element/Input/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCommentRequestAction, updateCommentRequestAction, deleteCommentRequestAction } from '../../../store/actions/post';
 import { BsSend, BsFillPersonFill, BsPencil, BsTrash3 } from "react-icons/bs";
 import { IPost, IComment } from '../PostCard/PostCard';
-import { RootState } from '../../../store/reducers';
+import { RootState } from '../../../store/configureStore';
+import { addCommentRequest, updateCommentRequest, deleteCommentRequest } from '../../../store/slices/post';
 
 const Comment = ({ post } : { post: IPost }) => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -28,7 +28,7 @@ const Comment = ({ post } : { post: IPost }) => {
     const onSubmitComment = useCallback((e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!comment.replace(/\s/g, "") || addCommentLoading) return;
-        dispatch(addCommentRequestAction({ boardId: post.id, comment, user: user }));
+        dispatch(addCommentRequest({ boardId: post.id, comment, user: user }));
         setComment('');
     }, [comment]);
     
@@ -52,7 +52,7 @@ const Comment = ({ post } : { post: IPost }) => {
         e.preventDefault();
         if (!updateComment.id) return;
 
-        dispatch(updateCommentRequestAction({
+        dispatch(updateCommentRequest({
             data: { id: updateComment.id, body: { comment: updateComment.comment } },
             boardId: post.id
         }));
@@ -65,7 +65,7 @@ const Comment = ({ post } : { post: IPost }) => {
 
         //TODO: 삭제 확인 confirm 창 띄우기
 
-        dispatch(deleteCommentRequestAction({ id: id, boardId: post.id }));
+        dispatch(deleteCommentRequest({ id: id, boardId: post.id }));
     }, []);
 
     const onCancelUpdateComment = useCallback(() => {

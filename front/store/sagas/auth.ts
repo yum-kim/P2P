@@ -1,36 +1,37 @@
 import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
 import auth from '../../api/auth';
-import { LOG_IN_REQUEST, loginFailureAction, loginSuccessAction, SIGN_UP_REQUEST, signupSuccessAction, signupFailureAction, signupInitAction } from '../actions/auth';
+import { logInRequest, logInSuccess, logInFailure, signUpRequest, signUpSuccess, signUpFailure, signUpInit } from '../slices/auth';
 
 function* login(action) {
-  const { res, error } = yield call(auth.login, action.data);
+  const { res, error } = yield call(auth.login, action.payload);
 
   if (res) {
-    yield put(loginSuccessAction(res));
+    yield put(logInSuccess(res));
   } else {
-    yield put(loginFailureAction(error));
+    yield put(logInFailure(error));
   }
 }
 
-
 function* signup(action) {
-  const { res, error } = yield call(auth.signup, action.data);
+  const { res, error } = yield call(auth.signup, action.payload);
 
   if (res) {
-    yield put(signupSuccessAction(res));
+    yield put(signUpSuccess(res));
   } else {
-    yield put(signupFailureAction(error));
+    yield put(signUpFailure(error));
   }
   
-  yield put(signupInitAction());
+  yield put(signUpInit());
 }
 
 function* watchLogin() {
-  yield takeLatest(LOG_IN_REQUEST, login);
+  console.log(logInRequest.type)
+
+  yield takeLatest(logInRequest.type, login);
 }
 
 function* watchSignup() {
-  yield takeLatest(SIGN_UP_REQUEST, signup);
+  yield takeLatest(signUpRequest.type, signup);
 }
 
 export default function* authSaga() {

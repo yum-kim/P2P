@@ -9,6 +9,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.2.5",
     "@types/react": "^18.2.8",
@@ -19,6 +20,7 @@
     "immer": "^9.0.19",
     "next": "^9.5.5",
     "next-redux-wrapper": "^8.0.0",
+    "prettier": "^2.8.8",
     "prop-types": "^15.8.1",
     "react-icons": "^4.8.0",
     "react-redux": "^8.0.5",
