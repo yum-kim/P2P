@@ -77,7 +77,7 @@ const reducer = (state = initialState, action) => {
                 draft.allPosts.unshift(action.data);
                 draft.addPostLoading = false;
                 draft.addPostDone = true;
-                draft.doneMessage = "게시물 업로드";
+                draft.modalMessage = "게시물 업로드";
                 break;
             case ADD_POST_FAILURE:
                 draft.addPostLoading = false;
@@ -93,7 +93,7 @@ const reducer = (state = initialState, action) => {
                 updatedPost.description = action.data.description;
                 draft.updatePostLoading = false;
                 draft.updatePostDone = true;
-                draft.doneMessage = "게시물 수정";
+                draft.modalMessage = "게시물 수정";
                 break;
             case UPDATE_POST_FAILURE:
                 draft.updatePostLoading = false;
@@ -108,7 +108,7 @@ const reducer = (state = initialState, action) => {
                 draft.allPosts = draft.allPosts.filter((v) => v.id !== action.data.id);
                 draft.deletePostLoading = false;
                 draft.deletePostDone = true;
-                draft.doneMessage = "게시물 삭제";
+                draft.modalMessage = "게시물 삭제";
                 break;
             case DELETE_POST_FAILURE:
                 draft.deletePostLoading = false;
@@ -125,7 +125,7 @@ const reducer = (state = initialState, action) => {
                 changedPost.status = action.data.status;
                 draft.changePostStatusLoading = false;
                 draft.changePostStatusDone = true;
-                draft.doneMessage = "게시물 공개 범위 수정";
+                draft.modalMessage = "게시물 공개 범위 수정";
                 break;
             case CHANGE_POST_STATUS_FAILURE:
                 draft.changePostStatusLoading = false;
