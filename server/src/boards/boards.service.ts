@@ -4,7 +4,6 @@ import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardRepository } from './board.repository';
 import { Board } from './board.entity';
 import { User } from 'src/auth/user.entity';
-import { Like } from 'typeorm';
 import { SearchBoardDto } from './dto/search-board.dto';
 import { HeartService } from 'src/heart/heart.service';
 import { BoardImageService } from 'src/board-image/board-image.service';
@@ -25,7 +24,7 @@ export class BoardsService {
   ): Promise<[Board[], number]> {
     const queryBuilder = this.boardRepository
       .createQueryBuilder('board')
-      .leftJoinAndSelect('board.user', 'user')
+      .leftJoin('board.user', 'user')
       .addSelect([
         'user.id',
         'user.usercode',
@@ -33,7 +32,13 @@ export class BoardsService {
         'user.profileImagePath',
       ])
       .leftJoinAndSelect('board.comment', 'comment')
-      .leftJoinAndSelect('comment.user', 'commentUser')
+      .leftJoin('comment.user', 'commentUser')
+      .addSelect([
+        'commentUser.id',
+        'commentUser.usercode',
+        'commentUser.username',
+        'commentUser.profileImagePath',
+      ])
       .leftJoinAndSelect('board.boardImage', 'boardImage')
       .skip((page - 1) * size)
       .take(size);
