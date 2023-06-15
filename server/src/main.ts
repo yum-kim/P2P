@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { setupSwagger } from './config/swagger.config';
 import * as config from 'config';
+import { readFileSync } from 'fs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +12,10 @@ async function bootstrap() {
   app.enableCors();
   setupSwagger(app);
   await app.listen(port);
+  try {
+    const banner: string = readFileSync('./.banner', 'utf8');
+    console.log(banner);
+  } catch (e) {}
   Logger.log(`Application running on port ${port}`);
 }
 bootstrap();
