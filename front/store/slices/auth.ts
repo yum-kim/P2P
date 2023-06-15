@@ -4,19 +4,21 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import auth from '../../api/auth';
 
 interface IAuthState {
-  logInLoading: boolean;
-  logInDone: boolean;
-  logInError: any;
-  signUpLoading: boolean;
-  signUpDone: boolean;
-  signUpError: any;
-  user: IUser | null;
+    logInLoading: boolean;
+    logInDone: boolean;
+    logInError: any;
+    logOutDone: boolean;
+    signUpLoading: boolean;
+    signUpDone: boolean;
+    signUpError: any;
+    user: IUser | null;
 }
 
 const initialState: IAuthState = {
     logInLoading: false,
     logInDone: false,
     logInError: null,
+    logOutDone: false,
     signUpLoading: false,
     signUpDone: false,
     signUpError: null,
@@ -31,6 +33,7 @@ export const authSlice = createSlice({
             state.logInLoading = true;
             state.logInDone = false;
             state.logInError = null;
+            state.logOutDone = false;
         },
         logInSuccess: (state, action: PayloadAction<IUser>) => {
             const { id, username, accessToken, profileImagePath } = action.payload;
@@ -45,6 +48,7 @@ export const authSlice = createSlice({
         },
         logOutRequest: (state) => {
             state.logInDone = false;
+            state.logOutDone = true;
             state.user = null;
             auth.setToken(null);
         },

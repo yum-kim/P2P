@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Header.module.scss';
 import Link from "next/link";
 import Button from '../../element/Button/Button';
 import Search from '../../common/Search/Search';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { BsBoxArrowInRight, BsBell } from "react-icons/bs";
 import { useRouter } from 'next/dist/client/router';
 import { logOutRequest } from '../../../store/slices/auth';
@@ -11,6 +11,7 @@ import { logOutRequest } from '../../../store/slices/auth';
 const Header = () => {
     const dispatch = useDispatch();
     const router = useRouter();
+
     const onClickLogout = () => {
         if (confirm("로그아웃 하시겠습니까?")) {
             dispatch(logOutRequest());

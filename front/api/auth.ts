@@ -1,7 +1,7 @@
 import request from './axios';
 
 class Auth {
-    accessToken: string | null;
+    private accessToken: string | null;
 
     constructor() {
         this.accessToken = null;
