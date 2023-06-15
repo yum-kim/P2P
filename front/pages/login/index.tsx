@@ -17,7 +17,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const router = useRouter();
-    const { logInLoading, logInDone, logInError, user } = useSelector((state: RootState) => state.auth);
+    const { logInLoading, logInDone, logInError, logOutDone, user } = useSelector((state: RootState) => state.auth);
     const { Modal, onShowModal, onCloseModal, modalContent, setModalContent } = useModal(false);
 
     const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +50,13 @@ const Login = () => {
             router.push('/feed');
         }
     }, [logInDone])
+
+    useEffect(() => {
+        if (logOutDone && !user) {
+            onShowModal();
+            setModalContent("로그아웃이 완료되었습니다.");
+        }
+    }, [logOutDone])
 
     return (
         <>
