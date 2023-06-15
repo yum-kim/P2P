@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { IPostParams } from '../../pages/feed';
 
 const initialState = {
     getPostsLoading: false,
@@ -32,6 +31,7 @@ const initialState = {
     updatePostHeartError: null,
     modalMessage: null,
     allPosts: [],
+    fetchedPosts: [],
     allPostsCnt: 0,
 }
 
@@ -55,11 +55,11 @@ const postSlice = createSlice({
         },
         getPostsSuccess: (state, action: PayloadAction<any>) => {
             const { posts, page } = action.payload;
-
+            state.fetchedPosts = posts[0];
             if (page === 1) {
-                state.allPosts = posts[0];
+                state.allPosts = state.fetchedPosts;
             } else {
-                state.allPosts.push(...posts[0]);
+                state.allPosts.push(...state.fetchedPosts);
             }
             state.allPostsCnt = posts[1];
             state.getPostsLoading = false;
