@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from 'src/auth/user.entity';
 import { BoardImage } from 'src/board-image/board-image.entity';
 import { BoardStatus } from '../board.enum';
 
