@@ -13,9 +13,10 @@ function* getPosts(action) {
 }
 
 function* addPost(action) {
-  const { res, error } = yield call(boards.createBoard, action.payload);
+  const { res, error } = yield call(boards.createBoard, action.payload.formData);
 
   if (res) {
+    //TODO: image 결과값도 추가하기
     yield put(addPostSuccess({ ...res, user: action.payload.user, comment: [] }));
   } else {
     yield put(addPostFailure(error));
