@@ -7,6 +7,8 @@ import { User } from 'src/auth/user.entity';
 import { SearchBoardDto } from './dto/search-board.dto';
 import { HeartService } from 'src/heart/heart.service';
 import { BoardImageService } from 'src/board-image/board-image.service';
+import { ResponseCreateBoardDto } from './dto/response-create-board.dtoy';
+import { ResponseBoardDto } from './dto/response-board.dto';
 
 @Injectable()
 export class BoardsService {
@@ -21,7 +23,7 @@ export class BoardsService {
     page: number,
     size: number,
     user: User,
-  ): Promise<[Board[], number]> {
+  ): Promise<[ResponseBoardDto[], number]> {
     const queryBuilder = this.boardRepository
       .createQueryBuilder('board')
       .leftJoin('board.user', 'user')
@@ -94,15 +96,21 @@ export class BoardsService {
     createBoardDto: CreateBoardDto,
     files: Express.Multer.File[],
     user: User,
-  ): Promise<Board> {
-    const boardData = await this.boardRepository.createBoard(
-      createBoardDto,
-      user,
-    );
+  ): Promise<ResponseCreateBoardDto> {
+    const responseData: ResponseCreateBoardDto =
+      (await this.boardRepository.createBoard(
+        createBoardDto,
+        user,
+      )) as ResponseCreateBoardDto;
 
-    if (files)
-      await this.boardImageService.createBoardImage(files, boardData.id);
-    return boardData;
+    if (files) {
+      responseData.boardImage = await this.boardImageService.createBoardImage(
+        files,
+        responseData.id,
+      );
+    }
+
+    return responseData;
   }
 
   async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {

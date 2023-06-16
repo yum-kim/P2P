@@ -27,6 +27,8 @@ import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardStatusValidationPipe } from './pipes/board-status-validataion.pipe';
 import { SearchBoardDto } from './dto/search-board.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { ResponseCreateBoardDto } from './dto/response-create-board.dtoy';
+import { ResponseBoardDto } from './dto/response-board.dto';
 
 @Controller('boards')
 @ApiBearerAuth('access-token')
@@ -41,7 +43,7 @@ export class BoardsController {
   @ApiResponse({
     status: 200,
     description: '게시판 전체 조회',
-    type: Board,
+    type: ResponseBoardDto,
     isArray: true,
   })
   @Get('')
@@ -50,7 +52,7 @@ export class BoardsController {
     @Query('page') page: number,
     @Query('size') size: number,
     @GetUser() user: User,
-  ): Promise<[Board[], number]> {
+  ): Promise<[ResponseBoardDto[], number]> {
     return await this.boardService.getAllBoards(searchQuery, page, size, user);
   }
 
@@ -89,7 +91,7 @@ export class BoardsController {
   })
   @ApiCreatedResponse({
     description: '게시판 생성',
-    type: Board,
+    type: ResponseCreateBoardDto,
   })
   @Post()
   @UsePipes(ValidationPipe)
@@ -99,7 +101,7 @@ export class BoardsController {
     @Body() createBoardDto: CreateBoardDto,
     @UploadedFiles() files: Express.Multer.File[],
     @GetUser() user: User,
-  ): Promise<Board> {
+  ): Promise<ResponseCreateBoardDto> {
     return await this.boardService.createBoard(createBoardDto, files, user);
   }
 
