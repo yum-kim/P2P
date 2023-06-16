@@ -100,7 +100,8 @@ export class BoardsService {
       user,
     );
 
-    await this.boardImageService.createBoardImage(files, boardData.id);
+    if (files)
+      await this.boardImageService.createBoardImage(files, boardData.id);
     return boardData;
   }
 
