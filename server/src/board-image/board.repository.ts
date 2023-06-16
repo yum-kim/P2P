@@ -7,13 +7,13 @@ export class BoardImageRepository extends Repository<BoardImage> {
   async createBoardImage(
     file: Express.Multer.File,
     boardId: number,
-  ): Promise<void> {
+  ): Promise<BoardImage> {
     const { path } = file;
 
     const boardImage = this.create({
       imagePath: path,
       boardId,
     });
-    await this.save(boardImage);
+    return await this.save(boardImage);
   }
 }
