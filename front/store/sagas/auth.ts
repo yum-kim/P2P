@@ -25,8 +25,6 @@ function* signup(action) {
 }
 
 function* watchLogin() {
-  console.log(logInRequest.type)
-
   yield takeLatest(logInRequest.type, login);
 }
 
