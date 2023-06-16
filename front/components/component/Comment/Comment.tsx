@@ -3,7 +3,7 @@ import styles from './Comment.module.scss';
 import Input from '../../element/Input/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsSend, BsFillPersonFill, BsPencil, BsTrash3 } from "react-icons/bs";
-import { IPost, IComment } from '../PostCard/PostCard';
+import { IPost, IPostComment } from '../PostCard/PostCard';
 import { RootState } from '../../../store/configureStore';
 import { addCommentRequest, updateCommentRequest, deleteCommentRequest } from '../../../store/slices/post';
 
@@ -83,7 +83,7 @@ const Comment = ({ post } : { post: IPost }) => {
                 </button>
             </form>
             <ul>
-                {post.comment.map((comment: IComment) => (
+                {post.comment.map((comment: IPostComment) => (
                     <li key={comment.id} className={styles.list}>
                         <div className={styles.img}>
                             {comment.user.profileImagePath ? <img src={comment.user.profileImagePath} alt="profile" /> : <BsFillPersonFill />}

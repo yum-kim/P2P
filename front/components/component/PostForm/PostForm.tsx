@@ -25,11 +25,12 @@ const PostForm = () => {
     const router = useRouter();
 
     const onClickUploadPost = () => {
-        let formData: FormData;
+        if (!text && !file) return;
+        
+        let formData = new FormData();
+        formData.append('description', text);
         
         if (file) {
-            formData = new FormData();
-            formData.append('description', text);
             formData.append('files', file);
             // let entries = formData.entries();
             // for (const pair of entries) {

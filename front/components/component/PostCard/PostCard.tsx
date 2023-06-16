@@ -11,17 +11,13 @@ import Button from '../../element/Button/Button';
 import { changePostStatusRequest, updatePostRequest, deletePostRequest, updatePostHeartRequest } from '../../../store/slices/post';
 import { RootState } from '../../../store/configureStore';
 
-interface IPostProps {
-    post: IPost
-}
-
 export interface IPost {
     id: number,
     user: IUser,
     description: string,
-    boardImage: [],
+    boardImage: IPostImage[],
     hit: number,
-    comment: IComment[],
+    comment: IPostComment[],
     status: "PUBLIC" | "PRIVATE",
     createAt: string,
     deleteAt: string,
@@ -39,7 +35,14 @@ export interface IUser {
     accessToken?:string
 }
 
-export interface IComment {
+export interface IPostImage {
+    id: number,
+    imagePath: string,
+    createAt: string,
+    deleteAt: string | null,
+    boardId: number
+}
+export interface IPostComment {
     id: number,
     boardId: number,
     comment: string,
@@ -48,7 +51,7 @@ export interface IComment {
     user: IUser 
 }
 
-const PostCard = ({ post }: IPostProps) => {
+const PostCard = ({ post }: { post: IPost }) => {
     const [showComments, setShowComments] = useState(false);
     const [heart, setHeart] = useState(post.heart);
     const [status, setStatus] = useState(post.status);
@@ -139,7 +142,7 @@ const PostCard = ({ post }: IPostProps) => {
             <div className={styles.top}>
                 <div className={styles.profile}>
                     <div className={styles.img}>
-                        {post.user.profileImagePath ? <img src={post.user.profileImagePath} alt="프로필" /> : <BsFillPersonFill />}
+                        {post.user.profileImagePath ? <img src={`${post.user.profileImagePath}`} alt="프로필" /> : <BsFillPersonFill />}
                     </div>
                     <div className={styles.postInfo}>
                         <p className={styles.name}>{post.user.username}</p>
@@ -171,8 +174,10 @@ const PostCard = ({ post }: IPostProps) => {
                 </div>
             </div>
             <div className={styles.content}>
-                {post.imagePath && <img src={post.imagePath} alt="attached image" />}
-
+                {post.boardImage?.map((img) => (
+                    <img src={img.imagePath} alt="attached image" />
+                ))
+                }
                 {showPostInput ? 
                     <div className={styles.updateBox}>
                         <Input type="textarea" value={description} height='100' onChange={onChangeText} ref={updateDescRef} />
