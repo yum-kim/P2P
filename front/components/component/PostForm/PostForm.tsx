@@ -11,6 +11,7 @@ import { addPostRequest } from '../../../store/slices/post';
 const PostForm = () => {
     const { user } = useSelector((state: RootState) => state.auth);
     const [text, setText] = useState('');
+    const [file, setFile] = useState<File | null>(null);
     const onChangeText = useCallback((e:React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);
     }, []);
@@ -25,9 +26,28 @@ const PostForm = () => {
 
     //TODO: 이미지 업로드 기능 추가 시 imagePaths 값 추가 송신
     const onClickUploadPost = () => {
-        dispatch(addPostRequest({ description: text, user }));
-        setText('');
+        let formData: FormData;
+        
+        if (file) {
+            formData = new FormData();
+            formData.append('files', file);
+            console.log(formData);
+            let entries = formData.entries();
+            for (const pair of entries) {
+                console.log(pair[0]); 
+                console.log(pair[1]);
+            }
+        }
+
+        dispatch(addPostRequest({ description: text, user, files: [ formData ] }));
+        // setText('');
+        // setFile(null);
     };
+
+    const onChangeImageFile = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        setFile(file);
+    }    
 
     if (!user) {
         router.push('/login');
@@ -42,7 +62,7 @@ const PostForm = () => {
             <div className={styles.content}>
                 <Input type='textarea' value={text} placeholder='오늘은 어떤 일이 있었나요?' height='100' onChange={onChangeText} />
                 <div className={styles.btnWrapper}>
-                    <input type="file" ref={imageInput} multiple hidden />
+                    <input type="file" ref={imageInput} onChange={onChangeImageFile} multiple hidden />
                     <Button varient='outlined' onClick={onClickImageUpload}>
                         <BsFileImage />이미지 선택
                     </Button>

@@ -18,7 +18,7 @@ class Boards {
         let option = {
             "method": "POST",
             "url": `/boards`,
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             "data": data
         }
         return await request(option);
