@@ -9,6 +9,7 @@ import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import Input from '../../element/Input/Input';
 import Button from '../../element/Button/Button';
 import { changePostStatusRequest, updatePostRequest, deletePostRequest, updatePostHeartRequest } from '../../../store/slices/post';
+import { RootState } from '../../../store/configureStore';
 
 interface IPostProps {
     post: IPost
@@ -18,7 +19,7 @@ export interface IPost {
     id: number,
     user: IUser,
     description: string,
-    imagePath: string,
+    boardImage: [],
     hit: number,
     comment: IComment[],
     status: "PUBLIC" | "PRIVATE",
@@ -107,7 +108,7 @@ const PostCard = ({ post }: IPostProps) => {
         }
     }, [isShowOtherMenu]);
 
-    const handleOutsideClick = useCallback((e: React.MouseEvent) => {
+    const handleOutsideClick = useCallback((e) => {
         if (otherMenuRef.current && !otherMenuRef.current.contains(e.target)) {
             setIsShowOtherMenu(false);
         }

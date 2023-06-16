@@ -24,24 +24,23 @@ const PostForm = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
-    //TODO: 이미지 업로드 기능 추가 시 imagePaths 값 추가 송신
     const onClickUploadPost = () => {
         let formData: FormData;
         
         if (file) {
             formData = new FormData();
+            formData.append('description', text);
             formData.append('files', file);
-            console.log(formData);
-            let entries = formData.entries();
-            for (const pair of entries) {
-                console.log(pair[0]); 
-                console.log(pair[1]);
-            }
+            // let entries = formData.entries();
+            // for (const pair of entries) {
+            //     console.log(pair[0]);
+            //     console.log(pair[1]);
+            // }
         }
 
-        dispatch(addPostRequest({ description: text, user, files: [ formData ] }));
-        // setText('');
-        // setFile(null);
+        dispatch(addPostRequest({ formData, user }));
+        setText('');
+        setFile(null);
     };
 
     const onChangeImageFile = (e:React.ChangeEvent<HTMLInputElement>) => {

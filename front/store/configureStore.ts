@@ -11,7 +11,7 @@ export const store = configureStore({
         auth: authReducer,
         post: postReducer,
     },
-    middleware: [...getDefaultMiddleware({ thunk: false }), sagaMiddleware],
+    middleware: [...getDefaultMiddleware({ thunk: false, serializableCheck: false }), sagaMiddleware],
 });
 
 sagaMiddleware.run(rootSaga);
