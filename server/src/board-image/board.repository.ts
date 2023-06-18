@@ -4,14 +4,12 @@ import { BoardImage } from './board-image.entity';
 
 @CustomRepository(BoardImage)
 export class BoardImageRepository extends Repository<BoardImage> {
-  async createBoardImage(
-    file: Express.Multer.File,
-    boardId: number,
-  ): Promise<BoardImage> {
-    const { path } = file;
+  async createBoardImage(file: any, boardId: number): Promise<BoardImage> {
+    const { location, key } = file;
 
     const boardImage = this.create({
-      imagePath: path,
+      imagePath: location,
+      imageName: key,
       boardId,
     });
     return await this.save(boardImage);
