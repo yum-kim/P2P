@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BoardsModule } from './boards/boards.module';
-import { typeORMConfig } from './config/typeorm.config';
+import { getTypeORMConfig } from './config/typeorm.config';
 import { AuthModule } from './auth/auth.module';
 import { CommentModule } from './comment/comment.module';
 import { BoardImageModule } from './board-image/board-image.module';
@@ -16,7 +16,7 @@ import { LoggerMiddleware } from './middlewares/logger';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    TypeOrmModule.forRoot(typeORMConfig),
+    TypeOrmModule.forRoot(getTypeORMConfig()),
     BoardsModule,
     CommentModule,
     AuthModule,
