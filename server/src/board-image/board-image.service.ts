@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { BoardImageRepository } from './board.repository';
 import { BoardImage } from './board-image.entity';
-import * as AWS from 'aws-sdk';
 
 @Injectable()
 export class BoardImageService {
