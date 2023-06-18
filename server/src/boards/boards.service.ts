@@ -103,7 +103,7 @@ export class BoardsService {
         user,
       )) as ResponseCreateBoardDto;
 
-    if (files && files.length > 1) {
+    if (files && files.length > 0) {
       responseData.boardImage = await this.boardImageService.createBoardImage(
         files,
         responseData.id,

@@ -21,6 +21,10 @@ export class BoardImage extends BaseEntity {
   @ApiProperty({ description: '경로' })
   imagePath: string;
 
+  @Column()
+  @ApiProperty({ description: '이미지 이름' })
+  imageName: string;
+
   @CreateDateColumn({ name: 'created_at' })
   @ApiProperty({ description: '생성일자' })
   createAt: Date;
