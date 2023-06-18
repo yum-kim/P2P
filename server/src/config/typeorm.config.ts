@@ -7,9 +7,9 @@ const dbConfig = config.get('db');
 
 export const typeORMConfig: TypeOrmModuleOptions = {
   type: dbConfig.type,
-  host: dbConfig.host, // [AWS RDB 용]process.env.RDS_HOSTNAME
-  port: dbConfig.port, // [AWS RDB 용]process.env.RDS_PORT
-  username: dbConfig.username, // [AWS RDB 용]process.env.RDS_USERNAME
+  host: process.env.RDS_HOSTNAME, // [AWS RDB 용]process.env.RDS_HOSTNAME
+  port: process.env.RDS_PORT as number, // [AWS RDB 용]process.env.RDS_PORT
+  username: process.env.RDS_USERNAME, // [AWS RDB 용]process.env.RDS_USERNAME
   password: dbConfig.password, // [AWS RDB 용]process.env.RDS_PASSWORD
   database: dbConfig.database, // [AWS RDB 용]process.env.RDS_DB_NAME
   entities: [__dirname + '/../**/*.entity.{js,ts}', Board],
