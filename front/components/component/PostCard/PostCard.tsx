@@ -189,7 +189,7 @@ const PostCard = ({ post }: { post: IPost }) => {
                 {showPostInput ? 
                     <div className={styles.updateBox}>
                         <Input type="textarea" value={description} height='100' onChange={onChangeText} ref={updateDescRef} />
-                        <Button varient="primary-blue" onClick={updatePost}>수정</Button>
+                        <Button variant="primary-blue" onClick={updatePost}>수정</Button>
                     </div>
                     : <p className={styles.content}>{post.description}</p>
                 }

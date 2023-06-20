@@ -7,7 +7,7 @@ const Search = ({ ...rest }) => {
     return (
         <div className={styles.search}>
             <BsSearch />
-            <Input {...rest} />
+            <Input type="text" {...rest} />
         </div>
     );
 };

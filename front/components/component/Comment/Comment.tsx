@@ -77,7 +77,7 @@ const Comment = ({ post } : { post: IPost }) => {
         <div className={styles.comments}>
             <p className={styles.length}>{post.comment.length}개의 댓글이 있습니다.</p>
             <form className={styles.form} onSubmit={onSubmitComment}>
-                <Input type="text" placeholder="댓글을 입력하세요." varient="background" ref={inputRef} value={comment} onChange={onChangeForm} />
+                <Input type="text" placeholder="댓글을 입력하세요." variant="background" ref={inputRef} value={comment} onChange={onChangeForm} />
                 <button type="submit">
                     <BsSend />
                 </button>
@@ -112,7 +112,7 @@ const Comment = ({ post } : { post: IPost }) => {
                                 ) : (
                                     <>
                                         <form className={styles.form} onSubmit={onSubmitUpdateComment} style={{ padding: `0.3rem 0` }}>
-                                            <Input type="text" varient="primary" ref={updateInputRef} value={updateComment.comment} onChange={onChangeUpdateForm} />
+                                            <Input type="text" variant="primary" ref={updateInputRef} value={updateComment.comment} onChange={onChangeUpdateForm} />
                                             <button type="submit">
                                                 <BsSend />
                                             </button>

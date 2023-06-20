@@ -10,6 +10,7 @@ import useModal from '../../hooks/useModal';
 import styles from './feed.module.scss';
 import { getPostsRequest } from '../../store/slices/post';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
+import { useRouter } from 'next/dist/client/router';
 
 const Feed = () => {
     const {
@@ -25,6 +26,7 @@ const Feed = () => {
         changePostStatusLoading, changePostStatusDone, changePostStatusError,
         modalMessage,
     } = useSelector((state: RootState) => state.post);
+    const { user } = useSelector((state: RootState) => state.auth);
     const [currentPage, setCurrentPage] = useState(1);
     const [isLastPage, setIsLastPage] = useState(false);
     const dispatch = useDispatch();
@@ -33,6 +35,7 @@ const Feed = () => {
     const { isIntersecting } = useInfiniteScroll(intersectingRef, {
         threshold: 0.3
     });
+    const router = useRouter();
 
     const completeMsgMap = {
         addPostDone,
@@ -77,16 +80,17 @@ const Feed = () => {
     }
 
     useEffect(() => {
-        getPosts();
-    }, []);
-
-    useEffect(() => {
         if (getPostsDone && fetchedPosts.length === 0) setIsLastPage(true);
     }, [getPostsDone])
 
     useEffect(() => {
         if (!getPostsLoading && isIntersecting && !isLastPage) getPosts();
     }, [isIntersecting, isLastPage]);
+
+    useEffect(() => {
+        if (!user) router.push('/login');
+        getPosts();
+    }, [user]);
 
     return (
         <>

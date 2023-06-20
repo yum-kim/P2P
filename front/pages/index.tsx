@@ -4,8 +4,8 @@ import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import Login from './login';
 import Feed from './feed';
-import { RootState } from '../store/reducers';
 import { useRouter } from 'next/dist/client/router';
+import { RootState } from '../store/configureStore';
 
 const Home = () => {
     const { user } = useSelector((state: RootState) => state.auth);

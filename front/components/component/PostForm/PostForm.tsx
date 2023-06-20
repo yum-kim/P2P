@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './PostForm.module.scss';
 import Button from '../../element/Button/Button';
@@ -54,21 +54,16 @@ const PostForm = () => {
         }
     }    
 
-    if (!user) {
-        router.push('/login');
-        return null;
-    }
-
     return (
         <div className={styles.postForm}>
             <div className={styles.img}>
-                {user.profileImagePath ? <img src={user.profileImagePath} alt="" /> : <BsFillPersonFill />}
+                {user && user.profileImagePath ? <img src={user.profileImagePath} alt="" /> : <BsFillPersonFill />}
             </div>
             <div className={styles.content}>
                 <Input type='textarea' value={text} placeholder='오늘은 어떤 일이 있었나요?' height='100' onChange={onChangeText} />
                 <div className={styles.btnWrapper}>
                     <input type="file" ref={imageInput} onChange={onChangeImageFile} multiple hidden />
-                    <Button varient='outlined' onClick={onClickImageUpload}>
+                    <Button variant='outlined' onClick={onClickImageUpload}>
                         <BsFileImage />이미지 선택
                     </Button>
                     <Button onClick={onClickUploadPost}>

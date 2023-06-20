@@ -86,10 +86,10 @@ const Login = () => {
                         </div>
                         <Button type='submit' size='40'>Login</Button>
                     </form>
-                    <Button size='36' varient='outlined'>Sign in with Google</Button>
+                    <Button size='36' variant='outlined'>Sign in with Google</Button>
                     <div className={styles.divider}></div>
                     <Link href='/signup'>
-                        <a><Button size='36' varient='secondary'>Sign up</Button></a>
+                        <a><Button size='36' variant='secondary'>Sign up</Button></a>
                     </Link>
                 </div>
             </div>

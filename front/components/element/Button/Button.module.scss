@@ -15,7 +15,7 @@
 .btn {
     
     //style
-    &[varient='primary'] {
+    &.variant-primary {
       @extend %btn-base;
       color: $white;
       background-color: $black;
@@ -28,7 +28,7 @@
       }
     }
 
-    &[varient='primary-blue'] {
+    &.variant-primary-blue {
         @extend %btn-base;
         color: $white;
         background-color: $blue;
@@ -40,7 +40,7 @@
         }
     }
 
-    &[varient='outlined'] {
+    &.variant-outlined {
         @extend %btn-base;
         color: $blue;
         background-color: $white;
@@ -52,7 +52,7 @@
         }
     }
 
-    &[varient='secondary'] {
+    &.variant-secondary {
         @extend %btn-base;
         color: $white;
         background-color: $purple;
@@ -64,7 +64,7 @@
         }
     }
 
-    &[varient='ghost'] {
+    &.variant-ghost {
         @extend %btn-base;
         color: $primary;
         background-color: transparent;
@@ -77,27 +77,27 @@
     }
 
     //sizes
-    &[size='32'] {
+    &.size-32 {
         @include text-style(14);
         height: 32px;
     }
 
-    &[size='36'] {
+    &.size-36 {
         @include text-style(16);
         height: 36px;
     }
 
-    &[size='40'] {
+    &.size-40 {
         @include text-style(16);
         height: 40px;
     }
 
-    &[size='48'] {
+    &.size-48 {
         @include text-style(16);
         height: 48px;
     }
 
-    &[size='55'] {
+    &.size-55 {
         @include text-style(18);
         height: 55px;
     }

@@ -107,7 +107,7 @@ const Signup = () => {
                         <Input type='password' placeholder='Confirm Password' value={confirmPassword} onChange={onChangeConfirmPassword} />
                         {confirmPasswordError && <p className={styles.error}>비밀번호가 일치하지 않습니다.</p>}
                         
-                        <Button varient='secondary' size='40' onClick={onClickSignup}>회원가입</Button>
+                        <Button variant='secondary' size='40' onClick={onClickSignup}>회원가입</Button>
                     </div>
                     <div className={styles.login}>
                         <p>이미 가입된 계정이 있으신가요?</p>

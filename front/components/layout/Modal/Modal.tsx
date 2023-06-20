@@ -26,7 +26,7 @@ const Modal:React.FC<IModalProps> = ({ title, children, onCloseModal }) => {
                     {children}
                 </div>
                 <div className={styles.buttons}>
-                    <Button varient="primary-blue" onClick={onCloseModal}>확인</Button>
+                    <Button variant="primary-blue" onClick={onCloseModal}>확인</Button>
                 </div>
             </div>
         </div>
