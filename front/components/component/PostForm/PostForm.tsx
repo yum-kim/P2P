@@ -11,7 +11,7 @@ import { addPostRequest } from '../../../store/slices/post';
 const PostForm = () => {
     const { user } = useSelector((state: RootState) => state.auth);
     const [text, setText] = useState('');
-    const [file, setFile] = useState<File | null>(null);
+    const [files, setFiles] = useState<File[] | null>(null);
     const onChangeText = useCallback((e:React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);
     }, []);
@@ -25,13 +25,15 @@ const PostForm = () => {
     const router = useRouter();
 
     const onClickUploadPost = () => {
-        if (!text && !file) return;
+        if (!text && !files) return;
         
         let formData = new FormData();
         formData.append('description', text);
         
-        if (file) {
-            formData.append('files', file);
+        if (files) {
+            for (let file of files) {
+                formData.append('files', file);
+            }
             // let entries = formData.entries();
             // for (const pair of entries) {
             //     console.log(pair[0]);
@@ -41,12 +43,15 @@ const PostForm = () => {
 
         dispatch(addPostRequest({ formData, user }));
         setText('');
-        setFile(null);
+        setFiles(null);
     };
 
-    const onChangeImageFile = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        setFile(file);
+    const onChangeImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files) {
+            const fileList = Array.from(files);
+            setFiles(fileList);
+        }
     }    
 
     if (!user) {

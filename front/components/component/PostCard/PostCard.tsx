@@ -40,7 +40,8 @@ export interface IPostImage {
     imagePath: string,
     createAt: string,
     deleteAt: string | null,
-    boardId: number
+    boardId: number,
+    imageName: string
 }
 export interface IPostComment {
     id: number,
@@ -120,7 +121,7 @@ const PostCard = ({ post }: { post: IPost }) => {
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDescription(e.target.value);
     }, []);
-        
+
     useEffect(() => {
         if (post.comment.length > 0) {
             setShowComments(true);   
@@ -174,10 +175,17 @@ const PostCard = ({ post }: { post: IPost }) => {
                 </div>
             </div>
             <div className={styles.content}>
-                {post.boardImage?.map((img) => (
-                    <img src={img.imagePath} alt="attached image" />
-                ))
-                }
+                <div className={styles.imgBox}>
+                    {post.boardImage?.map((img) => {
+                        return (
+                            <img
+                                src={img.imagePath}
+                                alt={img.imageName}
+                                className={`${styles['img' + post.boardImage.length]}`}
+                            />
+                        )
+                    })}
+                </div>
                 {showPostInput ? 
                     <div className={styles.updateBox}>
                         <Input type="textarea" value={description} height='100' onChange={onChangeText} ref={updateDescRef} />

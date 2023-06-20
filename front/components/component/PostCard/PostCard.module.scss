@@ -112,10 +112,65 @@
     .content {
         margin-bottom: 2rem;
 
-        img {
-            max-width: 100%;
+        .imgBox {
+            @include flexbox(start, start);
+            width: 100%;
+            overflow: hidden;
+            flex-wrap: wrap;
+            overflow: hidden;
+            flex: 1;
+            
+            img {
+                display: block;
+                max-width: 100%;
+                max-height: 500px;
+                object-fit: cover;
+
+                &.img1{
+                    max-width: 100%;
+                }
+    
+                &.img2{
+                    @include responsive("D") {
+                        max-width: 50%;
+                    }
+
+                    max-width: 100%;
+                }
+
+                &.img3{
+                    @include responsive("D") {
+                        max-width: calc(100% / 2);
+                        max-height: 300px;
+                        
+                        &:nth-child(1) {
+                            flex-basis: 100%;
+                            max-height: 500px;
+                        }
+                    }
+
+                    max-width: 100%;
+                }
+
+                &.img4{
+                    @include responsive("D") {
+                        width: calc(100% / 3);
+                        max-height: 300px;
+
+                        &:nth-child(1) {
+                            flex-basis: 100%;
+                            max-height: 500px;
+                        }
+                    }
+
+                    width: 100%;
+                }
+
+            }
+
             margin-bottom: 1rem;
         }
+
 
         .updateBox {
             @include column-flexbox(end, end);
