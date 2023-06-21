@@ -7,7 +7,6 @@
     "build": "next build",
     "export": "next build && next export"
   },
-
   "author": "yumiKim",
   "license": "ISC",
   "description": "",
@@ -18,9 +17,7 @@
     "@types/react": "^18.2.8",
     "@types/react-dom": "^18.2.4",
     "@types/react-router-dom": "^5.3.3",
-    "antd": "^4.23.2",
     "axios": "^1.2.1",
-    "immer": "^9.0.19",
     "next": "^9.5.5",
     "next-redux-wrapper": "^8.0.0",
     "prettier": "^2.8.8",
