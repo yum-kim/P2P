@@ -24,6 +24,8 @@ jobs:
      
       - name: Next.js Build and Export
         run: npm run export
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
         working-directory: front
 
       - name: Configure AWS credentials
