@@ -12,9 +12,6 @@ jobs:
     steps:
       - name: Git Checkout
         uses: actions/checkout@v2
-        
-      - name: Change to Front Directory
-        run: cd front
 
       - name: Use Node.js version 16.x
         uses: actions/setup-node@v1
@@ -23,9 +20,11 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
+        working-directory: front
      
       - name: Build
         run: npm run build
+        working-directory: front
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
