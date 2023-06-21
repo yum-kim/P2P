@@ -98,7 +98,7 @@ const Comment = ({ post } : { post: IPost }) => {
                                             <span className={styles.date}>{comment.updatedAt} {comment.createAt !== comment.updatedAt && (<span>(수정됨)</span>)}</span>
                                         </span>
 
-                                        {comment.user.id === user.id && (
+                                        {user && comment.user.id === user.id && (
                                             <span className={styles.myCommentBtns}>
                                                 <button onClick={() => onActiveUpdateCommentInput(comment.id, comment.comment)}>
                                                     <BsPencil />
