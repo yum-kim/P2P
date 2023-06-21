@@ -5,7 +5,7 @@ import { BoardImage } from './board-image.entity';
 @CustomRepository(BoardImage)
 export class BoardImageRepository extends Repository<BoardImage> {
   async createBoardImage(file: any, boardId: number): Promise<BoardImage> {
-    const { location, key } = file;
+    const { location, key } = file.transforms[0];
 
     const boardImage = this.create({
       imagePath: location,
