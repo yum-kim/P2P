@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { BoardImageRepository } from './board.repository';
+import { BoardImageRepository } from './board-image.repository';
 import { BoardImage } from './board-image.entity';
 
 @Injectable()
