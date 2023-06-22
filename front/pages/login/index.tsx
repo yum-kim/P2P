@@ -89,7 +89,7 @@ const Login = () => {
                     <Button size='36' variant='outlined'>Sign in with Google</Button>
                     <div className={styles.divider}></div>
                     <Link href='/signup'>
-                        <a><Button size='36' variant='secondary'>Sign up</Button></a>
+                        <Button size='36' variant='secondary'>Sign up</Button>
                     </Link>
                 </div>
             </div>

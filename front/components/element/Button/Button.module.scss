@@ -13,7 +13,6 @@
 }
 
 .btn {
-    
     //style
     &.variant-primary {
       @extend %btn-base;
@@ -100,6 +99,13 @@
     &.size-55 {
         @include text-style(18);
         height: 55px;
+    }
+
+    &:disabled {
+        cursor: initial;
+        border: none;
+        background-color: $border;
+        color: $tertiary
     }
 }
 
