@@ -143,6 +143,7 @@ export class BoardsService {
       for (const image of boardImages) {
         await delete_image(image.imageName);
       }
+      await this.boardRepository.delete(result.id);
     } else {
       throw new NotFoundException(`삭제할 게시글을 찾을 수 없습니다`);
     }
