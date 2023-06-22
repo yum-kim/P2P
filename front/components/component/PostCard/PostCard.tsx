@@ -10,6 +10,7 @@ import Input from '../../element/Input/Input';
 import Button from '../../element/Button/Button';
 import { changePostStatusRequest, updatePostRequest, deletePostRequest, updatePostHeartRequest } from '../../../store/slices/post';
 import PostImage from '../PostImage/PostImage';
+import { RootState } from '../../../store/configureStore';
 
 export interface IPost {
     id: number,
@@ -62,6 +63,7 @@ const PostCard = ({ post }: { post: IPost }) => {
     const [description, setDescription] = useState(post.description);
     const [showPostInput, setShowPostInput] = useState(false);
     const updateDescRef = useRef<HTMLTextAreaElement>(null);
+    const { user } = useSelector((state: RootState) => state.auth);
     
     const onToggleComments = useCallback(() => {
         setShowComments((prev) => !prev);
@@ -139,7 +141,7 @@ const PostCard = ({ post }: { post: IPost }) => {
             document.removeEventListener('click', handleOutsideClick);
         }
     }, [isShowOtherMenu]);
-     
+
     return (
         <article className={styles.card}>
             <div className={styles.top}>
@@ -149,18 +151,20 @@ const PostCard = ({ post }: { post: IPost }) => {
                     </div>
                     <div className={styles.postInfo}>
                         <p className={styles.name}>{post.user.username}</p>
-                        <div>
+                        <div className={styles.dateBox}>
                             <span className={styles.date}>{post.createAt}</span>
-                            <button className={styles.status} onClick={onChangePostStatus}>
+                            <span className={styles.status}>
                                 {post.status === 'PUBLIC' ? <MdPublic title="전체공개" /> : <BsLockFill title="나만보기" />}
-                            </button>
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div className={styles.otherBtn}>
-                    <button className={styles.dotsBtn} onClick={onShowOtherMenu}>
-                        <BsThreeDots />
-                    </button>
+                    {user && user.id === post.user.id && (
+                        <button className={styles.dotsBtn} onClick={onShowOtherMenu}>
+                            <BsThreeDots />
+                        </button>
+                    )}
                     {isShowOtherMenu && 
                         <ul ref={otherMenuRef}>
                             <li>
