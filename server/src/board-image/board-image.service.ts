@@ -5,6 +5,11 @@ import { BoardImage } from './board-image.entity';
 @Injectable()
 export class BoardImageService {
   constructor(private boardImageRepository: BoardImageRepository) {}
+  async getBoardImages(boardId: number): Promise<BoardImage[]> {
+    return await this.boardImageRepository.find({
+      where: { boardId },
+    });
+  }
   async createBoardImage(
     files: Express.Multer.File[],
     boardId: number,
