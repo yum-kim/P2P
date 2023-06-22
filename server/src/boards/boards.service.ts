@@ -9,6 +9,8 @@ import { HeartService } from 'src/heart/heart.service';
 import { BoardImageService } from 'src/board-image/board-image.service';
 import { ResponseCreateBoardDto } from './dto/response-create-board.dtoy';
 import { ResponseBoardDto } from './dto/response-board.dto';
+import { BoardImage } from 'src/board-image/board-image.entity';
+import { delete_image } from 'src/aws/s3.service';
 
 @Injectable()
 export class BoardsService {
@@ -128,13 +130,21 @@ export class BoardsService {
 
   async deleteBoard(id: number, user: User): Promise<void> {
     const query = this.boardRepository.createQueryBuilder('board');
-    const result: any = await query
-      .delete()
-      .where('board.id = :id', { id })
-      .andWhere('userId = :userId', { userId: user.id })
-      .execute();
 
-    if (result.affected === 0)
+    const result: Board = await query
+      .select()
+      .where('board.id = :id', { id })
+      .andWhere('board.userId = :userId', { userId: user.id })
+      .getOne();
+
+    if (result) {
+      const boardImages: BoardImage[] =
+        await this.boardImageService.getBoardImages(result.id);
+      for (const image of boardImages) {
+        await delete_image(image.imageName);
+      }
+    } else {
       throw new NotFoundException(`삭제할 게시글을 찾을 수 없습니다`);
+    }
   }
 }
