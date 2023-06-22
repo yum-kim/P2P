@@ -37,11 +37,15 @@ const PostImage = ({ boardImage }: IPostImageProps) => {
         }))
     );
     
-    const containerWidth = 900; //가로 길이 제한
-    const containerHeight = 700; //세로 길이 제한
-
-    //가로/세로 제한 하나라도 넘으면 작은쪽 길이로 제한하고 비율맞춰 리사이징(width, heigth 값 명시 목적)
+    /**
+     * nextjs Image Component: width, heigth 값 명시 목적으로 리사이징 함수
+     * - 가로/세로 제한 하나라도 넘으면 작은쪽 길이로 제한하고 비율맞춰 리사이징
+     * @param index 
+     * @param size {width, height}
+     */
     const handleImageLoad = (index, size) => {
+        const containerWidth = 900; //가로 길이 제한
+        const containerHeight = 500; //세로 길이 제한
         let adjustedWidth = size.width;
         let adjustedHeight = size.height;
 
@@ -74,21 +78,31 @@ const PostImage = ({ boardImage }: IPostImageProps) => {
     return (
         <>
             <div className={`${styles.imgWrapper}`}>   
-            {images.map((image, index) => (
+                {boardImage.map((img,idx) => (
+                    <img
+                        key={`${img.imageName}${idx}`}
+                        src={img.imagePath}
+                        alt={img.imageName}
+                        className={`${styles['img' + boardImage.length]}`}   
+                    />
+            ))}
+
+            {/* {images.map((image, index) => (
                 <>
                     {image.width && image.height && (
                         <Image
-                            key={index}
+                            key={`${image.imageName}${index}`}
                             src={image.url}
                             alt={image.imageName}
+                            layout="responsive"
                             width={image.width}
                             height={image.height}
                             className={`${styles['img' + boardImage.length]}`}   
                         />
                     )}
-                    <ImageLoader src={image.url} onLoad={(size) => handleImageLoad(index, size)} />
+                    <ImageLoader key={index} src={image.url} onLoad={(size) => handleImageLoad(index, size)} />
                 </>
-            ))}
+            ))} */}
             </div>
         </>              
     );

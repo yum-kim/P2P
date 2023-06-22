@@ -50,14 +50,20 @@
                     font-weight: 500;
                 }
         
-                .date {
-                    @include text-style(14, $secondary);
-                    line-height: 1;
-                }
-        
-                .status {
-                    margin-left: 5px;
-                    color: $secondary;   
+                .dateBox {
+                    @include flexbox();
+                    
+                    .date {
+                        @include text-style(14, $secondary);
+                        line-height: 1;
+                    }
+            
+                    .status {
+                        width: 16px;
+                        height: 16px;
+                        margin-left: 5px;
+                        color: $secondary;
+                    }
                 }
             }
         }
