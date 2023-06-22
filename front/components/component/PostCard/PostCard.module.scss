@@ -87,6 +87,7 @@
                 top: 30px;
                 border: 1px solid $border;
                 border-radius: 4px;
+                background-color: $white;
                 box-shadow: 3px 3px 4px -1px rgba(176, 176, 176, 0.5);
 
                 li {
@@ -119,58 +120,8 @@
             flex-wrap: wrap;
             overflow: hidden;
             flex: 1;
-            
-            img {
-                display: block;
-                max-width: 100%;
-                max-height: 500px;
-                object-fit: cover;
-
-                &.img1{
-                    max-width: 100%;
-                }
-    
-                &.img2{
-                    @include responsive("D") {
-                        max-width: 50%;
-                    }
-
-                    max-width: 100%;
-                }
-
-                &.img3{
-                    @include responsive("D") {
-                        max-width: calc(100% / 2);
-                        max-height: 300px;
-                        
-                        &:nth-child(1) {
-                            flex-basis: 100%;
-                            max-height: 500px;
-                        }
-                    }
-
-                    max-width: 100%;
-                }
-
-                &.img4{
-                    @include responsive("D") {
-                        width: calc(100% / 3);
-                        max-height: 300px;
-
-                        &:nth-child(1) {
-                            flex-basis: 100%;
-                            max-height: 500px;
-                        }
-                    }
-
-                    width: 100%;
-                }
-
-            }
-
             margin-bottom: 1rem;
         }
-
 
         .updateBox {
             @include column-flexbox(end, end);

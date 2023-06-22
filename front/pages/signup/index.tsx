@@ -112,9 +112,7 @@ const Signup = () => {
                     <div className={styles.login}>
                         <p>이미 가입된 계정이 있으신가요?</p>
                         <Link href='/login'>
-                            <a>
-                                <Button size='36'>Login</Button>
-                            </a>
+                            <Button size='36'>Login</Button>
                         </Link>
                     </div>
                 </div>
