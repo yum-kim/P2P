@@ -6,6 +6,8 @@ module.exports = {
     includePaths: [path.join(__dirname, 'styles')],
   },
   images: {
+    loader: 'akamai',
+    path: '/',
     domains: [`${process.env.NEXT_PUBLIC_IMG_URL}`]
   }
 }
