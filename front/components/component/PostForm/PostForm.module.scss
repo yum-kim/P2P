@@ -8,7 +8,7 @@
     padding-bottom: 2rem;
     border-bottom: 1px solid $border;
     
-    .img {
+    .profile {
         width: 30px;
         height: 30px;
         border: 1px solid $border;
@@ -35,9 +35,48 @@
     .content {
         flex: 1;
 
+        .others {
+            @include flexbox(between, center);
+            margin-top: 1rem;
+        }
+
+        .uploadedImg {
+            .alert {
+                color: $red;
+                margin-bottom: 10px;
+            }
+
+            ul {
+                @include flexbox(start, start);
+                flex-wrap: wrap;
+
+                li {
+                    @include flexbox();
+
+                    border: 1px solid $border;
+                    background-color: $white;
+                    padding: 0.5rem 1rem;
+                    border-radius: 1rem;
+                    margin-right: 10px;
+                    margin-bottom: 5px;
+
+                    button {
+                        width: 16px;
+                        height: 16px;
+                        margin-left: 10px;
+                        
+                        svg {
+                            font-size: 1.1rem;
+                            color: $primary;
+                        }
+                    }
+                }
+            }
+        }
+
         .btnWrapper {
             @include flexbox(end);
-            margin-top: 1rem;
+            flex-shrink: 0;
     
             *:not(:last-of-type) {
                 margin-right: 10px;

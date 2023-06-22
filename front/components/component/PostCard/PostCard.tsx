@@ -9,7 +9,7 @@ import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import Input from '../../element/Input/Input';
 import Button from '../../element/Button/Button';
 import { changePostStatusRequest, updatePostRequest, deletePostRequest, updatePostHeartRequest } from '../../../store/slices/post';
-import { RootState } from '../../../store/configureStore';
+import PostImage from '../PostImage/PostImage';
 
 export interface IPost {
     id: number,
@@ -104,12 +104,14 @@ const PostCard = ({ post }: { post: IPost }) => {
         dispatch(updatePostHeartRequest({ boardId: post.id, heart: !heart }));
     }, [heart]);
 
-    const onShowOtherMenu = useCallback(() => {
+    const onShowOtherMenu = useCallback((e) => {
         if (isShowOtherMenu) {
             setIsShowOtherMenu(false);
         } else {
             setIsShowOtherMenu(true);
         }
+
+        e.stopPropagation();
     }, [isShowOtherMenu]);
 
     const handleOutsideClick = useCallback((e) => {
@@ -175,17 +177,11 @@ const PostCard = ({ post }: { post: IPost }) => {
                 </div>
             </div>
             <div className={styles.content}>
+                {post.boardImage.length > 0 &&
                 <div className={styles.imgBox}>
-                    {post.boardImage?.map((img) => {
-                        return (
-                            <img
-                                src={img.imagePath}
-                                alt={img.imageName}
-                                className={`${styles['img' + post.boardImage.length]}`}
-                            />
-                        )
-                    })}
+                     <PostImage boardImage={post.boardImage} />
                 </div>
+                }
                 {showPostInput ? 
                     <div className={styles.updateBox}>
                         <Input type="textarea" value={description} height='100' onChange={onChangeText} ref={updateDescRef} />

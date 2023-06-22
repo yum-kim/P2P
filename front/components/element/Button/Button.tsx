@@ -6,12 +6,13 @@ interface IButtonProps {
     variant?: "primary" | "primary-blue" | "outlined" | "secondary" | "ghost",
     size?: "32" | "36" | "40" | "48" | "55",
     type?: 'submit',
+    disabled?: boolean,
     onClick?: () => void;
 }
 
-const Button = ({ children, variant = 'primary', size = '32', type, onClick } : IButtonProps) => {
+const Button = ({ children, variant = 'primary', size = '32', type, disabled,  onClick } : IButtonProps) => {
     return (
-        <button className={`${styles.btn} ${styles['variant-' + variant]} ${styles['size-' + size]}`} type={type} onClick={onClick}>
+        <button className={`${styles.btn} ${styles['variant-' + variant]} ${styles['size-' + size]}`} type={type} disabled={disabled} onClick={onClick}>
             {children}
         </button>
     );

@@ -17,11 +17,13 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "noEmit": true,
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx", "pages/login/index.tsx"
+    "**/*.tsx",
+    "pages/login/index.tsx"
   ],
   "exclude": [
     "node_modules"
