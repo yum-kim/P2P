@@ -117,7 +117,7 @@ const Comment = ({ post } : { post: IPost }) => {
                                                 <BsSend />
                                             </button>
                                         </form>
-                                        <button onClick={onCancelUpdateComment}>취소</button>
+                                        <button onClick={onCancelUpdateComment} className={styles.cancelBtn}>취소</button>
                                     </>
                                     )
                                 }
