@@ -2,7 +2,7 @@ import React from 'react';
 import Link from "next/link";
 import styles from './Nav.module.scss';
 import { useRouter } from 'next/dist/client/router';
-import { BsHouseDoor, BsChatText } from "react-icons/bs";
+import { BsHouseDoor, BsChatText, BsPersonGear } from "react-icons/bs";
 
 const Nav = () => {
     const router = useRouter();
@@ -16,6 +16,10 @@ const Nav = () => {
             <Link href="/messenger" className={router.pathname == '/messenger' ? styles.active : undefined}>
                 <BsChatText />
                 Message 
+            </Link>
+            <Link href="/mypage" className={router.pathname == '/mypage' ? styles.active : undefined}>
+                <BsPersonGear />
+                My Page
             </Link>
         </nav>
     );
