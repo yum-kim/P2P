@@ -36,7 +36,6 @@ export class BoardsService {
         'user.profileImagePath',
       ])
       .leftJoinAndSelect('board.comment', 'comment')
-      .orderBy('comment.createAt', 'DESC')
       .leftJoin('comment.user', 'commentUser')
       .addSelect([
         'commentUser.id',
@@ -63,16 +62,15 @@ export class BoardsService {
     queryBuilder.orderBy(`board.${sortColumn}`, orderby);
 
     const boardAndCount: any = await queryBuilder.getManyAndCount();
+    console.log(boardAndCount[0]);
+    for (const board of boardAndCount[0]) {
+      board.comment.sort((a, b) => b.id - a.id);
+      board.heart = !!(await this.heartService.getHeartByBoardUserId(
+        board.id,
+        user.id,
+      ));
+    }
 
-    boardAndCount[0] = await Promise.all(
-      boardAndCount[0].map(async (x) => {
-        x.heart = !!(await this.heartService.getHeartByBoardUserId(
-          x.id,
-          user.id,
-        ));
-        return x;
-      }),
-    );
     return boardAndCount;
   }
 
