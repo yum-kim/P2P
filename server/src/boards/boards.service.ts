@@ -64,7 +64,7 @@ export class BoardsService {
     const boardAndCount: any = await queryBuilder.getManyAndCount();
     console.log(boardAndCount[0]);
     for (const board of boardAndCount[0]) {
-      board.comment.sort((a, b) => b.id - a.id);
+      board.comment.sort((a, b) => a.id - b.id);
       board.heart = !!(await this.heartService.getHeartByBoardUserId(
         board.id,
         user.id,
