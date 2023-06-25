@@ -30,7 +30,7 @@ const mypage = () => {
             <AppLayout>
                 {/* <Loading /> */}
 
-                {!visible && (
+                {/* {!visible && ( */}
                 <section className={styles.mypage}>
                     <div className={styles.mypageWrapper}>
                         <article className={styles.profile}>
@@ -60,7 +60,7 @@ const mypage = () => {
                         </article>
                     </div>
                 </section>
-                )}
+                {/* )} */}
                 
                 <Slider visible={visible}>
                     <SettingAccount onClose={onCloseSettingAccountSlider}/>

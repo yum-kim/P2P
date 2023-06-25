@@ -24,6 +24,7 @@ const App: React.FC<AppProps> = ({ Component }) => {
                 <title>P2P</title>
             </Head>
             <Provider store={store}>
+                <div id="modal"></div>
                 <Component />
             </Provider>
         </>

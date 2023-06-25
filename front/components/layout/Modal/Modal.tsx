@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Button from '../../element/Button/Button';
 import { BsXLg } from "react-icons/bs";
 import { FcAbout, FcHighPriority, FcInfo } from "react-icons/fc";
 import styles from "./Modal.module.scss";
+import { createPortal } from 'react-dom';
 
 export interface IModalProps {
     title?: string;
@@ -11,10 +12,19 @@ export interface IModalProps {
 }
 
 const Modal:React.FC<IModalProps> = ({ title, children, onCloseModal }) => {
-    return (
-        <div
-            className={styles.modalContainer}
-        >
+    const [mounted, setMounted] = useState(false);
+    const modalRootRef = useRef<Element | null>(null);
+    
+    useEffect(() => {
+        setMounted(true);    
+        if(document) {
+            const dom = document.getElementById('modal');
+            modalRootRef.current = dom;
+        }
+    }, [])
+ 
+    const modal = (
+        <div className={styles.modalContainer}>
             <div className={styles.modalBg} onClick={onCloseModal}></div>
             <div className={styles.modal}>
                 <span className={styles.ico}>
@@ -31,6 +41,10 @@ const Modal:React.FC<IModalProps> = ({ title, children, onCloseModal }) => {
             </div>
         </div>
     );
+    
+    if (modalRootRef.current && mounted) {
+        return createPortal(modal, modalRootRef.current);
+    }
 };
 
 export default Modal;
