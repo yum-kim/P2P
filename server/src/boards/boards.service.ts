@@ -36,6 +36,7 @@ export class BoardsService {
         'user.profileImagePath',
       ])
       .leftJoinAndSelect('board.comment', 'comment')
+      .orderBy('comment.createAt', 'DESC')
       .leftJoin('comment.user', 'commentUser')
       .addSelect([
         'commentUser.id',
