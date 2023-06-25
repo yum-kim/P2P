@@ -15,7 +15,7 @@ const Slider = ({ visible, children }: ISliderProps) => {
         } else {
             const timer = setTimeout(() => {
                 setIsRendered(true);
-            }, 400);
+            }, 0);
          
             return () => clearTimeout(timer);
         }
@@ -24,7 +24,7 @@ const Slider = ({ visible, children }: ISliderProps) => {
 
     const sliderStyle: React.CSSProperties = {
         transform: `translateX(${visible ? 0 : '200%'})`,
-        transition: 'transform 0.4s ease-in-out',
+        transition: 'transform 0.6s ease-in-out',
         position: 'absolute',
         top: '20px',
         left: 0,
