@@ -17,7 +17,6 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, IInputProps>(({
                     ref={ref as React.RefObject<HTMLTextAreaElement>}
                     className={`${styles.textarea} ${styles['variant-' + variant]} ${styles['height-' + height]}`}
                     value={value}
-                    height={height}
                     onChange={onChange}
                 >
                 </textarea>
