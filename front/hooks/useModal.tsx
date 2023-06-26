@@ -1,42 +1,53 @@
 import { IModalProps } from '../components/layout/Modal/Modal';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import Modal from '../components/layout/Modal/Modal';
 
 interface IModalHook {
-    Modal: React.FC<IModalProps> | null;
-    onShowModal: () => void;
-    onCloseModal: () => void;
-    modalContent: string | null;
-    setModalContent: (content:string) => void
+    Modal: React.FC<IModalProps> | null,
+    onShowModal: (content:string, onConfirm?:() => void) => void,
+    onCloseModal: () => void,
+    onConfirmModal: () => void
 }
 
 const useModal = (initialValue: boolean): IModalHook => {
     const [isShowModal, setIsShowModal] = useState(initialValue);
     const [modalContent, setModalContent] = useState(null);
+    const callbackRef = useRef(null);
 
-    const onShowModal = useCallback(() => {
+    const onShowModal = useCallback((content, onConfirm?) => {
         setIsShowModal(true);
-    }, [])
+        setModalContent(content);
+        callbackRef.current = onConfirm;
+    }, [modalContent, callbackRef.current])
 
     const onCloseModal = useCallback(() => {
         setIsShowModal(false);
+        setModalContent(null);
+        callbackRef.current = null;
     }, []);
 
+    const onConfirmModal = useCallback(() => {
+        callbackRef.current && callbackRef.current();        
+        setIsShowModal(false);
+        callbackRef.current = null;
+    }, [callbackRef.current]);
+    
     return {
         Modal: 
-            isShowModal ? ({ title, children }: IModalProps) => (
+            isShowModal ? ({ type, title }: IModalProps) => (
                 <Modal
+                    type={type}
                     title={title}
                     onCloseModal={onCloseModal}
+                    onConfirmModal={onConfirmModal}
                 >
-                    {children}
+                    {modalContent}
                 </Modal>
                 ) 
                 : () => null,
         onShowModal,
         onCloseModal,
-        modalContent,
-        setModalContent
+        onConfirmModal,
     }
 };
 

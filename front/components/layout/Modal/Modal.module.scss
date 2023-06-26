@@ -48,6 +48,14 @@
         .buttons {
             @include flexbox();
             margin-top: 2rem;
+
+            button {
+                width: 76px;
+
+                &:not(:last-child) {
+                    margin-right: 1rem;
+                }
+            }
         }
     }
 }

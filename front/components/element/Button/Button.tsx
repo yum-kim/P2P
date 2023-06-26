@@ -3,7 +3,7 @@ import styles from './Button.module.scss';
 
 interface IButtonProps {
     children: React.ReactNode,
-    variant?: "primary" | "primary-blue" | "outlined" | "secondary" | "ghost",
+    variant?: "primary" | "primary-blue" | "outlined" | "secondary" | "ghost" | "danger",
     size?: "32" | "36" | "40" | "48" | "55",
     type?: 'submit',
     disabled?: boolean,

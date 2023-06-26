@@ -11,6 +11,7 @@ import Button from '../../element/Button/Button';
 import { changePostStatusRequest, updatePostRequest, deletePostRequest, updatePostHeartRequest } from '../../../store/slices/post';
 import PostImage from '../PostImage/PostImage';
 import { RootState } from '../../../store/configureStore';
+import useModal from '../../../hooks/useModal';
 
 export interface IPost {
     id: number,
@@ -64,6 +65,7 @@ const PostCard = ({ post }: { post: IPost }) => {
     const [showPostInput, setShowPostInput] = useState(false);
     const updateDescRef = useRef<HTMLTextAreaElement>(null);
     const { user } = useSelector((state: RootState) => state.auth);
+    const { Modal, onShowModal, onCloseModal, onConfirmModal } = useModal(false);
     
     const onToggleComments = useCallback(() => {
         setShowComments((prev) => !prev);
@@ -71,9 +73,13 @@ const PostCard = ({ post }: { post: IPost }) => {
 
     const onChangePostStatus = useCallback(() => {
         const changeStatus = status == "PUBLIC" ? "PRIVATE" : "PUBLIC";
-        setStatus(changeStatus);
-        dispatch(changePostStatusRequest({ id: post.id, body: { status: changeStatus } }));
-        setIsShowOtherMenu(false);
+        
+        onShowModal(`게시물 상태를 ${changeStatus == "PUBLIC" ? "공개" : "비공개"}로 변경하시겠습니까?`, () => {
+            setStatus(changeStatus);
+            dispatch(changePostStatusRequest({ id: post.id, body: { status: changeStatus } }));
+            setIsShowOtherMenu(false);
+        })
+
     }, [status]);
 
     const onShowPostInput = useCallback(() => {
@@ -85,20 +91,17 @@ const PostCard = ({ post }: { post: IPost }) => {
     }, [showPostInput]);
     
     const updatePost = useCallback(() => {
-        //TODO: 게시물 수정 confirm 추가
-        // if () {
-        // }
-        dispatch(updatePostRequest({ id: post.id, body: { description: description } }))
-        setShowPostInput(false);
+        onShowModal("게시물을 수정하시겠습니까?", () => {
+            dispatch(updatePostRequest({ id: post.id, body: { description: description } }))
+            setShowPostInput(false);
+        });
     }, [description]);
 
     const onDeletePost = useCallback(() => {
-        //TODO: 게시물 삭제 confirm 추가
-        // if () {
-        // }
-
-        dispatch(deletePostRequest(post.id));
-        setIsShowOtherMenu(false);
+        onShowModal("게시물을 삭제하시겠습니까?", () => {
+            dispatch(deletePostRequest(post.id));
+            setIsShowOtherMenu(false);
+        });
     }, [])
 
     const onClickHeartButton = useCallback(() => {
@@ -144,6 +147,13 @@ const PostCard = ({ post }: { post: IPost }) => {
 
     return (
         <article className={styles.card}>
+            <Modal
+                type="confirm"
+                onCloseModal={onCloseModal}
+                onConfirmModal={onConfirmModal}
+            >
+            </Modal>
+
             <div className={styles.top}>
                 <div className={styles.profile}>
                     <div className={styles.img}>
@@ -181,7 +191,7 @@ const PostCard = ({ post }: { post: IPost }) => {
                 </div>
             </div>
             <div className={styles.content}>
-                {post.boardImage.length > 0 &&
+                {post.boardImage?.length > 0 &&
                 <div className={styles.imgBox}>
                      <PostImage boardImage={post.boardImage} />
                 </div>
@@ -189,7 +199,10 @@ const PostCard = ({ post }: { post: IPost }) => {
                 {showPostInput ? 
                     <div className={styles.updateBox}>
                         <Input type="textarea" value={description} height='100' onChange={onChangeText} ref={updateDescRef} />
-                        <Button variant="primary-blue" onClick={updatePost}>수정</Button>
+                        <div className={styles.updateBtn}>
+                            <Button variant="primary-blue" onClick={updatePost}>수정</Button>
+                            <Button variant="primary-blue" onClick={() => setShowPostInput(false)}>취소</Button>
+                        </div>
                     </div>
                     : <p className={styles.content}>{post.description}</p>
                 }

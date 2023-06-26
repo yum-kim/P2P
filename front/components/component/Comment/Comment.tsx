@@ -6,6 +6,7 @@ import { BsSend, BsFillPersonFill, BsPencil, BsTrash3 } from "react-icons/bs";
 import { IPost, IPostComment } from '../PostCard/PostCard';
 import { RootState } from '../../../store/configureStore';
 import { addCommentRequest, updateCommentRequest, deleteCommentRequest } from '../../../store/slices/post';
+import useModal from '../../../hooks/useModal';
 
 const Comment = ({ post } : { post: IPost }) => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -16,6 +17,7 @@ const Comment = ({ post } : { post: IPost }) => {
     const { user } = useSelector((state: RootState) => state.auth);
     const { addCommentLoading } = useSelector((state: RootState) => state.post);
     const dispatch = useDispatch();
+    const { Modal, onShowModal, onCloseModal, onConfirmModal } = useModal(false);
 
     const onChangeForm = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setComment(e.currentTarget.value);
@@ -42,10 +44,7 @@ const Comment = ({ post } : { post: IPost }) => {
 
         setShowCommentInput(true);
         setUpdateComment({ id: id, comment: comment });
-
-        if (updateInputRef.current) {
-            updateInputRef.current.focus();
-        }
+        updateInputRef.current && updateInputRef.current.focus();
     }, []);
 
     const onSubmitUpdateComment = useCallback((e: React.FormEvent<HTMLFormElement>) => {
@@ -63,9 +62,9 @@ const Comment = ({ post } : { post: IPost }) => {
     const onClickDeleteComment = useCallback((id: number) => {
         if (!id) return;
 
-        //TODO: 삭제 확인 confirm 창 띄우기
-
-        dispatch(deleteCommentRequest({ id: id, boardId: post.id }));
+        onShowModal("댓글을 삭제하시겠습니까?", () => {
+            dispatch(deleteCommentRequest({ id: id, boardId: post.id }));
+        })
     }, []);
 
     const onCancelUpdateComment = useCallback(() => {
@@ -75,6 +74,12 @@ const Comment = ({ post } : { post: IPost }) => {
 
     return (
         <div className={styles.comments}>
+            <Modal
+                type="confirm"
+                onCloseModal={onCloseModal}
+                onConfirmModal={onConfirmModal}
+            >
+            </Modal>
             <p className={styles.length}>{post.comment.length}개의 댓글이 있습니다.</p>
             <form className={styles.form} onSubmit={onSubmitComment}>
                 <Input type="text" placeholder="댓글을 입력하세요." variant="background" ref={inputRef} value={comment} onChange={onChangeForm} />

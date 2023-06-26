@@ -18,7 +18,7 @@ const Login = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { logInLoading, logInDone, logInError, logOutDone, user } = useSelector((state: RootState) => state.auth);
-    const { Modal, onShowModal, onCloseModal, modalContent, setModalContent } = useModal(false);
+    const { Modal, onShowModal, onCloseModal } = useModal(false);
 
     const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
@@ -31,8 +31,8 @@ const Login = () => {
     const onSubmitLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!username || !password) {
-            onShowModal();
-            setModalContent("빈 값이 있습니다.");
+            onShowModal("빈 값이 있습니다.");
+            // setModalContent("빈 값이 있습니다.");
             return;
         }
         dispatch(logInRequest({ username, password }));
@@ -40,8 +40,8 @@ const Login = () => {
 
     useEffect(() => {
         if (logInError) {
-            onShowModal();
-            setModalContent(logInError.message);
+            onShowModal(logInError.message);
+            // setModalContent(logInError.message);
         }
     }, [logInError])
 
@@ -53,8 +53,8 @@ const Login = () => {
 
     useEffect(() => {
         if (logOutDone && !user) {
-            onShowModal();
-            setModalContent("로그아웃이 완료되었습니다.");
+            onShowModal("로그아웃이 완료되었습니다.");
+            // setModalContent("로그아웃이 완료되었습니다.");
         }
     }, [logOutDone])
 
@@ -66,8 +66,8 @@ const Login = () => {
             {logInLoading && <Loading />}
 
             <Modal
+                type="alert"
                 onCloseModal={onCloseModal}>
-                <p>{modalContent}</p>
             </Modal>
 
             <div className={styles.login}>
