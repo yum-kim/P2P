@@ -33,13 +33,15 @@ const initialState = {
     allPosts: [],
     fetchedPosts: [],
     allPostsCnt: 0,
+    cursor: null
 }
 
 export interface IPostParams {
+    username?: string,
     description?: string,
     sortColumn?: "createAt",
     orderby?: "ASC" | "DESC",
-    page: number,
+    cursor?: number | null,
     size: number
 }
 
@@ -54,14 +56,16 @@ const postSlice = createSlice({
             state.getPostsError = null;
         },
         getPostsSuccess: (state, action: PayloadAction<any>) => {
-            const { posts, page } = action.payload;
+            const { posts, cursor } = action.payload;
             state.fetchedPosts = posts[0];
-            if (page === 1) {
+            state.allPostsCnt = posts[1];
+            state.cursor = posts[2];
+
+            if (!cursor) {
                 state.allPosts = state.fetchedPosts;
             } else {
                 state.allPosts.push(...state.fetchedPosts);
             }
-            state.allPostsCnt = posts[1];
             state.getPostsLoading = false;
             state.getPostsDone = true;
         },

@@ -6,7 +6,7 @@ function* getPosts(action) {
   const { res, error } = yield call(boards.getBoards, action.payload);
 
   if (res) {
-    yield put(getPostsSuccess({ posts: res, page: action.payload.page }));
+    yield put(getPostsSuccess({ posts: res, cursor: action.payload.cursor }));
   } else {
     yield put(getPostsFailure(error));
   }

@@ -24,10 +24,10 @@ const Feed = () => {
         deleteCommentLoading, deleteCommentDone, deleteCommentError,
         deletePostLoading, deletePostDone, deletePostError,
         changePostStatusLoading, changePostStatusDone, changePostStatusError,
+        cursor,
         modalMessage,
     } = useSelector((state: RootState) => state.post);
     const { user } = useSelector((state: RootState) => state.auth);
-    const [currentPage, setCurrentPage] = useState(1);
     const [isLastPage, setIsLastPage] = useState(false);
     const dispatch = useDispatch();
     const { Modal, onShowModal, onCloseModal, onConfirmModal } = useModal(false);
@@ -50,7 +50,6 @@ const Feed = () => {
             onShowModal(`${modalMessage}이(가) 완료되었습니다.`);
         }
         dispatch(clearModalMessage());
-
     }, Object.values(completeMsgMap));
 
     const errMsgMap = {
@@ -74,9 +73,8 @@ const Feed = () => {
     }, Object.values(errMsgMap));
 
     const getPosts = () => {
-        if (currentPage == 1 && fetchedPosts.length > 0) return;
-        dispatch(getPostsRequest({ page: currentPage, size: 2, sortColumn: "createAt", orderby: "DESC" }));
-        setCurrentPage(currentPage + 1);
+        // if (!cursor && fetchedPosts.length > 0) return;
+        dispatch(getPostsRequest({ cursor, size: 10, sortColumn: "createAt", orderby: "DESC" }));
     }
 
     useEffect(() => {
