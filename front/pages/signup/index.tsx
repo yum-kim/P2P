@@ -22,7 +22,7 @@ const Signup = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { signUpLoading, signUpDone, signUpError } = useSelector((state: RootState) => state.auth);
-    const { Modal, onShowModal, onCloseModal, onConfirmModal } = useModal(false);
+    const { Modal, onShowModal, onCloseModal } = useModal(false);
 
     const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         const regType = /^[A-Za-z0-9]*$/; //영문, 숫자만 사용해서 3자 이상 체크
@@ -82,8 +82,8 @@ const Signup = () => {
             {signUpLoading && <Loading />}
 
             <Modal
+                type="alert"
                 onCloseModal={onCloseModal}>
-                <p>{modalContent}</p>
             </Modal>
 
             <div className={styles.signup}>
