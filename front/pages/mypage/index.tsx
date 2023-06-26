@@ -39,8 +39,8 @@ const mypage = () => {
                             </div>
                         </article>
                         <article className={styles.user}>
-                            <p className={styles.username}>{user && user.username || 'USERNAME'}</p>
-                            <p className={styles.usercode}>{user && user.usercode || 'USERCODE'}</p>
+                            <p className={styles.username}>{user && user.username}</p>
+                            <p className={styles.usercode}>{user && user.usercode}</p>
                         </article>
                         <article className={styles.btnBox}>
                             <ul>

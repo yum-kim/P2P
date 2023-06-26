@@ -93,7 +93,7 @@ const SettingAccount = ({ onClose }) => {
                 </article>
                 <article className={styles.content}>
                     <div className={styles.list}>
-                        <label htmlFor="name">NAME</label>
+                        <label htmlFor="name">Nickname</label>
 
                         {isActiveNameInput ? (
                             <Input type="text" id="name" onChange={onChangeName} value={name} />
@@ -103,7 +103,7 @@ const SettingAccount = ({ onClose }) => {
                         <button onClick={onActiveNameInput}>{isActiveNameInput ? '저장' : '수정'}</button>
                     </div>
                     <div className={styles.list}>
-                        <label htmlFor="pw">PASSWORD</label>
+                        <label htmlFor="pw">password</label>
 
                         {isActivePwInput ? (
                             <Input type="password" id="pw" onChange={onChangePw} value={pw} />
