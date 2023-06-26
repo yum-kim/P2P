@@ -34,7 +34,10 @@ export const multerOptionsFactory = async (): Promise<MulterOptions> => {
           },
           transform: function (_req, file, cb) {
             // sharp를 사용하여 리사이즈를 실행하고 결과물을 전달합니다.
-            cb(null, sharp().resize({ width: 900 }).jpeg({ quality: 80 }));
+            cb(
+              null,
+              sharp().rotate().resize({ width: 900 }).jpeg({ quality: 80 }),
+            );
           },
         },
       ],

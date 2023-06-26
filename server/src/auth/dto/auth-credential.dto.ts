@@ -22,4 +22,7 @@ export class AuthCredentialDto {
   @MaxLength(20)
   @ApiProperty({ description: '비밀번호' })
   password: string;
+
+  @ApiProperty({ description: '닉네임', required: false })
+  usercode: string;
 }
