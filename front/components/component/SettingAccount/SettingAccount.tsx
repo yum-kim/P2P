@@ -11,7 +11,7 @@ const SettingAccount = ({ onClose }) => {
     const { user } = useSelector((state: RootState) => state.auth);
     const profileInputRef = useRef<HTMLInputElement>(null);
     const [file, setFile] = useState<File | null>(null);
-    const [name, setName] = useState(user?.username || null);
+    const [name, setName] = useState(user?.usercode || null);
     const [pw, setPw] = useState(user?.password || null);
 
     const [isActiveNameInput, setIsActiveNameInput] = useState(false);
