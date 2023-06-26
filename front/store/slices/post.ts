@@ -207,6 +207,9 @@ const postSlice = createSlice({
             state.deleteCommentLoading = false;
             state.deleteCommentError = action.payload;
         },
+        clearModalMessage: (state) => {
+            state.modalMessage = null;
+        }
     },
 });
 
@@ -238,6 +241,7 @@ export const {
   deleteCommentRequest,
   deleteCommentSuccess,
   deleteCommentFailure,
+  clearModalMessage
 } = postSlice.actions;
 
 export default postSlice.reducer;

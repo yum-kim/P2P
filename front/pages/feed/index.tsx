@@ -8,7 +8,7 @@ import Loading from '../../components/common/Loading/Loading';
 import { RootState } from '../../store/configureStore';
 import useModal from '../../hooks/useModal';
 import styles from './feed.module.scss';
-import { getPostsRequest } from '../../store/slices/post';
+import { getPostsRequest, clearModalMessage } from '../../store/slices/post';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import { useRouter } from 'next/dist/client/router';
 
@@ -46,9 +46,11 @@ const Feed = () => {
 
     useEffect(() => {
         const doneStates = Object.keys(completeMsgMap).filter((key) => completeMsgMap[key]);
-        if (doneStates.length > 0) {
+        if (doneStates.length > 0 && modalMessage) {
             onShowModal(`${modalMessage}이(가) 완료되었습니다.`);
         }
+        dispatch(clearModalMessage());
+
     }, Object.values(completeMsgMap));
 
     const errMsgMap = {
@@ -73,7 +75,7 @@ const Feed = () => {
 
     const getPosts = () => {
         if (currentPage == 1 && fetchedPosts.length > 0) return;
-        dispatch(getPostsRequest({ page: currentPage, size: 10, sortColumn: "createAt", orderby: "DESC" }));
+        dispatch(getPostsRequest({ page: currentPage, size: 2, sortColumn: "createAt", orderby: "DESC" }));
         setCurrentPage(currentPage + 1);
     }
 
