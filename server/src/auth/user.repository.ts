@@ -11,13 +11,13 @@ import * as bcrypt from 'bcryptjs';
 @CustomRepository(User)
 export class UserRepository extends Repository<User> {
   async createUser(authCredentialDto: AuthCredentialDto): Promise<any> {
-    const { username, password } = authCredentialDto;
+    const { username, password, usercode } = authCredentialDto;
 
     const hashedPassword = await this.getHashPassword(password);
     const user = this.create({
       username,
       password: hashedPassword,
-      usercode: '',
+      usercode: usercode,
     });
     try {
       return await this.save(user);
