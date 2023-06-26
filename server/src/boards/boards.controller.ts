@@ -48,12 +48,11 @@ export class BoardsController {
   })
   @Get('')
   async getAllBoards(
-    @Query() searchQuery: SearchBoardDto,
-    @Query('page') page: number,
-    @Query('size') size: number,
     @GetUser() user: User,
-  ): Promise<[ResponseBoardDto[], number]> {
-    return await this.boardService.getAllBoards(searchQuery, page, size, user);
+    @Query() searchQuery: SearchBoardDto,
+    @Query('size') size: number,
+  ): Promise<[ResponseBoardDto[], number, number?]> {
+    return await this.boardService.getAllBoards(searchQuery, size, user);
   }
 
   @ApiOperation({

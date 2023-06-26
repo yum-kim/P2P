@@ -21,11 +21,10 @@ export class BoardsService {
   ) {}
 
   async getAllBoards(
-    { username, description, sortColumn, orderby }: SearchBoardDto,
-    page: number,
+    { username, description, cursor, sortColumn, orderby }: SearchBoardDto,
     size: number,
     user: User,
-  ): Promise<[ResponseBoardDto[], number]> {
+  ): Promise<[ResponseBoardDto[], number, number?]> {
     const queryBuilder = this.boardRepository
       .createQueryBuilder('board')
       .leftJoin('board.user', 'user')
@@ -44,7 +43,7 @@ export class BoardsService {
         'commentUser.profileImagePath',
       ])
       .leftJoinAndSelect('board.boardImage', 'boardImage')
-      .skip((page - 1) * size)
+      .andWhere(cursor ? `board.id < :cursor` : '1=1', { cursor })
       .take(size);
 
     if (description) {
@@ -62,7 +61,7 @@ export class BoardsService {
     queryBuilder.orderBy(`board.${sortColumn}`, orderby);
 
     const boardAndCount: any = await queryBuilder.getManyAndCount();
-    console.log(boardAndCount[0]);
+
     for (const board of boardAndCount[0]) {
       board.comment.sort((a, b) => a.id - b.id);
       board.heart = !!(await this.heartService.getHeartByBoardUserId(
@@ -71,7 +70,11 @@ export class BoardsService {
       ));
     }
 
-    return boardAndCount;
+    const lastCursor = boardAndCount[0].length
+      ? boardAndCount[0][boardAndCount[0].length - 1].id
+      : null;
+
+    return [boardAndCount[0], boardAndCount[1], lastCursor];
   }
 
   async getAllBoardByUserId(user: User): Promise<Board[]> {
