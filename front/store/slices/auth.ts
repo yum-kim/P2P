@@ -36,10 +36,10 @@ export const authSlice = createSlice({
             state.logOutDone = false;
         },
         logInSuccess: (state, action: PayloadAction<IUser>) => {
-            const { id, username, accessToken, profileImagePath } = action.payload;
+            const { id, username, usercode, accessToken, profileImagePath } = action.payload;
             state.logInLoading = false;
             state.logInDone = true;
-            state.user = { id, username, accessToken, profileImagePath };
+            state.user = { id, username, usercode, accessToken, profileImagePath };
             auth.setToken(accessToken);
         },
         logInFailure: (state, action: PayloadAction<any>) => {

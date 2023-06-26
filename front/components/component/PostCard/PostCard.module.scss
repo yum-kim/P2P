@@ -134,7 +134,16 @@
             @include column-flexbox(end, end);
 
             textarea {
-                margin-bottom: 5px;
+                margin-bottom: 1rem;
+            }
+
+            .updateBtn {
+                @include flexbox();
+                button {
+                    &:not(:last-child) {
+                        margin-right: 10px;
+                    }
+                }
             }
         }
     }

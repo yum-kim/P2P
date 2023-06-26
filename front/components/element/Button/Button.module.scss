@@ -75,6 +75,18 @@
         }
     }
 
+    &.variant-danger {
+        @extend %btn-base;
+        color: $white;
+        background-color: $red;
+        border: none;
+        transition: color 200ms ease-in-out;
+
+        &:not(:disabled):hover {
+            background-color: $red-dark;
+        }
+    }
+
     //sizes
     &.size-32 {
         @include text-style(14);

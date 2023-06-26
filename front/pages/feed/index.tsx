@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Head from 'next/head';
 import { useSelector, useDispatch } from 'react-redux';
 import AppLayout from '../../components/layout/AppLayout/AppLayout';
@@ -30,7 +30,7 @@ const Feed = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isLastPage, setIsLastPage] = useState(false);
     const dispatch = useDispatch();
-    const { Modal, onShowModal, onCloseModal, modalContent, setModalContent } = useModal(false);
+    const { Modal, onShowModal, onCloseModal, onConfirmModal } = useModal(false);
     const intersectingRef = useRef(null);
     const { isIntersecting } = useInfiniteScroll(intersectingRef, {
         threshold: 0.3
@@ -47,8 +47,7 @@ const Feed = () => {
     useEffect(() => {
         const doneStates = Object.keys(completeMsgMap).filter((key) => completeMsgMap[key]);
         if (doneStates.length > 0) {
-            onShowModal();
-            setModalContent(`${modalMessage}이(가) 완료되었습니다.`);
+            onShowModal(`${modalMessage}이(가) 완료되었습니다.`);
         }
     }, Object.values(completeMsgMap));
 
@@ -68,8 +67,7 @@ const Feed = () => {
         const errMsg = doneStates.length > 0 && errMsgMap[doneStates[0]].message;
 
         if (errMsg) {
-            onShowModal();
-            setModalContent(`${errMsg}`);
+            onShowModal(`${errMsg}`);
         }
     }, Object.values(errMsgMap));
 
@@ -100,8 +98,9 @@ const Feed = () => {
             <AppLayout>
                 {(getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading || updatePostHeartLoading || updatePostLoading) && <Loading />}
                 <Modal
-                    onCloseModal={onCloseModal}>
-                    <p>{modalContent}</p>
+                    type="alert"
+                    onCloseModal={onCloseModal}
+                >
                 </Modal>
 
                 <PostForm />
