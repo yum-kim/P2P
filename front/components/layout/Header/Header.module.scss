@@ -1,5 +1,6 @@
 @import '../../../styles/constants/colors';
 @import '../../../styles/mixins/flexbox';
+@import '../../../styles/mixins/position';
 @import '../../../styles/layout/grids';
 @import '../../../styles/constants/typography';
 
@@ -13,7 +14,6 @@
         padding: 1.5rem 0;
 
         .logo {
-            
             a {
                 @include flexbox(start, center);
                 width: 40px;
@@ -37,29 +37,59 @@
             }
         }
 
-        .icon {
-            padding: 5px;
-            
-            &.active {
-                i {
-                    color: $black;
-                }
-            }
 
-            &:not(:last-child) {
-                margin-right: 0.5rem;
-            }
-            
-            svg {
-                color: $secondary;
-                font-size: 1.7rem;
-            }
+        .rightArea  {
+            @include flexbox();
 
-            &:hover {
+            .profile {
+                width: 35px;
+                height: 35px;
+                border: 1px solid $border;
+                border-radius: 50%;
+                margin-left: 10px;
+                overflow: hidden;
+                text-align: center;
+                position: relative;
+
                 svg {
-                    color: $black;
+                    @include pos-center-x;
+                    top: 4px;
+                    width: 100%;
+                    height: 100%;
+                    color: $tertiary;
+                }
+    
+                img {
+                    width: 100%;
+                    overflow: hidden;
                 }
             }
+    
+            .icon {
+                padding: 5px;
+                
+                &.active {
+                    i {
+                        color: $black;
+                    }
+                }
+    
+                &:not(:last-child) {
+                    margin-right: 0.5rem;
+                }
+                
+                svg {
+                    color: $secondary;
+                    font-size: 1.7rem;
+                }
+    
+                &:hover {
+                    svg {
+                        color: $black;
+                    }
+                }
+            }
+
         }
     }
 }

@@ -2,15 +2,17 @@ import React, { useEffect } from 'react';
 import styles from './Header.module.scss';
 import Link from "next/link";
 import Search from '../../common/Search/Search';
-import { useDispatch } from 'react-redux';
-import { BsBoxArrowInRight, BsBell } from "react-icons/bs";
+import { useDispatch, useSelector } from 'react-redux';
+import { BsBoxArrowInRight, BsBell, BsFillPersonFill } from "react-icons/bs";
 import { useRouter } from 'next/dist/client/router';
 import { logOutRequest } from '../../../store/slices/auth';
 import useModal from '../../../hooks/useModal';
+import { RootState } from '../../../store/configureStore';
 
 const Header = () => {
     const dispatch = useDispatch();
     const router = useRouter();
+    const { user } = useSelector((state: RootState) => state.auth);
     const { Modal, onShowModal, onCloseModal, onConfirmModal } = useModal(false);
 
     const onClickLogout = () => {
@@ -41,13 +43,16 @@ const Header = () => {
                             <div className={`lg-only ${styles.search}`}>
                                 <Search placeholder='search' />
                             </div>
-                            <div>
+                            <div className={styles.rightArea}>
                                 <button className={styles.icon}>
                                     <BsBell />
                                 </button>
                                 <button className={styles.icon} onClick={onClickLogout}>
                                     <BsBoxArrowInRight />
                                 </button>
+                                <div className={styles.profile}>
+                                    {user && user.profileImagePath ? <img src={user.profileImagePath} alt="프로필" /> : <BsFillPersonFill />}
+                                </div>
                             </div>
                         </div>
                     </div>
