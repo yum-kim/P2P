@@ -20,6 +20,8 @@ export class AuthService {
   ) {}
 
   async signUp(authCredentialDto: AuthCredentialDto): Promise<any> {
+    if (!authCredentialDto.usercode)
+      authCredentialDto.usercode = this.generateUserCode();
     return this.userRepository.createUser(authCredentialDto);
   }
 
@@ -88,5 +90,33 @@ export class AuthService {
     const passwordVerify = await bcrypt.compare(password, oriPassword);
     if (!passwordVerify)
       throw new UnauthorizedException('비밀번호가 맞지 않습니다');
+  }
+
+  generateUserCode() {
+    const colors = [
+      '빨간',
+      '파란',
+      '노란',
+      '푸른',
+      '하얀',
+      '분홍',
+      '까만',
+      '초록',
+    ];
+    const items = [
+      '자동차',
+      '사과',
+      '비행기',
+      '오토바이',
+      '배',
+      '선풍기',
+      '가방',
+      '베개',
+    ];
+
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    const randomItem = items[Math.floor(Math.random() * items.length)];
+
+    return randomColor + randomItem;
   }
 }
