@@ -7,6 +7,8 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { UserRepository } from './user.repository';
 import * as config from 'config';
+import { MulterModule } from '@nestjs/platform-express';
+import { multerOptionsFactory } from 'src/common/multer.option.factory';
 
 const jwtConfig = config.get('jwt');
 
@@ -20,6 +22,9 @@ const jwtConfig = config.get('jwt');
       },
     }),
     TypeOrmExModule.forCustomRepository([UserRepository]),
+    MulterModule.registerAsync({
+      useFactory: multerOptionsFactory,
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

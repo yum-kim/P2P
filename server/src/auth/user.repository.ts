@@ -13,8 +13,7 @@ export class UserRepository extends Repository<User> {
   async createUser(authCredentialDto: AuthCredentialDto): Promise<any> {
     const { username, password } = authCredentialDto;
 
-    const salt: any = await bcrypt.genSalt();
-    const hashedPassword: any = await bcrypt.hash(password, salt);
+    const hashedPassword = await this.getHashPassword(password);
     const user = this.create({
       username,
       password: hashedPassword,
@@ -30,5 +29,23 @@ export class UserRepository extends Repository<User> {
         throw new InternalServerErrorException();
       }
     }
+  }
+
+  async updateUserImage(file: any, userId: number): Promise<User> {
+    console.log(file);
+    const { location, key } = file.transforms[0];
+
+    const UserImage = this.create({
+      profileImagePath: location,
+      profileImageName: key,
+      id: userId,
+    });
+    return await this.save(UserImage);
+  }
+
+  async getHashPassword(password: string): Promise<string> {
+    const salt: any = await bcrypt.genSalt();
+    const hashedPassword: any = await bcrypt.hash(password, salt);
+    return hashedPassword;
   }
 }
