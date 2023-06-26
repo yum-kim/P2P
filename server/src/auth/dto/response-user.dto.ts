@@ -10,6 +10,9 @@ export class ResponseUserDto {
   @ApiProperty({ description: 'username' })
   username: string;
 
+  @ApiProperty({ description: 'usercode' })
+  usercode: string;
+
   @ApiProperty({ description: 'profileImagePath' })
   profileImagePath: string;
 }
