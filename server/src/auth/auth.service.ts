@@ -37,6 +37,7 @@ export class AuthService {
         accessToken,
         id: user.id,
         username: user.username,
+        usercode: user.usercode,
         profileImagePath: user.profileImagePath,
       };
     } else {
