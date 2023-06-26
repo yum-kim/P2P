@@ -29,4 +29,8 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   @ApiProperty({ description: '유저 이미지 url' })
   profileImagePath: string;
+
+  @Column({ nullable: true })
+  @ApiProperty({ description: '유저 이미지 name' })
+  profileImageName: string;
 }
