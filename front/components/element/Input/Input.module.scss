@@ -20,15 +20,15 @@ $heights : ('40','45','50','55','60','65','70','75','80','85','90','95','100');
 .input {
     @extend %form-base;
 
-    &[variant='primary'] {
+    &.variant-primary {
         border: 1px solid $tertiary;
     }
 
-    &[variant='secondary'] {
+    &.variant-secondary {
         border: 1px solid $border;
     }
 
-    &[variant='background'] {
+    &.variant-background {
         background-color: $background;
 
         &:hover {

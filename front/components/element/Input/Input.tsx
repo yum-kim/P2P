@@ -1,15 +1,34 @@
-import React from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 import styles from './Input.module.scss';
 
-const Input = ({ type, ...rest }) => {
+interface IInputProps {
+    type: 'text' | 'textarea' | 'password',
+    variant: 'primary' | 'secondary' | 'background',
+    value: string,
+    onChange: (e:React.ChangeEvent) => void,
+}
+
+const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, IInputProps>(({ type, variant, value, onChange }, ref) => {
     return (
         <>
             {type == 'textarea' ?
-                <textarea className={styles.textarea} {...rest}></textarea>
-                : <input type={type} className={styles.input} {...rest} />
+                <textarea
+                    ref={ref as React.RefObject<HTMLTextAreaElement>}
+                    className={`${styles.textarea} ${styles['variant' + variant]}`}
+                    value={value}
+                    onChange={onChange}
+                >
+                </textarea>
+                : <input
+                    ref={ref as React.RefObject<HTMLInputElement>}
+                    type={type}
+                    className={`${styles.input} ${styles['variant' + variant]}`}
+                    value={value}
+                    onChange={onChange}
+                />
             }
         </>
     );
-};
+});
 
 export default Input;
