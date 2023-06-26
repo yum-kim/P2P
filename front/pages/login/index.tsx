@@ -77,8 +77,8 @@ const Login = () => {
                 <div className={styles.loginWrapper}>
                     <form onSubmit={onSubmitLogin}>
                         <div className={styles.username}>
-                            <label htmlFor="id">Login Id</label>
-                            <Input type='text' placeholder='login Id' id='id' onChange={onChangeUsername} />
+                            <label htmlFor="id">Username</label>
+                            <Input type='text' placeholder='username' id='id' onChange={onChangeUsername} />
                         </div>
                         <div className={styles.password}>
                             <label htmlFor="password">Password</label>

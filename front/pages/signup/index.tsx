@@ -104,8 +104,8 @@ const Signup = () => {
                 </h2>
                 <div className={styles.signupWrapper}>
                     <div className={styles.form}>
-                        <label htmlFor="id">Login Id</label>
-                        <Input id="id" type="text" placeholder='Login Id' value={username} onChange={onChangeUsername} />
+                        <label htmlFor="username">Username</label>
+                        <Input id="username" type="text" placeholder='Username' value={username} onChange={onChangeUsername} />
                         {usernameError && <p className={styles.error}>영문, 숫자만을 사용해 3자 이상 입력해주세요.</p>}
 
                         <label htmlFor="nickname">Nickname</label>
@@ -121,7 +121,7 @@ const Signup = () => {
                         <Input id="password2" type='password' placeholder='Confirm Password' value={confirmPassword} onChange={onChangeConfirmPassword} />
                         {confirmPasswordError && <p className={styles.error}>비밀번호가 일치하지 않습니다.</p>}
                         
-                        <Button variant='secondary' size='40' onClick={onClickSignup}>회원가입</Button>
+                        <Button variant='secondary' size='40' onClick={onClickSignup}>Sign up</Button>
                     </div>
                     <div className={styles.login}>
                         <p>이미 가입된 계정이 있으신가요?</p>
