@@ -16,6 +16,12 @@ export class SearchBoardDto {
   readonly description?: string;
 
   @ApiProperty({
+    description: '게시판 커서',
+    required: false,
+  })
+  readonly cursor?: number;
+
+  @ApiProperty({
     description: '정렬할 데이터 종류',
     default: BoardSortTypeEnum.createAt,
     enum: BoardSortTypeEnum,
