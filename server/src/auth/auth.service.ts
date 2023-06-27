@@ -58,8 +58,8 @@ export class AuthService {
     if (!result) throw new NotFoundException(`수정할 유저를 찾을 수 없습니다`);
 
     if (file) {
-      if (result.profileImagePath) {
-        await delete_image(result.profileImagePath);
+      if (result.profileImageName) {
+        await delete_image(result.profileImageName);
       }
       return await this.userRepository.updateUserImage(file, user.id);
     } else if (updateUserDto.password) {
@@ -73,13 +73,31 @@ export class AuthService {
     return await this.userRepository.save(updateUser);
   }
 
+  async deleteUserProfile(user: User): Promise<User> {
+    const updateUser = {
+      profileImagePath: null,
+      profileImageName: null,
+      id: user.id,
+    };
+    const result: User = await this.userRepository.findOne({
+      where: { id: user.id },
+    });
+
+    if (result) {
+      if (result.profileImageName) await delete_image(result.profileImageName);
+      return await this.userRepository.save(updateUser);
+    } else {
+      throw new NotFoundException(`삭제할 유저를 찾을 수 없습니다`);
+    }
+  }
+
   async deleteUser(user: User): Promise<void> {
     const result: User = await this.userRepository.findOne({
       where: { id: user.id },
     });
 
     if (result) {
-      if (result.profileImagePath) await delete_image(result.profileImagePath);
+      if (result.profileImageName) await delete_image(result.profileImageName);
       await this.userRepository.delete(result.id);
     } else {
       throw new NotFoundException(`삭제할 유저를 찾을 수 없습니다`);
