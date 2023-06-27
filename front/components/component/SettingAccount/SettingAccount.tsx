@@ -19,7 +19,7 @@ const SettingAccount = ({ onClose }) => {
   const [isActivePwInput, setIsActivePwInput] = useState(false);
   const profileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
-  const { Modal, onShowModal, onCloseModal, onConfirmModal } = useModal(false);
+  const { Modal, onShowModal } = useModal(false);
 
   const onClickImageUpload = useCallback(() => {
     profileInputRef.current.click();
@@ -28,7 +28,7 @@ const SettingAccount = ({ onClose }) => {
   const uploadImage = useCallback(() => {
     const formData = new FormData();
     formData.append('file', file);
-    dispatch(updateUserRequest({ formData }));
+    dispatch(updateUserRequest(formData));
     setFile(null);
   }, [file]);
 

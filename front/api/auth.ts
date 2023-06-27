@@ -20,7 +20,9 @@ class Auth {
         let option = {
             "method": "POST",
             "url": `/auth/signin`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "application/json",
+            },
             "data": data
         }
         return await request(option);
@@ -30,7 +32,9 @@ class Auth {
         let option = {
             "method": "POST",
             "url": `/auth/signup`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "application/json",
+            },
             "data": data
         }
         return await request(option);
@@ -40,7 +44,9 @@ class Auth {
         let option = {
             "method": "PUT",
             "url": `/auth`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "multipart/form-data",
+            },
             "data": data
         }
         return await request(option);

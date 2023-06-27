@@ -10,7 +10,9 @@ const axiosInstance = axios.create({
 interface IOptionProps {
   "method": string,
   "url": string,
-  "Content-Type": string,
+  "headers": {
+    "Content-type": string,
+  },
   "params"?: any,
   "data"?: any
 }
