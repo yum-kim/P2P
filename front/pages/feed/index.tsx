@@ -14,7 +14,7 @@ import { useRouter } from 'next/dist/client/router';
 
 const Feed = () => {
     const {
-        allPosts, allPostsCnt, fetchedPosts,
+        allPosts, fetchedPosts,
         getPostsLoading, getPostsDone, getPostsError,
         addPostLoading, addPostDone, addPostError,
         updatePostLoading, updatePostDone, updatePostError,
@@ -99,7 +99,7 @@ const Feed = () => {
                 {(getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading || updatePostHeartLoading || updatePostLoading) && <Loading />}
                 <Modal />
                 <PostForm />
-                    {allPostsCnt == 0 && <p className={styles.cnt}>등록된 게시물이 없어요.🥲</p>}
+                    {allPosts.length == 0 && <p className={styles.cnt}>등록된 게시물이 없어요.🥲</p>}
                     {allPosts?.map((post) => (
                         <PostCard key={post.id} post={post} />
                     ))}
