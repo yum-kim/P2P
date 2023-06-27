@@ -32,7 +32,6 @@ export class UserRepository extends Repository<User> {
   }
 
   async updateUserImage(file: any, userId: number): Promise<User> {
-    console.log(file);
     const { location, key } = file.transforms[0];
 
     const UserImage = this.create({

@@ -49,7 +49,7 @@ export class AuthService {
     updateUserDto: UpdateUserDto,
     file: Express.Multer.File,
     user: User,
-  ): Promise<void> {
+  ): Promise<User> {
     let updateUser = {};
     const result: User = await this.userRepository.findOne({
       where: { id: user.id },
@@ -61,17 +61,16 @@ export class AuthService {
       if (result.profileImagePath) {
         await delete_image(result.profileImagePath);
       }
-      await this.userRepository.updateUserImage(file, user.id);
+      return await this.userRepository.updateUserImage(file, user.id);
     } else if (updateUserDto.password) {
       const hashedPassword = await this.userRepository.getHashPassword(
         updateUserDto.password,
       );
       updateUser = { password: hashedPassword, id: user.id };
-      await this.userRepository.save(updateUser);
     } else {
       updateUser = { usercode: updateUserDto.usercode, id: user.id };
-      await this.userRepository.save(updateUser);
     }
+    return await this.userRepository.save(updateUser);
   }
 
   async deleteUser(user: User): Promise<void> {
