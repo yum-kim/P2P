@@ -6,28 +6,21 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { UserRepository } from './user.repository';
-import * as config from 'config';
 import { MulterModule } from '@nestjs/platform-express';
 import { multerOptionsFactory } from 'src/common/multer.option.factory';
-
-const jwtConfig = config.get('jwt');
+import { JwtRefreshStrategy } from './jwt-refresh.strategy';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      secret: jwtConfig.secret,
-      signOptions: {
-        expiresIn: jwtConfig.expiresIn,
-      },
-    }),
+    JwtModule,
     TypeOrmExModule.forCustomRepository([UserRepository]),
     MulterModule.registerAsync({
       useFactory: multerOptionsFactory,
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, JwtRefreshStrategy],
   exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}

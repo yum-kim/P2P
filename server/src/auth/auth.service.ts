@@ -11,6 +11,7 @@ import { ResponseUserDto } from './dto/response-user.dto';
 import { User } from './user.entity';
 import { delete_image } from 'src/aws/s3.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as config from 'config';
 
 @Injectable()
 export class AuthService {
@@ -25,14 +26,28 @@ export class AuthService {
     return this.userRepository.createUser(authCredentialDto);
   }
 
-  async signIn(authCredentialDto: AuthCredentialDto): Promise<ResponseUserDto> {
+  async signIn(
+    authCredentialDto: AuthCredentialDto,
+    res,
+  ): Promise<ResponseUserDto> {
+    const jwtConfig = config.get('jwt');
     const { username, password } = authCredentialDto;
     const user = await this.userRepository.findOne({ where: { username } });
 
     if (user) {
       await this.checkPassword(password, user.password);
       const payload: any = { username: user.username, id: user.id };
-      const accessToken: string = await this.jwtService.sign(payload);
+      const accessToken: string = await this.generateToken(
+        payload,
+        jwtConfig.secret,
+        jwtConfig.expiresIn,
+      );
+      const refreshToken: string = await this.generateToken(
+        payload,
+        jwtConfig.refresh,
+        jwtConfig.refreshExpiresIn,
+      );
+      res.cookie('refreshToken', refreshToken);
       return {
         accessToken,
         id: user.id,
@@ -136,5 +151,12 @@ export class AuthService {
     const randomItem = items[Math.floor(Math.random() * items.length)];
 
     return randomColor + randomItem;
+  }
+
+  async generateToken(payload, secretKey, expiresIn?): Promise<string> {
+    return await this.jwtService.sign(payload, {
+      secret: secretKey,
+      expiresIn,
+    });
   }
 }

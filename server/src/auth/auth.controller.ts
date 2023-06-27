@@ -9,6 +9,8 @@ import {
   UploadedFile,
   UseGuards,
   Patch,
+  Res,
+  Response,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -24,6 +26,8 @@ import { GetUser } from './get-user.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { JwtRefreshAuthGuard } from './jwt-refresh-auth.guard';
+import * as config from 'config';
 
 @Controller('auth')
 export class AuthController {
@@ -58,8 +62,9 @@ export class AuthController {
   @Post('/signin')
   signIn(
     @Body(ValidationPipe) authCredentialDto: AuthCredentialDto,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<ResponseUserDto> {
-    return this.authService.signIn(authCredentialDto);
+    return this.authService.signIn(authCredentialDto, res);
   }
 
   @ApiOperation({
@@ -99,5 +104,22 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async deleteUser(@GetUser() user: User): Promise<void> {
     return await this.authService.deleteUser(user);
+  }
+
+  @ApiOperation({ summary: 'refreshToken 재발급' })
+  @UseGuards(JwtRefreshAuthGuard)
+  @Put('/access-token')
+  async reNewAccessToken(
+    @GetUser() user: User,
+  ): Promise<{ accessToken: string }> {
+    const jwtConfig = config.get('jwt');
+
+    const payload: any = { username: user.username, id: user.id };
+    const accessToken = await this.authService.generateToken(
+      payload,
+      jwtConfig.secret,
+      jwtConfig.expiresIn,
+    );
+    return { accessToken };
   }
 }

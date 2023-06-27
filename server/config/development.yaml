@@ -6,3 +6,4 @@ db:
 
 jwt:
   secret: 'ptop1234'
+  refresh: 'ptopRefresh'
