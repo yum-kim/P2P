@@ -24,7 +24,7 @@ const Signup = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { signUpLoading, signUpDone, signUpError } = useSelector((state: RootState) => state.auth);
-    const { Modal, onShowModal, onCloseModal } = useModal(false);
+    const { Modal, onShowModal } = useModal(false);
 
     const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         const regType = /^[A-Za-z0-9]{3,}$/; //영문, 숫자만 사용해서 3자 이상 체크

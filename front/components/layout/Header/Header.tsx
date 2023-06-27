@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './Header.module.scss';
 import Link from "next/link";
 import Search from '../../common/Search/Search';
@@ -13,7 +13,7 @@ const Header = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { user } = useSelector((state: RootState) => state.auth);
-    const { Modal, onShowModal, onCloseModal, onConfirmModal } = useModal(false);
+    const { Modal, onShowModal } = useModal(false);
 
     const onClickLogout = () => {
         onShowModal("로그아웃 하시겠습니까?", () => {

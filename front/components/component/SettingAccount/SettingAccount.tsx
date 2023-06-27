@@ -39,9 +39,7 @@ const SettingAccount = ({ onClose }) => {
   }, [file]);
 
   useEffect(() => {
-    if (file) {
-      uploadImage();
-    }
+    file && uploadImage();
   }, [file])
 
   const onChangeName = useCallback((e) => {

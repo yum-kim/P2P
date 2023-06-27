@@ -11,51 +11,35 @@ import Loading from '../../components/common/Loading/Loading';
 import useModal from '../../hooks/useModal';
 import { RootState } from '../../store/configureStore';
 import { logInRequest } from '../../store/slices/auth';
+import useInput from '../../hooks/useInput';
 
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, onChangeUsername] = useInput('');
+    const [password, onChangePassword] = useInput('');
     const dispatch = useDispatch();
     const router = useRouter();
     const { logInLoading, logInDone, logInError, logOutDone, user } = useSelector((state: RootState) => state.auth);
-    const { Modal, onShowModal, onCloseModal } = useModal(false);
-
-    const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(e.target.value);
-    }
-
-    const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    }
+    const { Modal, onShowModal } = useModal(false);
 
     const onSubmitLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!username || !password) {
             onShowModal("빈 값이 있습니다.");
-            // setModalContent("빈 값이 있습니다.");
             return;
         }
         dispatch(logInRequest({ username, password }));
     }
 
     useEffect(() => {
-        if (logInError) {
-            onShowModal(logInError.message);
-            // setModalContent(logInError.message);
-        }
+        logInError && onShowModal(logInError.message);
     }, [logInError])
 
     useEffect(() => {
-        if (logInDone && user) {
-            router.push('/feed');
-        }
+        logInDone && user && router.push('/feed');
     }, [logInDone])
 
     useEffect(() => {
-        if (logOutDone && !user) {
-            onShowModal("로그아웃이 완료되었습니다.");
-            // setModalContent("로그아웃이 완료되었습니다.");
-        }
+        logOutDone && !user && onShowModal("로그아웃이 완료되었습니다.");
     }, [logOutDone])
 
     return (
@@ -65,7 +49,7 @@ const Login = () => {
             </Head>
             {logInLoading && <Loading />}
             <Modal />
-            
+
             <div className={styles.login}>
                 <h2 className={styles.logo}>
                     <img src='images/extension_icon.svg' alt='로고' />

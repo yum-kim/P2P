@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import styles from './PostCard.module.scss';
 import { BsChatLeftTextFill, BsChatLeftText, BsLockFill } from "react-icons/bs";
-import { MdPublic, MdOutlineMoreHoriz } from "react-icons/md";
+import { MdPublic } from "react-icons/md";
 import { BsFillPersonFill, BsThreeDots } from "react-icons/bs";
 import { useSelector, useDispatch } from 'react-redux';
 import Comment from '../Comment/Comment';
@@ -12,6 +12,7 @@ import { changePostStatusRequest, updatePostRequest, deletePostRequest, updatePo
 import PostImage from '../PostImage/PostImage';
 import { RootState } from '../../../store/configureStore';
 import useModal from '../../../hooks/useModal';
+import useInput from '../../../hooks/useInput';
 
 export interface IPost {
     id: number,
@@ -61,11 +62,11 @@ const PostCard = ({ post }: { post: IPost }) => {
     const [isShowOtherMenu, setIsShowOtherMenu] = useState(false);
     const dispatch = useDispatch();
     const otherMenuRef = useRef(null);
-    const [description, setDescription] = useState(post.description);
+    const [description, onChangeDescrption] = useInput(post.description);
     const [showPostInput, setShowPostInput] = useState(false);
     const updateDescRef = useRef<HTMLTextAreaElement>(null);
     const { user } = useSelector((state: RootState) => state.auth);
-    const { Modal, onShowModal, onCloseModal, onConfirmModal } = useModal(false);
+    const { Modal, onShowModal } = useModal(false);
     
     const onToggleComments = useCallback(() => {
         setShowComments((prev) => !prev);
@@ -81,13 +82,18 @@ const PostCard = ({ post }: { post: IPost }) => {
         })
 
     }, [status]);
-
+    
     const onShowPostInput = useCallback(() => {
         setShowPostInput(true);
         setIsShowOtherMenu(false);
+    }, [showPostInput]);
 
-        //FIXME: focus 안됨
-        updateDescRef.current && updateDescRef.current.focus();
+    useEffect(() => {
+        if (showPostInput && updateDescRef.current) {
+            updateDescRef.current.focus();
+            const length = updateDescRef.current.value.length;
+            updateDescRef.current.setSelectionRange(length, length); //커서 마지막 글자로 이동
+        }
     }, [showPostInput]);
     
     const updatePost = useCallback(() => {
@@ -125,14 +131,8 @@ const PostCard = ({ post }: { post: IPost }) => {
         }
     }, []);
 
-    const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setDescription(e.target.value);
-    }, []);
-
     useEffect(() => {
-        if (post.comment.length > 0) {
-            setShowComments(true);   
-        }
+        post.comment.length > 0 && setShowComments(true);
     }, []);
 
     useEffect(() => {
@@ -192,7 +192,7 @@ const PostCard = ({ post }: { post: IPost }) => {
                 }
                 {showPostInput ? 
                     <div className={styles.updateBox}>
-                        <Input type="textarea" value={description} height='100' onChange={onChangeText} ref={updateDescRef} />
+                        <Input type="textarea" value={description} height='100' onChange={onChangeDescrption} ref={updateDescRef} />
                         <div className={styles.updateBtn}>
                             <Button variant="primary-blue" onClick={updatePost}>수정</Button>
                             <Button variant="primary-blue" onClick={() => setShowPostInput(false)}>취소</Button>

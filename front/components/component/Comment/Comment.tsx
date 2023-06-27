@@ -7,21 +7,18 @@ import { IPost, IPostComment } from '../PostCard/PostCard';
 import { RootState } from '../../../store/configureStore';
 import { addCommentRequest, updateCommentRequest, deleteCommentRequest } from '../../../store/slices/post';
 import useModal from '../../../hooks/useModal';
+import useInput from '../../../hooks/useInput';
 
 const Comment = ({ post } : { post: IPost }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const updateInputRef = useRef<HTMLInputElement>(null);
-    const [comment, setComment] = useState('');
+    const [comment, onChangeForm, setComment] = useInput('');
     const [updateComment, setUpdateComment] = useState({ id: null, comment: null });
     const [showCommentInput, setShowCommentInput] = useState(false);
     const { user } = useSelector((state: RootState) => state.auth);
     const { addCommentLoading } = useSelector((state: RootState) => state.post);
     const dispatch = useDispatch();
-    const { Modal, onShowModal, onCloseModal, onConfirmModal } = useModal(false);
-
-    const onChangeForm = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setComment(e.currentTarget.value);
-    }, []);
+    const { Modal, onShowModal } = useModal(false);
 
     const onChangeUpdateForm = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setUpdateComment({ id: updateComment.id, comment: e.currentTarget.value });
@@ -44,8 +41,13 @@ const Comment = ({ post } : { post: IPost }) => {
 
         setShowCommentInput(true);
         setUpdateComment({ id: id, comment: comment });
-        updateInputRef.current && updateInputRef.current.focus();
     }, []);
+    
+    useEffect(() => {
+        if (showCommentInput && updateInputRef.current) {
+            updateInputRef.current && updateInputRef.current.focus();
+        }
+    }, [showCommentInput]);
 
     const onSubmitUpdateComment = useCallback((e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
