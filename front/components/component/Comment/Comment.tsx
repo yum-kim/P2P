@@ -91,7 +91,7 @@ const Comment = ({ post } : { post: IPost }) => {
                             {comment.user.profileImagePath ? <img src={comment.user.profileImagePath} alt="profile" /> : <BsFillPersonFill />}
                         </div>
                         <div className={styles.rhtBox}>
-                            <p className={styles.name}>{comment.user.username}</p>
+                            <p className={styles.name}>{comment.user.usercode} ({comment.user.username})</p>
                             <div className={styles.content}>
                                 {!showCommentInput || updateComment.id !== comment.id ? (
                                     <>

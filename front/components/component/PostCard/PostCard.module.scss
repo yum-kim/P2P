@@ -48,8 +48,14 @@
 
             .postInfo {
                 .name {
+                    @include flexbox(start, center);
                     @include text-style(16, $black);
                     font-weight: 500;
+
+                    .username {
+                        @include text-style(13, $primary);
+                        font-weight: 400;
+                    }
                 }
         
                 .dateBox {
