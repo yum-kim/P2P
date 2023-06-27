@@ -94,7 +94,8 @@ export const authSlice = createSlice({
     updateUserSuccess: (state, action: PayloadAction<any>) => {
         state.updateUserLoading = false;
         state.updateUserDone = true;
-        state.user.usercode = action.payload.usercode;
+        if (action.payload.usercode) state.user.usercode = action.payload.usercode;
+        else if (action.payload.profileImagePath) state.user.profileImagePath = action.payload.profileImagePath;
         state.modalMessage = "프로필 정보 수정";
     },
     updateUserFailure: (state, action: PayloadAction<any>) => {

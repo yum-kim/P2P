@@ -32,8 +32,8 @@ function* signup(action) {
 function* updateUser(action) {
   const { res, error } = yield call(auth.updateUserInfo, action.payload);
 
-  if (!error) {
-    yield put(updateUserSuccess({ usercode: action.payload.usercode }));
+  if (res) {
+    yield put(updateUserSuccess(res));
   } else {
     yield put(updateUserFailure(error));
   }

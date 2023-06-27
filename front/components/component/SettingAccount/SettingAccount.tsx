@@ -95,8 +95,11 @@ const SettingAccount = ({ onClose }) => {
       return;
     }
 
+    const formData = new FormData();
+    formData.append('usercode', nickname);
+
     setIsActiveNameInput((prev) => !prev);
-    isActiveNameInput && dispatch(updateUserRequest({ usercode: nickname }))
+    isActiveNameInput && dispatch(updateUserRequest(formData));
     setNicknameError(null);
   }, [nickname]);
 
@@ -105,9 +108,12 @@ const SettingAccount = ({ onClose }) => {
       onShowModal("비밀번호를 다시 확인해주세요.");
       return;
     }
+
+    const formData = new FormData();
+    formData.append('password', password);
     
     setIsActivePwInput((prev) => !prev);
-    isActivePwInput && dispatch(updateUserRequest({ password }));
+    isActivePwInput && dispatch(updateUserRequest(formData));
     setPasswordError(null);
   }, [password]);
 
