@@ -1,14 +1,22 @@
 @import '../styles/constants/colors';
 @import '../styles/mixins/flexbox';
+@import '../../styles/layout/grids';
+@import '../styles/mixins/responsive';
 @import '../styles/mixins/text_style';
 
 .signup {
     @include column-flexbox();
     
-    width: 400px;
+    width: 100%;
+    padding: 0 1rem;
     height: 100vh;
     margin: 0 auto;
     
+    @include responsive("T") {
+        width: 400px;
+        padding: 0;
+    }
+
     .logo {
         width: 100px;
         margin-bottom: 2rem;
