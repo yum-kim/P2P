@@ -5,10 +5,10 @@ import styles from "./Modal.module.scss";
 import { createPortal } from 'react-dom';
 
 export interface IModalProps {
-    type: "alert" | "confirm",
+    type?: "alert" | "confirm",
     title?: string,
-    children: React.ReactNode,
-    onCloseModal: () => void,
+    children?: React.ReactNode,
+    onCloseModal?: () => void,
     onConfirmModal?: () => void
 }
 

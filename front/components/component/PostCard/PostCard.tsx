@@ -30,8 +30,8 @@ export interface IPost {
 
 export interface IUser {
     id: number,
-    usercode?: string,
     username: string,
+    usercode?: string,
     password?: string
     profileImagePath: string,
     accessToken?:string

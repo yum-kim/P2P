@@ -33,18 +33,21 @@ const useModal = (initialValue: boolean): IModalHook => {
     }, [callbackRef.current]);
     
     return {
-        Modal: 
-            isShowModal ? ({ type, title }: IModalProps) => (
-                <Modal
-                    type={type}
-                    title={title}
-                    onCloseModal={onCloseModal}
-                    onConfirmModal={onConfirmModal}
-                >
-                    {modalContent}
-                </Modal>
-                ) 
-                : () => null,
+        Modal:
+            isShowModal ? ({ title }: IModalProps) => {
+                const type = callbackRef.current ? 'confirm' : 'alert';
+                return (
+                    <Modal
+                        type={type}
+                        title={title}
+                        onCloseModal={onCloseModal}
+                        onConfirmModal={onConfirmModal}
+                    >
+                        {modalContent}
+                    </Modal>
+                )
+            }
+            : () => null,
         onShowModal,
         onCloseModal,
         onConfirmModal,

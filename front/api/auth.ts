@@ -35,6 +35,16 @@ class Auth {
         }
         return await request(option);
     }
+
+    async updateUserInfo(data: any) {
+        let option = {
+            "method": "PUT",
+            "url": `/auth`,
+            "Content-Type": "application/json",
+            "data": data
+        }
+        return await request(option);
+    }
 }
 
 const auth = new Auth();
