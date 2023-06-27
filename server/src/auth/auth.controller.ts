@@ -8,6 +8,7 @@ import {
   UseInterceptors,
   UploadedFile,
   UseGuards,
+  Patch,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -76,6 +77,17 @@ export class AuthController {
     @GetUser() user: User,
   ): Promise<User> {
     return await this.authService.updateUser(updateUserDto, file, user);
+  }
+
+  @ApiOperation({
+    summary: '프로필 이미지 초기화',
+    description: '프로필 이미지 초기화',
+  })
+  @Patch('/user/profile')
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard)
+  async deleteUserProfile(@GetUser() user: User): Promise<User> {
+    return await this.authService.deleteUserProfile(user);
   }
 
   @ApiOperation({
