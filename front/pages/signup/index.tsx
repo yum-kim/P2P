@@ -27,8 +27,8 @@ const Signup = () => {
     const { Modal, onShowModal, onCloseModal } = useModal(false);
 
     const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const regType = /^[A-Za-z0-9]*$/; //영문, 숫자만 사용해서 3자 이상 체크
-        if (regType.test(e.target.value) && e.target.value.length >= 3) {
+        const regType = /^[A-Za-z0-9]{3,}$/; //영문, 숫자만 사용해서 3자 이상 체크
+        if (regType.test(e.target.value)) {
             setUsernameError(false);
         } else {
             setUsernameError(true);
@@ -47,8 +47,8 @@ const Signup = () => {
     };
 
     const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const regType = /^[A-Za-z0-9]*$/; //영문, 숫자만 사용해서 8자 이상 체크
-        if (regType.test(e.target.value) && e.target.value.length >= 8) {
+        const regType = /^[A-Za-z0-9]{8,}$/; //영문, 숫자만 사용해서 8자 이상 체크
+        if (regType.test(e.target.value)) {
             setPasswordError(false);
         } else {
             setPasswordError(true);
@@ -70,7 +70,7 @@ const Signup = () => {
             onShowModal("입력된 정보를 확인해주세요.");
             return;
         }
-        dispatch(signUpRequest({ username, password }));
+        dispatch(signUpRequest({ username, usercode: nickname, password }));
     }
 
     useEffect(() => {
