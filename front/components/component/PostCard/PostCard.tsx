@@ -147,13 +147,7 @@ const PostCard = ({ post }: { post: IPost }) => {
 
     return (
         <article className={styles.card}>
-            <Modal
-                type="confirm"
-                onCloseModal={onCloseModal}
-                onConfirmModal={onConfirmModal}
-            >
-            </Modal>
-
+            <Modal />
             <div className={styles.top}>
                 <div className={styles.profile}>
                     <div className={styles.img}>

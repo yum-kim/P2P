@@ -24,12 +24,7 @@ const Header = () => {
 
     return (
         <header className={styles.headerWrapper}>
-            <Modal
-                type="confirm"
-                onCloseModal={onCloseModal}
-                onConfirmModal={onConfirmModal}
-            >
-            </Modal>
+            <Modal />
             <div className='container'>
                 <div className='row'>
                     <div className='col-sm-4'>

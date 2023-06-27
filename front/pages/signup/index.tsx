@@ -93,10 +93,7 @@ const Signup = () => {
             </Head>
             {signUpLoading && <Loading />}
 
-            <Modal
-                type="alert"
-                onCloseModal={onCloseModal}>
-            </Modal>
+            <Modal />
 
             <div className={styles.signup}>
                 <h2 className={styles.logo}>

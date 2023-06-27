@@ -74,12 +74,7 @@ const Comment = ({ post } : { post: IPost }) => {
 
     return (
         <div className={styles.comments}>
-            <Modal
-                type="confirm"
-                onCloseModal={onCloseModal}
-                onConfirmModal={onConfirmModal}
-            >
-            </Modal>
+            <Modal />
             <p className={styles.length}>{post.comment.length}개의 댓글이 있습니다.</p>
             <form className={styles.form} onSubmit={onSubmitComment}>
                 <Input type="text" placeholder="댓글을 입력하세요." variant="background" ref={inputRef} value={comment} onChange={onChangeForm} />

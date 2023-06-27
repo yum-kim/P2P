@@ -64,12 +64,8 @@ const Login = () => {
                 <title>P2P | login</title>
             </Head>
             {logInLoading && <Loading />}
-
-            <Modal
-                type="alert"
-                onCloseModal={onCloseModal}>
-            </Modal>
-
+            <Modal />
+            
             <div className={styles.login}>
                 <h2 className={styles.logo}>
                     <img src='images/extension_icon.svg' alt='로고' />
