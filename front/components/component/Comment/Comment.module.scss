@@ -45,18 +45,18 @@
             }
 
             .img {
-                width: 30px;
-                height: 30px;            
+                width: 35px;
+                height: 35px;            
                 position: relative;
                 border-radius: 50%;
                 overflow: hidden;
-                margin: 5px 0.5rem 0;
+                margin: 5px 0.5rem 5px 0;
                 border: 1px solid $border;
                 flex-shrink: 0;
 
                 svg {
                     @include pos-center-x();
-                    top: 3px;
+                    top: 5px;
                     width: 100%;
                     height: 100%;
                     color: $tertiary;

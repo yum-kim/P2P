@@ -24,8 +24,8 @@
             @include flexbox(start);
     
             .img {
-                width: 30px;
-                height: 30px;
+                width: 35px;
+                height: 35px;
                 position: relative;
                 border-radius: 50%;
                 overflow: hidden;
@@ -34,8 +34,9 @@
     
                 svg {
                     @include pos-center-x;
-                    top: 3px;
-                    font-size: 30px;
+                    top: 5px;
+                    width: 100%;
+                    height: 100%;
                     color: $tertiary;
                 }
     
@@ -134,6 +135,7 @@
             @include column-flexbox(end, end);
 
             textarea {
+                border: 1px solid $tertiary;
                 margin-bottom: 1rem;
             }
 
