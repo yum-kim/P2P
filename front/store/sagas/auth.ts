@@ -1,6 +1,11 @@
 import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
 import auth from '../../api/auth';
-import { logInRequest, logInSuccess, logInFailure, signUpRequest, signUpSuccess, signUpFailure, signUpInit, updateUserRequest, updateUserSuccess, updateUserFailure } from '../slices/auth';
+import {
+  logInRequest, logInSuccess, logInFailure,
+  signUpRequest, signUpSuccess, signUpFailure, signUpInit,
+  updateUserRequest, updateUserSuccess, updateUserFailure,
+  deleteProfileImgSuccess, deleteProfileImgFailure, deleteProfileImgRequest
+} from '../slices/auth';
 
 function* login(action) {
   const { res, error } = yield call(auth.login, action.payload);
@@ -34,6 +39,16 @@ function* updateUser(action) {
   }
 }
 
+function* deleteProfileImg(action) {
+  const { error } = yield call(auth.deleteProfileImg);
+
+  if (!error) {
+    yield put(deleteProfileImgSuccess());
+  } else {
+    yield put(deleteProfileImgFailure(error));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(logInRequest.type, login);
 }
@@ -46,10 +61,15 @@ function* watchUpdateUser() {
   yield takeLatest(updateUserRequest.type, updateUser);
 }
 
+function* watchDeleteProfileImg() {
+  yield takeLatest(deleteProfileImgRequest.type, deleteProfileImg);
+}
+
 export default function* authSaga() {
   yield all([
     fork(watchLogin),
     fork(watchSignup),
     fork(watchUpdateUser),
+    fork(watchDeleteProfileImg),
   ]);
 }

@@ -51,6 +51,17 @@ class Auth {
         }
         return await request(option);
     }
+
+    async deleteProfileImg() {
+        let option = {
+            "method": "PATCH",
+            "url": `/auth/user/profile`,
+            "headers": {
+                "Content-type": "application/json",
+            },
+        }
+        return await request(option);
+    }
 }
 
 const auth = new Auth();

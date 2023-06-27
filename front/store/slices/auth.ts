@@ -14,7 +14,11 @@ interface IAuthState {
   signUpError: any;
   updateUserLoading: boolean;
   updateUserDone: boolean;
-  updateUserError: boolean;
+  updateUserError: any;
+  deleteProfileImgLoading: boolean;
+  deleteProfileImgDone: boolean;
+  deleteProfileImgError: any;
+  modalMessage: string | null;
   user: IUser | null;
 }
 
@@ -29,6 +33,10 @@ const initialState: IAuthState = {
   updateUserLoading: false,
   updateUserDone: false,
   updateUserError: null,
+  deleteProfileImgLoading: false,
+  deleteProfileImgDone: false,
+  deleteProfileImgError: null,
+  modalMessage: null,
   user: null,
 }
 
@@ -67,6 +75,7 @@ export const authSlice = createSlice({
     signUpSuccess: (state, action: PayloadAction<any>) => {
         state.signUpLoading = false;
         state.signUpDone = true;
+        state.modalMessage = "회원가입";
     },
     signUpFailure: (state, action: PayloadAction<any>) => {
         state.signUpLoading = false;
@@ -86,11 +95,30 @@ export const authSlice = createSlice({
         state.updateUserLoading = false;
         state.updateUserDone = true;
         state.user.usercode = action.payload.usercode;
+        state.modalMessage = "프로필 정보 수정";
     },
     updateUserFailure: (state, action: PayloadAction<any>) => {
         state.updateUserLoading = false;
         state.updateUserError = action.payload;
     },
+    deleteProfileImgRequest: (state) => {
+        state.deleteProfileImgLoading = true;
+        state.deleteProfileImgDone = false;
+        state.deleteProfileImgError = null;
+    },
+    deleteProfileImgSuccess: (state) => {
+        state.deleteProfileImgLoading = false;
+        state.deleteProfileImgDone = true;
+        state.user.profileImagePath = null;
+        state.modalMessage = "프로필 이미지 삭제";
+    },
+    deleteProfileImgFailure: (state, action: PayloadAction<any>) => {
+        state.deleteProfileImgLoading = false;
+        state.deleteProfileImgError = action.payload;
+    },
+    clearModalMessage: (state) => {
+        state.modalMessage = null;
+    }
   }
 })
 
@@ -105,6 +133,10 @@ export const {
   signUpInit,
   updateUserRequest,
   updateUserSuccess,
-  updateUserFailure
+  updateUserFailure,
+  deleteProfileImgRequest,
+  deleteProfileImgSuccess,
+  deleteProfileImgFailure,
+  clearModalMessage
 } = authSlice.actions;
 export default authSlice.reducer;
