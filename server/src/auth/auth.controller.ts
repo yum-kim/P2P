@@ -4,8 +4,6 @@ import {
   Post,
   ValidationPipe,
   Delete,
-  ParseIntPipe,
-  Param,
   Put,
   UseInterceptors,
   UploadedFile,
@@ -76,7 +74,7 @@ export class AuthController {
     @Body() updateUserDto: UpdateUserDto,
     @UploadedFile() file: Express.Multer.File,
     @GetUser() user: User,
-  ): Promise<void> {
+  ): Promise<User> {
     return await this.authService.updateUser(updateUserDto, file, user);
   }
 
