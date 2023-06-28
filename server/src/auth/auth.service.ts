@@ -52,8 +52,7 @@ export class AuthService {
         jwtConfig.refreshExpiresIn,
       );
       res.cookie('refreshToken', refreshToken, {
-        sameSite: 'None',
-        secure: true,
+        sameSite: 'Lax',
       });
       return {
         accessToken,
