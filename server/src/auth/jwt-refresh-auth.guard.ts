@@ -17,13 +17,14 @@ export class JwtRefreshAuthGuard extends AuthGuard('jwt-refresh') {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    const refreshToken = request.cookies['refreshToken'];
+    const { authorization } = request.headers;
 
-    if (refreshToken === undefined) {
+    if (authorization === undefined) {
       throw new UnauthorizedException('Token 전송 안됨');
     }
 
-    request.user = await this.validateToken(refreshToken);
+    const token = authorization.replace('Bearer ', '');
+    request.user = await this.validateToken(token);
     return true;
   }
 

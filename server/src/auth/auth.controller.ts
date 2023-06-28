@@ -106,7 +106,7 @@ export class AuthController {
     return await this.authService.deleteUser(user);
   }
 
-  @ApiOperation({ summary: 'refreshToken 재발급' })
+  @ApiOperation({ summary: 'accessToken 재발급' })
   @UseGuards(JwtRefreshAuthGuard)
   @Put('/access-token')
   async reNewAccessToken(@GetUser() user: User): Promise<ResponseUserDto> {
