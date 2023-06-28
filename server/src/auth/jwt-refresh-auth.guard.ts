@@ -1,15 +1,15 @@
 import {
   Injectable,
   ExecutionContext,
-  InternalServerErrorException,
   UnauthorizedException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import * as config from 'config';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class JwtRefreshAuthGuard extends AuthGuard('jwt-refresh') {
   constructor(private jwtService: JwtService) {
     super();
   }
@@ -17,19 +17,18 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    const { authorization } = request.headers;
+    const refreshToken = request.cookies['refreshToken'];
 
-    if (authorization === undefined) {
+    if (refreshToken === undefined) {
       throw new UnauthorizedException('Token 전송 안됨');
     }
 
-    const token = authorization.replace('Bearer ', '');
-    request.user = await this.validateToken(token);
+    request.user = await this.validateToken(refreshToken);
     return true;
   }
 
   async validateToken(token: string) {
-    const secretKey = config.get('jwt.secret');
+    const secretKey = config.get('jwt.refresh');
 
     try {
       const verify = await this.jwtService.verify(token, { secret: secretKey });
