@@ -7,6 +7,9 @@ export class ResponseUserDto {
   @ApiProperty({ description: 'AccessToken' })
   accessToken: string;
 
+  @ApiProperty({ description: 'refreshToken' })
+  refreshToken?: string;
+
   @ApiProperty({ description: 'username' })
   username: string;
 
