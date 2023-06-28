@@ -10,7 +10,7 @@ import { useRouter } from 'next/dist/client/router';
 import Loading from '../../components/common/Loading/Loading';
 import useModal from '../../hooks/useModal';
 import { RootState } from '../../store/configureStore';
-import { logInRequest } from '../../store/slices/auth';
+import { logInRequest, issueAccessTokenRequest } from '../../store/slices/auth';
 import useInput from '../../hooks/useInput';
 
 const Login = () => {
@@ -18,7 +18,7 @@ const Login = () => {
     const [password, onChangePassword] = useInput('');
     const dispatch = useDispatch();
     const router = useRouter();
-    const { logInLoading, logInDone, logInError, logOutDone, expireRefreshTokenError, user } = useSelector((state: RootState) => state.auth);
+    const { logInLoading, logInError, logOutDone, expireRefreshTokenError, user, issueAccessTokenLoading } = useSelector((state: RootState) => state.auth);
     const { Modal, onShowModal } = useModal(false);
 
     const onSubmitLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -39,8 +39,8 @@ const Login = () => {
     }, [logInError])
 
     useEffect(() => {
-        logInDone && user && router.push('/feed');
-    }, [logInDone])
+        !logOutDone && user && router.push('/feed');
+    }, [user, logOutDone])
 
     useEffect(() => {
         if (!expireRefreshTokenError && logOutDone && !user) {
@@ -48,12 +48,17 @@ const Login = () => {
         }
     }, [logOutDone])
 
+    useEffect(() => {
+        //refreshToken 있다면 accessToken 발급 후 자동로그인 처리
+        dispatch(issueAccessTokenRequest());
+    }, [])
+
     return (
         <>
             <Head>
                 <title>P2P | login</title>
             </Head>
-            {logInLoading && <Loading />}
+            {logInLoading || issueAccessTokenLoading && <Loading />}
             <Modal />
 
             <div className={styles.login}>

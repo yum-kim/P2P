@@ -77,7 +77,7 @@ export const authSlice = createSlice({
         state.logInLoading = false;
         state.logInError = action.payload;
     },
-    logOutRequest: (state, action?: undefined | PayloadAction<any>) => {
+    logOutRequest: (state, action?: null | PayloadAction<any>) => {
         state.logInDone = false;
         state.logOutDone = true;
         state.user = null;

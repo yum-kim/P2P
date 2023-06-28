@@ -17,7 +17,7 @@ const Header = () => {
 
     const onClickLogout = () => {
         onShowModal("로그아웃 하시겠습니까?", () => {
-            dispatch(logOutRequest());
+            dispatch(logOutRequest(null));
             router.push('/login');
         })
     }
