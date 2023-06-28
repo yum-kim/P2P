@@ -6,6 +6,7 @@ import Input from '../../element/Input/Input';
 import { BsFillPersonFill, BsFileImage, BsCloudUpload, BsXCircleFill } from "react-icons/bs";
 import { RootState } from '../../../store/configureStore';
 import { addPostRequest } from '../../../store/slices/post';
+import { issueAccessTokenRequest } from '../../../store/slices/auth';
 
 const PostForm = () => {
     const { user } = useSelector((state: RootState) => state.auth);
@@ -67,6 +68,10 @@ const PostForm = () => {
         });
     }, []);
 
+    const onClickIssueToken = () => {
+        dispatch(issueAccessTokenRequest());
+    }
+
     return (
         <div className={styles.postForm}>
             <div className={styles.profile}>
@@ -87,6 +92,10 @@ const PostForm = () => {
                             ))}
                         </ul>
                     </div>
+
+                    {/* 백엔드 테스트용 임시 버튼 */}
+                    <Button onClick={onClickIssueToken}>AccessToken API Call</Button>
+                    
                     <div className={styles.btnWrapper}>
                         <input type="file" ref={imageInput} onChange={onAddImageFile} multiple hidden />
                         <Button variant='outlined' onClick={onClickImageUpload}>

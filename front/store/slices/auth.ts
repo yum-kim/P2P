@@ -21,6 +21,10 @@ interface IAuthState {
   removeAccountLoading: boolean;
   removeAccountDone: boolean;
   removeAccountError: any;
+  issueAccessTokenLoading: boolean;
+  issueAccessTokenDone: boolean;
+  issueAccessTokenError: null;
+  expireRefreshTokenError: null;
   modalMessage: string | null;
   user: IUser | null;
 }
@@ -42,6 +46,10 @@ const initialState: IAuthState = {
   removeAccountLoading: false,
   removeAccountDone: false,
   removeAccountError: null,
+  issueAccessTokenLoading: false,
+  issueAccessTokenDone: false,
+  issueAccessTokenError: null,
+  expireRefreshTokenError: null,
   modalMessage: null,
   user: null,
 }
@@ -62,16 +70,21 @@ export const authSlice = createSlice({
         state.logInDone = true;
         state.user = { id, username, usercode, accessToken, profileImagePath };
         auth.setToken(accessToken);
+        state.expireRefreshTokenError = null;
     },
     logInFailure: (state, action: PayloadAction<any>) => {
         state.logInLoading = false;
         state.logInError = action.payload;
     },
-    logOutRequest: (state) => {
+    logOutRequest: (state, action: PayloadAction<any>) => {
         state.logInDone = false;
         state.logOutDone = true;
         state.user = null;
         auth.setToken(null);
+
+        if (action.payload) { //토큰만료로 로그아웃 시켰을 때
+          state.expireRefreshTokenError = action.payload;
+        }
     },
     signUpRequest: (state, action: PayloadAction<any>) => {
         state.signUpLoading = true;
@@ -137,9 +150,25 @@ export const authSlice = createSlice({
         state.removeAccountLoading = false;
         state.removeAccountError = action.payload;
     },
+    issueAccessTokenRequest: (state) => {
+        state.issueAccessTokenLoading = true;
+        state.issueAccessTokenDone = false;
+        state.issueAccessTokenError = null;
+    },
+    issueAccessTokenSuccess: (state, action: PayloadAction<any>) => {
+        state.issueAccessTokenLoading = false;
+        state.issueAccessTokenDone = true;
+        const { id, username, usercode, accessToken, profileImagePath } = action.payload;
+        state.user = { id, username, usercode, accessToken, profileImagePath };
+        auth.setToken(accessToken);
+    },
+    issueAccessTokenFailure: (state, action: PayloadAction<any>) => {
+        state.issueAccessTokenLoading = false;
+        state.issueAccessTokenError = action.payload;
+    },
     clearModalMessage: (state) => {
         state.modalMessage = null;
-    }
+    },
   }
 })
 
@@ -161,6 +190,9 @@ export const {
   removeAccountRequest,
   removeAccountSuccess,
   removeAccountFailure,
+  issueAccessTokenRequest,
+  issueAccessTokenSuccess,
+  issueAccessTokenFailure,
   clearModalMessage
 } = authSlice.actions;
 export default authSlice.reducer;

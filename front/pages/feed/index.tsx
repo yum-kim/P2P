@@ -30,7 +30,7 @@ const Feed = () => {
     const { user } = useSelector((state: RootState) => state.auth);
     const [isLastPage, setIsLastPage] = useState(false);
     const dispatch = useDispatch();
-    const { Modal, onShowModal, onCloseModal, onConfirmModal } = useModal(false);
+    const { Modal, onShowModal } = useModal(false);
     const intersectingRef = useRef(null);
     const { isIntersecting } = useInfiniteScroll(intersectingRef, {
         threshold: 0.3

@@ -4,7 +4,7 @@ import {
   logInRequest, logInSuccess, logInFailure,
   signUpRequest, signUpSuccess, signUpFailure, signUpInit,
   updateUserRequest, updateUserSuccess, updateUserFailure,
-  deleteProfileImgSuccess, deleteProfileImgFailure, deleteProfileImgRequest, removeAccountRequest, removeAccountSuccess, removeAccountFailure
+  deleteProfileImgSuccess, deleteProfileImgFailure, deleteProfileImgRequest, removeAccountRequest, removeAccountSuccess, removeAccountFailure, issueAccessTokenRequest, issueAccessTokenSuccess, issueAccessTokenFailure
 } from '../slices/auth';
 
 function* login(action) {
@@ -39,7 +39,7 @@ function* updateUser(action) {
   }
 }
 
-function* deleteProfileImg(action) {
+function* deleteProfileImg() {
   const { error } = yield call(auth.deleteProfileImg);
 
   if (!error) {
@@ -49,13 +49,23 @@ function* deleteProfileImg(action) {
   }
 }
 
-function* removeAccount(action) {
+function* removeAccount() {
   const { error } = yield call(auth.removeAccount);
 
   if (!error) {
     yield put(removeAccountSuccess());
   } else {
     yield put(removeAccountFailure(error));
+  }
+}
+
+function* issueAccessToken() {
+  const { res, error } = yield call(auth.issueAccessToken);
+
+  if (res) {
+    yield put(issueAccessTokenSuccess(res));
+  } else {
+    yield put(issueAccessTokenFailure(error));
   }
 }
 
@@ -79,6 +89,10 @@ function* watchRemoveAccount() {
   yield takeLatest(removeAccountRequest.type, removeAccount);
 }
 
+function* watchIssueAccessToken() {
+  yield takeLatest(issueAccessTokenRequest.type, issueAccessToken);
+}
+
 export default function* authSaga() {
   yield all([
     fork(watchLogin),
@@ -86,5 +100,6 @@ export default function* authSaga() {
     fork(watchUpdateUser),
     fork(watchDeleteProfileImg),
     fork(watchRemoveAccount),
+    fork(watchIssueAccessToken),
   ]);
 }

@@ -18,7 +18,7 @@ const Login = () => {
     const [password, onChangePassword] = useInput('');
     const dispatch = useDispatch();
     const router = useRouter();
-    const { logInLoading, logInDone, logInError, logOutDone, user } = useSelector((state: RootState) => state.auth);
+    const { logInLoading, logInDone, logInError, logOutDone, expireRefreshTokenError, user } = useSelector((state: RootState) => state.auth);
     const { Modal, onShowModal } = useModal(false);
 
     const onSubmitLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -31,6 +31,10 @@ const Login = () => {
     }
 
     useEffect(() => {
+        expireRefreshTokenError && !user && onShowModal("토큰이 만료되어 권한이 없습니다. 재로그인 해주세요.");
+    }, [expireRefreshTokenError])
+    
+    useEffect(() => {
         logInError && onShowModal(logInError.message);
     }, [logInError])
 
@@ -39,7 +43,9 @@ const Login = () => {
     }, [logInDone])
 
     useEffect(() => {
-        logOutDone && !user && onShowModal("로그아웃이 완료되었습니다.");
+        if (!expireRefreshTokenError && logOutDone && !user) {
+            onShowModal("로그아웃이 완료되었습니다.");
+        }
     }, [logOutDone])
 
     return (
