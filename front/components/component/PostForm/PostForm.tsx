@@ -73,7 +73,7 @@ const PostForm = () => {
                 {user && user.profileImagePath ? <img src={user.profileImagePath} alt="" /> : <BsFillPersonFill />}
             </div>
             <div className={styles.content}>
-                <Input type='textarea' value={text} placeholder='오늘은 어떤 일이 있었나요?' height='100' onChange={onChangeText} />
+                <Input type='textarea' value={text} placeholder={`${user?.usercode}님! 오늘은 어떤 일이 있었나요?`} height='100' onChange={onChangeText} />
 
                 <div className={styles.others}>
                     <div className={styles.uploadedImg}>

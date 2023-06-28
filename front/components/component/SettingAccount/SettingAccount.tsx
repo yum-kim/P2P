@@ -5,11 +5,11 @@ import { RootState } from '../../../store/configureStore';
 import { BsFillPersonFill, BsFileEarmarkPersonFill, BsFillArrowLeftCircleFill, BsFillTrashFill } from "react-icons/bs";
 import Input from '../../element/Input/Input';
 import Button from '../../element/Button/Button';
-import { updateUserRequest } from '../../../store/slices/auth';
+import { updateUserRequest, deleteProfileImgRequest, clearModalMessage } from '../../../store/slices/auth';
 import useModal from '../../../hooks/useModal';
 
 const SettingAccount = ({ onClose }) => {
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user, updateUserDone, updateUserError, deleteProfileImgDone, deleteProfileImgError, modalMessage } = useSelector((state: RootState) => state.auth);
   const [file, setFile] = useState<File | null>(null);
   const [nickname, setNickname] = useState(user?.usercode || null);
   const [password, setPassword] = useState(null);
@@ -19,7 +19,34 @@ const SettingAccount = ({ onClose }) => {
   const [isActivePwInput, setIsActivePwInput] = useState(false);
   const profileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
-  const { Modal, onShowModal, onCloseModal, onConfirmModal } = useModal(false);
+  const { Modal, onShowModal } = useModal(false);
+
+  const completeMsgMap = {
+      updateUserDone,
+      deleteProfileImgDone,
+  }
+
+  useEffect(() => {
+      const doneStates = Object.keys(completeMsgMap).filter((key) => completeMsgMap[key]);
+      if (doneStates.length > 0 && modalMessage) {
+          onShowModal(`${modalMessage}이(가) 완료되었습니다.`);
+      }
+      dispatch(clearModalMessage());
+  }, Object.values(completeMsgMap));
+
+  const errMsgMap = {
+      updateUserError,
+      deleteProfileImgError
+  }
+
+  useEffect(() => {
+      const doneStates = Object.keys(errMsgMap).filter((key) => errMsgMap[key]);
+      const errMsg = doneStates.length > 0 && errMsgMap[doneStates[0]].message;
+
+      if (errMsg) {
+          onShowModal(`${errMsg}`);
+      }
+  }, Object.values(errMsgMap));
 
   const onClickImageUpload = useCallback(() => {
     profileInputRef.current.click();
@@ -28,7 +55,7 @@ const SettingAccount = ({ onClose }) => {
   const uploadImage = useCallback(() => {
     const formData = new FormData();
     formData.append('file', file);
-    dispatch(updateUserRequest({ formData }));
+    dispatch(updateUserRequest(formData));
     setFile(null);
   }, [file]);
 
@@ -68,8 +95,11 @@ const SettingAccount = ({ onClose }) => {
       return;
     }
 
+    const formData = new FormData();
+    formData.append('usercode', nickname);
+
     setIsActiveNameInput((prev) => !prev);
-    isActiveNameInput && dispatch(updateUserRequest({ usercode: nickname }))
+    isActiveNameInput && dispatch(updateUserRequest(formData));
     setNicknameError(null);
   }, [nickname]);
 
@@ -78,16 +108,20 @@ const SettingAccount = ({ onClose }) => {
       onShowModal("비밀번호를 다시 확인해주세요.");
       return;
     }
+
+    const formData = new FormData();
+    formData.append('password', password);
     
     setIsActivePwInput((prev) => !prev);
-    isActivePwInput && dispatch(updateUserRequest({ password }));
+    isActivePwInput && dispatch(updateUserRequest(formData));
     setPasswordError(null);
   }, [password]);
 
-  const onDeleteProfile = useCallback(() => {
-    //TODO: image null로 update dispatch 추가
-    
-    setFile(null);
+  const onDeleteProfileImg = useCallback(() => {
+    onShowModal("등록된 프로필 이미지를 삭제하시겠습니까?", () => {
+      dispatch(deleteProfileImgRequest());
+      setFile(null);
+    })
   }, []);
 
   const onBackMyPage = useCallback(() => {
@@ -119,7 +153,7 @@ const SettingAccount = ({ onClose }) => {
                     </button>
                 </div>
                 <div className={styles.deleteProfileBtn}>
-                    <Button variant="primary-blue" onClick={onDeleteProfile}>
+                    <Button variant="primary-blue" onClick={onDeleteProfileImg}>
                         <BsFillTrashFill />이미지 삭제
                     </Button>
                 </div>

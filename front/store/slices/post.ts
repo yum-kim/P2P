@@ -32,7 +32,7 @@ const initialState = {
     modalMessage: null,
     allPosts: [],
     fetchedPosts: [],
-    allPostsCnt: 0,
+    remainingPostsCnt: 0,
     cursor: null
 }
 
@@ -58,7 +58,7 @@ const postSlice = createSlice({
         getPostsSuccess: (state, action: PayloadAction<any>) => {
             const { posts, cursor } = action.payload;
             state.fetchedPosts = posts[0];
-            state.allPostsCnt = posts[1];
+            state.remainingPostsCnt = posts[1];
             state.cursor = posts[2];
 
             if (!cursor) {
@@ -81,7 +81,6 @@ const postSlice = createSlice({
         },
         addPostSuccess: (state, action: PayloadAction<any>) => {
             state.allPosts.unshift(action.payload);
-            state.allPostsCnt++;
             state.addPostLoading = false;
             state.addPostDone = true;
             state.modalMessage = '게시물 업로드';
@@ -115,7 +114,6 @@ const postSlice = createSlice({
         },
         deletePostSuccess: (state, action: PayloadAction<any>) => {
             state.allPosts = state.allPosts.filter((v) => v.id !== action.payload.id);
-            state.allPostsCnt--;
             state.deletePostLoading = false;
             state.deletePostDone = true;
             state.modalMessage = '게시물 삭제';

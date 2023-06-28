@@ -8,7 +8,9 @@ class Boards {
         let option = {
             "method": "GET",
             "url": `/boards`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "application/json",
+            },
             "params": params
         }
         return await request(option);
@@ -18,7 +20,9 @@ class Boards {
         let option = {
             "method": "POST",
             "url": `/boards`,
-            "Content-Type": "multipart/form-data",
+            "headers": {
+                "Content-type": "multipart/form-data",
+            },
             "data": data
         }
         return await request(option);
@@ -28,7 +32,9 @@ class Boards {
         let option = {
             "method": "PUT",
             "url": `/boards/${data.id}`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "application/json",
+            },
             "data": data.body
         }
         return await request(option);
@@ -38,7 +44,9 @@ class Boards {
         let option = {
             "method": "DELETE",
             "url": `/boards/${id}`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "application/json",
+            },
         }
         return await request(option);
     }
@@ -47,7 +55,9 @@ class Boards {
         let option = {
             "method": "GET",
             "url": `/boards/user`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "application/json",
+            },
             "params": params
         }
         return await request(option);
@@ -57,7 +67,9 @@ class Boards {
         let option = {
             "method": "GET",
             "url": `/boards/${id}`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "application/json",
+            },
         }
         return await request(option);
     }
@@ -66,7 +78,9 @@ class Boards {
         let option = {
             "method": "PATCH",
             "url": `/boards/${data.id}/status`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "application/json",
+            },
             "data": data.body
         }
         return await request(option);
@@ -76,7 +90,9 @@ class Boards {
         let option = {
             "method": "POST",
             "url": `/heart`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "application/json",
+            },
             "data": data
         }
         return await request(option);
@@ -86,7 +102,9 @@ class Boards {
         let option = {
             "method": "POST",
             "url": `/comment`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "application/json",
+            },
             "data": data
         }
         return await request(option);
@@ -96,7 +114,9 @@ class Boards {
         let option = {
             "method": "PUT",
             "url": `/comment/${data.id}`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "application/json",
+            },
             "data": data.body
         }
         return await request(option);
@@ -106,7 +126,9 @@ class Boards {
         let option = {
             "method": "PUT",
             "url": `/comment/${id}`,
-            "Content-Type": "application/json",
+            "headers": {
+                "Content-type": "application/json",
+            },
         }
         return await request(option);
     }

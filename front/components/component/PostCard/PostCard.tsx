@@ -154,7 +154,7 @@ const PostCard = ({ post }: { post: IPost }) => {
                         {post.user.profileImagePath ? <img src={`${post.user.profileImagePath}`} alt="프로필" /> : <BsFillPersonFill />}
                     </div>
                     <div className={styles.postInfo}>
-                        <p className={styles.name}>{post.user.username}</p>
+                        <p className={styles.name}>{post.user.usercode} <span className={styles.username}>({post.user.username})</span></p>
                         <div className={styles.dateBox}>
                             <span className={styles.date}>{post.createAt}</span>
                             <span className={styles.status}>
