@@ -63,7 +63,7 @@ async function validateResponse(res:any, option: IOptionProps) {
         store.dispatch(issueAccessTokenRequest());
         return await request(option); //재요청
       case "리프레쉬 토큰 만료":
-        store.dispatch(logOutRequest(error));
+        // store.dispatch(logOutRequest(error));
         return;
     }
   }
