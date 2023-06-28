@@ -40,7 +40,7 @@ export class JwtRefreshAuthGuard extends AuthGuard('jwt-refresh') {
         case 'JsonWebTokenError':
           throw new UnauthorizedException('유효하지 않은 토큰입니다.');
         case 'TokenExpiredError':
-          throw new UnauthorizedException('토큰이 만료되었습니다.');
+          throw new UnauthorizedException('refresh 토큰이 만료되었습니다.');
         default:
           throw new InternalServerErrorException('서버 오류입니다.');
       }
