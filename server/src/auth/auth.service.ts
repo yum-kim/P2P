@@ -20,6 +20,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  async findOneUser(userId: number): Promise<User> {
+    return await this.userRepository.findOne({ where: { id: userId } });
+  }
+
   async signUp(authCredentialDto: AuthCredentialDto): Promise<any> {
     if (!authCredentialDto.usercode)
       authCredentialDto.usercode = this.generateUserCode();
@@ -47,7 +51,10 @@ export class AuthService {
         jwtConfig.refresh,
         jwtConfig.refreshExpiresIn,
       );
-      res.cookie('refreshToken', refreshToken);
+      res.cookie('refreshToken', refreshToken, {
+        sameSite: 'None',
+        secure: true,
+      });
       return {
         accessToken,
         id: user.id,
