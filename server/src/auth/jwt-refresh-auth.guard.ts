@@ -1,8 +1,8 @@
 import {
   Injectable,
   ExecutionContext,
-  HttpException,
-  HttpStatus,
+  UnauthorizedException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
@@ -20,7 +20,7 @@ export class JwtRefreshAuthGuard extends AuthGuard('jwt-refresh') {
     const refreshToken = request.cookies['refreshToken'];
 
     if (refreshToken === undefined) {
-      throw new HttpException('Token 전송 안됨', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException('Token 전송 안됨');
     }
 
     request.user = await this.validateToken(refreshToken);
@@ -37,11 +37,11 @@ export class JwtRefreshAuthGuard extends AuthGuard('jwt-refresh') {
       switch (e.name) {
         // 토큰에 대한 오류를 판단합니다.
         case 'JsonWebTokenError':
-          throw new HttpException('유효하지 않은 토큰입니다.', 401);
+          throw new UnauthorizedException('유효하지 않은 토큰입니다.');
         case 'TokenExpiredError':
-          throw new HttpException('토큰이 만료되었습니다.', 401);
+          throw new UnauthorizedException('토큰이 만료되었습니다.');
         default:
-          throw new HttpException('서버 오류입니다.', 500);
+          throw new InternalServerErrorException('서버 오류입니다.');
       }
     }
   }

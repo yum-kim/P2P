@@ -1,4 +1,8 @@
-import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { HeartRepository } from './heart.repository';
 import { CreateHeartDto } from './dto/create-heart.dto';
 import { User } from 'src/auth/user.entity';
@@ -30,7 +34,7 @@ export class HeartService {
     const heart: any = await this.heartRepository.findOne({
       where: { boardId: createHeartDto.boardId, userId: user.id },
     });
-    if (heart) throw new HttpException(`이미 좋아요를 한 상태 입니다`, 500);
+    if (heart) throw new BadRequestException(`이미 좋아요를 한 상태 입니다`);
     await this.updateBoardHeart(
       createHeartDto.boardId,
       BoardHeartTypeEnum.increment,
