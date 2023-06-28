@@ -11,7 +11,10 @@ async function bootstrap() {
   const serverConfig = config.get('server');
   const port = serverConfig.port;
   app.use(cookieParser());
-  app.enableCors();
+  app.enableCors({
+    origin: ['http://dqe25jv8g5qos.cloudfront.net', 'http://localhost:3000'],
+    credentials: true,
+  });
   setupSwagger(app);
   await app.listen(port);
   try {
