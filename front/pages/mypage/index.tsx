@@ -40,12 +40,6 @@ const mypage = () => {
         }
     }, [removeAccountError]);
 
-    useEffect(() => {
-        if (!user) {
-            router.push('/login');
-        }
-    }, [user]);
-
     return (
         <>
             <Head>

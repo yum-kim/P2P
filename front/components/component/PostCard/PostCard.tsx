@@ -35,7 +35,8 @@ export interface IUser {
     usercode?: string,
     password?: string
     profileImagePath: string,
-    accessToken?:string
+    accessToken?: string,
+    refreshToken?: string
 }
 
 export interface IPostImage {

@@ -86,7 +86,6 @@ const Feed = () => {
     }, [isIntersecting, isLastPage]);
 
     useEffect(() => {
-        if (!user) router.push('/login');
         getPosts();
     }, [user]);
 

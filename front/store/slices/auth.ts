@@ -2,7 +2,7 @@ import { IUser } from './../../components/component/PostCard/PostCard';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import auth from '../../api/auth';
-import { BaseOptions } from 'vm';
+import { setCookie } from '../../utils/cookie';
 
 interface IAuthState {
   logInLoading: boolean;
@@ -65,26 +65,27 @@ export const authSlice = createSlice({
         state.logOutDone = false;
     },
     logInSuccess: (state, action: PayloadAction<IUser>) => {
-        const { id, username, usercode, accessToken, profileImagePath } = action.payload;
+        const { id, username, usercode, accessToken, refreshToken, profileImagePath } = action.payload;
         state.logInLoading = false;
         state.logInDone = true;
         state.user = { id, username, usercode, accessToken, profileImagePath };
         auth.setToken(accessToken);
+        setCookie('P2P|refreshToken', refreshToken, 1);
         state.expireRefreshTokenError = null;
     },
     logInFailure: (state, action: PayloadAction<any>) => {
         state.logInLoading = false;
         state.logInError = action.payload;
     },
-    logOutRequest: (state) => {
+    logOutRequest: (state, action?: undefined | PayloadAction<any>) => {
         state.logInDone = false;
         state.logOutDone = true;
         state.user = null;
         auth.setToken(null);
 
-        // if (action.payload.expireToken) { //토큰만료로 로그아웃 시켰을 때
-        //   state.expireRefreshTokenError = action.payload;
-        // }
+        if (action?.payload) { //토큰만료로 로그아웃 시켰을 때
+          state.expireRefreshTokenError = action.payload;
+        }
     },
     signUpRequest: (state, action: PayloadAction<any>) => {
         state.signUpLoading = true;
