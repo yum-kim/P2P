@@ -3,16 +3,22 @@ import AppLayout from "../../components/layout/AppLayout/AppLayout";
 import styles from './mypage.module.scss';
 import { BsFillPersonFill, BsFileEarmarkPersonFill } from "react-icons/bs";
 import { AiOutlineRight } from "react-icons/ai";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/configureStore';
-import { useRef, useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import Slider from '../../components/common/Slider/Slider';
 import SettingAccount from '../../components/component/SettingAccount/SettingAccount';
 import Loading from '../../components/common/Loading/Loading';
+import useModal from '../../hooks/useModal';
+import { removeAccountRequest } from '../../store/slices/auth';
+import { useRouter } from 'next/router';
 
 const mypage = () => {
-    const { user } = useSelector((state: RootState) => state.auth);
+    const { user, removeAccountLoading, removeAccountDone, removeAccountError } = useSelector((state: RootState) => state.auth);
     const [visible, setVisible] = useState(false);
+    const { Modal, onShowModal } = useModal(false);
+    const dispatch = useDispatch();
+    const router = useRouter();
     
     const onClickSettingAccountSlider = useCallback(() => {
         setVisible(true);
@@ -22,14 +28,33 @@ const mypage = () => {
         setVisible(false);
     }, [visible]);
 
+    const onClickRemoveAccount = useCallback(() => {
+        onShowModal("회원탈퇴 시 복구할 수 없습니다. 계속 진행하시겠습니까?", () => {
+            dispatch(removeAccountRequest());
+        })
+    }, []);
+
+    useEffect(() => {
+        if (removeAccountError) {
+            onShowModal(`회원탈퇴 중 오류가 발생했습니다. ${removeAccountError.message}`);
+        }
+    }, [removeAccountError]);
+
+    useEffect(() => {
+        if (!user) {
+            router.push('/login');
+        }
+    }, [user]);
+
     return (
         <>
             <Head>
                 <title>P2P | My Page</title>
             </Head>
             <AppLayout>
-                {/* <Loading /> */}
-
+                {removeAccountLoading && <Loading />}
+                <Modal />
+                
                 {/* {!visible && ( */}
                 <section className={styles.mypage}>
                     <div className={styles.mypageWrapper}>
@@ -54,7 +79,7 @@ const mypage = () => {
                                     <button disabled>언어변경<AiOutlineRight /></button>
                                 </li> */}
                                 <li>
-                                    <button>회원탈퇴<AiOutlineRight /></button>
+                                    <button onClick={onClickRemoveAccount}>회원탈퇴<AiOutlineRight /></button>
                                 </li>
                             </ul>
                         </article>

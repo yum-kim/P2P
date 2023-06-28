@@ -75,14 +75,15 @@ const Signup = () => {
 
     useEffect(() => {
         if (signUpError) {
-            onShowModal("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
+            onShowModal(`회원가입 중 오류가 발생했습니다. 다시 시도해주세요. ${signUpError.message}`);
         }
     }, [signUpError]);
 
     useEffect(() => {
         if (signUpDone) {
-            onShowModal("회원가입이 완료되었습니다. 로그인 후 이용해주세요.");
-            router.push('/login');
+            onShowModal("회원가입이 완료되었습니다. 로그인 화면으로 이동하시겠습니까?", () => {
+                router.push('/login');
+            });
         }
     }, [signUpDone]);
 

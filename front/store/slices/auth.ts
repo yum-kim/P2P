@@ -18,6 +18,9 @@ interface IAuthState {
   deleteProfileImgLoading: boolean;
   deleteProfileImgDone: boolean;
   deleteProfileImgError: any;
+  removeAccountLoading: boolean;
+  removeAccountDone: boolean;
+  removeAccountError: any;
   modalMessage: string | null;
   user: IUser | null;
 }
@@ -36,6 +39,9 @@ const initialState: IAuthState = {
   deleteProfileImgLoading: false,
   deleteProfileImgDone: false,
   deleteProfileImgError: null,
+  removeAccountLoading: false,
+  removeAccountDone: false,
+  removeAccountError: null,
   modalMessage: null,
   user: null,
 }
@@ -75,7 +81,6 @@ export const authSlice = createSlice({
     signUpSuccess: (state, action: PayloadAction<any>) => {
         state.signUpLoading = false;
         state.signUpDone = true;
-        state.modalMessage = "회원가입";
     },
     signUpFailure: (state, action: PayloadAction<any>) => {
         state.signUpLoading = false;
@@ -117,6 +122,21 @@ export const authSlice = createSlice({
         state.deleteProfileImgLoading = false;
         state.deleteProfileImgError = action.payload;
     },
+    removeAccountRequest: (state) => {
+        state.removeAccountLoading = true;
+        state.removeAccountDone = false;
+        state.removeAccountError = null;
+    },
+    removeAccountSuccess: (state) => {
+        state.removeAccountLoading = false;
+        state.removeAccountDone = true;
+        state.user = null;
+        state.modalMessage = "회원탈퇴";
+    },
+    removeAccountFailure: (state, action: PayloadAction<any>) => {
+        state.removeAccountLoading = false;
+        state.removeAccountError = action.payload;
+    },
     clearModalMessage: (state) => {
         state.modalMessage = null;
     }
@@ -138,6 +158,9 @@ export const {
   deleteProfileImgRequest,
   deleteProfileImgSuccess,
   deleteProfileImgFailure,
+  removeAccountRequest,
+  removeAccountSuccess,
+  removeAccountFailure,
   clearModalMessage
 } = authSlice.actions;
 export default authSlice.reducer;

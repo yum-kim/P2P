@@ -42,7 +42,7 @@ class Auth {
 
     async updateUserInfo(data: any) {
         let option = {
-            "method": "PUT",
+            "method": "DELETE",
             "url": `/auth`,
             "headers": {
                 "Content-type": "multipart/form-data",
@@ -58,6 +58,17 @@ class Auth {
             "url": `/auth/user/profile`,
             "headers": {
                 "Content-type": "application/json",
+            },
+        }
+        return await request(option);
+    }
+
+    async removeAccount() {
+        let option = {
+            "method": "DELETE",
+            "url": `/auth`,
+            "headers": {
+                "Content-type": "multipart/form-data",
             },
         }
         return await request(option);

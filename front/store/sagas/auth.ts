@@ -4,7 +4,7 @@ import {
   logInRequest, logInSuccess, logInFailure,
   signUpRequest, signUpSuccess, signUpFailure, signUpInit,
   updateUserRequest, updateUserSuccess, updateUserFailure,
-  deleteProfileImgSuccess, deleteProfileImgFailure, deleteProfileImgRequest
+  deleteProfileImgSuccess, deleteProfileImgFailure, deleteProfileImgRequest, removeAccountRequest, removeAccountSuccess, removeAccountFailure
 } from '../slices/auth';
 
 function* login(action) {
@@ -26,7 +26,7 @@ function* signup(action) {
     yield put(signUpFailure(error));
   }
   
-  yield put(signUpInit());
+  // yield put(signUpInit());
 }
 
 function* updateUser(action) {
@@ -49,6 +49,16 @@ function* deleteProfileImg(action) {
   }
 }
 
+function* removeAccount(action) {
+  const { error } = yield call(auth.removeAccount);
+
+  if (!error) {
+    yield put(removeAccountSuccess());
+  } else {
+    yield put(removeAccountFailure(error));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(logInRequest.type, login);
 }
@@ -65,11 +75,16 @@ function* watchDeleteProfileImg() {
   yield takeLatest(deleteProfileImgRequest.type, deleteProfileImg);
 }
 
+function* watchRemoveAccount() {
+  yield takeLatest(removeAccountRequest.type, removeAccount);
+}
+
 export default function* authSaga() {
   yield all([
     fork(watchLogin),
     fork(watchSignup),
     fork(watchUpdateUser),
     fork(watchDeleteProfileImg),
+    fork(watchRemoveAccount),
   ]);
 }
