@@ -75,7 +75,7 @@ const Signup = () => {
 
     useEffect(() => {
         if (signUpError) {
-            onShowModal(`회원가입 중 오류가 발생했습니다. 다시 시도해주세요. ${signUpError.message}`);
+            onShowModal(`회원가입 중 오류가 발생했습니다. ${signUpError.message}`);
         }
     }, [signUpError]);
 
