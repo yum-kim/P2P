@@ -109,9 +109,7 @@ export class AuthController {
   @ApiOperation({ summary: 'refreshToken 재발급' })
   @UseGuards(JwtRefreshAuthGuard)
   @Put('/access-token')
-  async reNewAccessToken(
-    @GetUser() user: User,
-  ): Promise<{ accessToken: string }> {
+  async reNewAccessToken(@GetUser() user: User): Promise<ResponseUserDto> {
     const jwtConfig = config.get('jwt');
 
     const payload: any = { username: user.username, id: user.id };
@@ -120,6 +118,7 @@ export class AuthController {
       jwtConfig.secret,
       jwtConfig.expiresIn,
     );
-    return { accessToken };
+    const userdata = await this.authService.findOneUser(user.id);
+    return { ...userdata, accessToken };
   }
 }
