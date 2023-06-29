@@ -1,6 +1,5 @@
-import { useRouter } from 'next/dist/client/router';
-import { useDispatch } from 'react-redux';
-import axios, { AxiosRequestConfig } from 'axios';
+import { TOKEN_COOKIE_NAME } from './../utils/cookie';
+import axios from 'axios';
 import auth from './auth';
 import { issueAccessTokenRequest, signUpInit, logOutRequest } from '../store/slices/auth';
 import { store } from '../store/configureStore';
@@ -25,7 +24,7 @@ interface IOptionProps {
 export default async function request(option: IOptionProps) {
   try {
     const accessToken = auth.getToken();
-    const refreshToken = getCookie('P2P|refreshToken');
+    const refreshToken = getCookie(TOKEN_COOKIE_NAME);
 
     if (accessToken) {
       axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;

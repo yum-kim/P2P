@@ -16,9 +16,11 @@ const Header = () => {
     const { Modal, onShowModal } = useModal(false);
 
     const onClickLogout = () => {
-        onShowModal("로그아웃 하시겠습니까?", () => {
-            dispatch(logOutRequest(null));
-            router.push('/login');
+        onShowModal("로그아웃 하시겠습니까?", {
+            confirm: () => {
+                dispatch(logOutRequest(null));
+                router.push('/login');
+            }
         })
     }
 

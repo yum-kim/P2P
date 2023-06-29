@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import AppLayout from "../../components/layout/AppLayout/AppLayout";
 import styles from './mypage.module.scss';
-import { BsFillPersonFill, BsFileEarmarkPersonFill } from "react-icons/bs";
+import { BsFillPersonFill } from "react-icons/bs";
 import { AiOutlineRight } from "react-icons/ai";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/configureStore';
@@ -10,33 +10,37 @@ import Slider from '../../components/common/Slider/Slider';
 import SettingAccount from '../../components/component/SettingAccount/SettingAccount';
 import Loading from '../../components/common/Loading/Loading';
 import useModal from '../../hooks/useModal';
-import { removeAccountRequest } from '../../store/slices/auth';
-import { useRouter } from 'next/router';
+import { removeAccountRequest, resetSpecificAuth } from '../../store/slices/auth';
 
 const mypage = () => {
-    const { user, removeAccountLoading, removeAccountDone, removeAccountError } = useSelector((state: RootState) => state.auth);
+    const { user, removeAccountLoading, removeAccountError } = useSelector((state: RootState) => state.auth);
     const [visible, setVisible] = useState(false);
     const { Modal, onShowModal } = useModal(false);
     const dispatch = useDispatch();
-    const router = useRouter();
     
     const onClickSettingAccountSlider = useCallback(() => {
         setVisible(true);
-    }, [visible])
+    }, [visible]);
 
     const onCloseSettingAccountSlider = useCallback(() => {
         setVisible(false);
     }, [visible]);
 
     const onClickRemoveAccount = useCallback(() => {
-        onShowModal("회원탈퇴 시 복구할 수 없습니다. 계속 진행하시겠습니까?", () => {
-            dispatch(removeAccountRequest());
+        onShowModal("회원탈퇴 시 복구할 수 없습니다. 계속 진행하시겠습니까?", {
+            confirm: () => {
+                dispatch(removeAccountRequest());
+            }
         })
     }, []);
 
     useEffect(() => {
         if (removeAccountError) {
-            onShowModal(`회원탈퇴 중 오류가 발생했습니다. ${removeAccountError.message}`);
+            onShowModal(`회원탈퇴 중 오류가 발생했습니다. ${removeAccountError.message}`, {
+                cancel: () => {
+                    dispatch(resetSpecificAuth("removeAccountError"));
+                }
+            });
         }
     }, [removeAccountError]);
 

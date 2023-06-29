@@ -1,5 +1,5 @@
 //login
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import styles from './login.module.scss';
 import Input from '../../components/element/Input/Input';
@@ -10,7 +10,7 @@ import { useRouter } from 'next/dist/client/router';
 import Loading from '../../components/common/Loading/Loading';
 import useModal from '../../hooks/useModal';
 import { RootState } from '../../store/configureStore';
-import { logInRequest, issueAccessTokenRequest } from '../../store/slices/auth';
+import { logInRequest, issueAccessTokenRequest, resetSpecificAuth } from '../../store/slices/auth';
 import useInput from '../../hooks/useInput';
 
 const Login = () => {
@@ -21,21 +21,31 @@ const Login = () => {
     const { logInLoading, logInError, logOutDone, expireRefreshTokenError, user, issueAccessTokenLoading } = useSelector((state: RootState) => state.auth);
     const { Modal, onShowModal } = useModal(false);
 
-    const onSubmitLogin = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    const onSubmitLogin = useCallback(async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!username || !password) {
             onShowModal("빈 값이 있습니다.");
             return;
         }
         dispatch(logInRequest({ username, password }));
-    }
+    }, [username, password]);
 
     useEffect(() => {
-        expireRefreshTokenError && !user && onShowModal("토큰이 만료되어 권한이 없습니다. 재로그인 해주세요.");
+        if (expireRefreshTokenError && !user) {
+            onShowModal("토큰이 만료되어 권한이 없습니다. 재로그인 해주세요.", {
+               cancel: () => {
+                   dispatch(resetSpecificAuth("expireRefreshTokenError"));
+               }
+           });
+        }
     }, [expireRefreshTokenError])
     
     useEffect(() => {
-        logInError && onShowModal(logInError.message);
+        logInError && onShowModal(logInError.message, {
+            cancel: () => {
+                dispatch(resetSpecificAuth("logInError"));
+            }
+        });
     }, [logInError])
 
     useEffect(() => {
@@ -44,7 +54,11 @@ const Login = () => {
 
     useEffect(() => {
         if (!expireRefreshTokenError && logOutDone && !user) {
-            onShowModal("로그아웃이 완료되었습니다.");
+            onShowModal("로그아웃이 완료되었습니다.", {
+                cancel: () => {
+                    dispatch(resetSpecificAuth("logOutDone"));
+                },
+            });
         }
     }, [logOutDone])
 

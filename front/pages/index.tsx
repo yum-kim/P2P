@@ -2,8 +2,6 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
-import Login from './login';
-import Feed from './feed';
 import { useRouter } from 'next/dist/client/router';
 import { RootState } from '../store/configureStore';
 
@@ -24,7 +22,6 @@ const Home = () => {
             <Head>
                 <title>P2P | main</title>
             </Head>
-            {/* {user ? <Feed /> : <Login />} */}
         </>
     );
 }

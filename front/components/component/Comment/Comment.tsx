@@ -64,8 +64,10 @@ const Comment = ({ post } : { post: IPost }) => {
     const onClickDeleteComment = useCallback((id: number) => {
         if (!id) return;
 
-        onShowModal("댓글을 삭제하시겠습니까?", () => {
-            dispatch(deleteCommentRequest({ id: id, boardId: post.id }));
+        onShowModal("댓글을 삭제하시겠습니까?", {
+            confirm: () => {
+                dispatch(deleteCommentRequest({ id: id, boardId: post.id }));
+            }
         })
     }, []);
 

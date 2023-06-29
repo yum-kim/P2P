@@ -1,3 +1,5 @@
+export const TOKEN_COOKIE_NAME = 'P2P|refreshToken';
+
 export function setCookie(name, value, days) {
   let expires = '';
   if (days) {

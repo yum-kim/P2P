@@ -209,8 +209,30 @@ const postSlice = createSlice({
             state.deleteCommentLoading = false;
             state.deleteCommentError = action.payload;
         },
-        clearModalMessage: (state) => {
+        //모달 확인 처리 후 상태값 리셋
+        resetSpecificPost: (state, action: PayloadAction<string>) => {
+            const key = action.payload;
+            if (state.hasOwnProperty(key)) {
+                state[key] = false;
+            }
+        },
+        resetAllPostDone: (state) => {
+            Object.keys(state).forEach((key) => {
+                if (key.endsWith("Done")) {
+                    state[key] = false;
+                }
+            });
             state.modalMessage = null;
+        },
+        resetAllPostError: (state) => {
+            Object.keys(state).forEach((key) => {
+                if (key.endsWith("Error")) {
+                    state[key] = false;
+                }
+            });
+        },
+        resetAllPost: (state) => {
+            Object.assign(state, initialState)
         }
     },
 });
@@ -243,7 +265,10 @@ export const {
   deleteCommentRequest,
   deleteCommentSuccess,
   deleteCommentFailure,
-  clearModalMessage
+  resetSpecificPost,
+  resetAllPostDone,
+  resetAllPostError,
+  resetAllPost
 } = postSlice.actions;
 
 export default postSlice.reducer;

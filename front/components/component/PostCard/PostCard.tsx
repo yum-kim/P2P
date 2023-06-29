@@ -13,6 +13,7 @@ import PostImage from '../PostImage/PostImage';
 import { RootState } from '../../../store/configureStore';
 import useModal from '../../../hooks/useModal';
 import useInput from '../../../hooks/useInput';
+import { resetSpecificAuth } from '../../../store/slices/auth';
 
 export interface IPost {
     id: number,
@@ -76,12 +77,13 @@ const PostCard = ({ post }: { post: IPost }) => {
     const onChangePostStatus = useCallback(() => {
         const changeStatus = status == "PUBLIC" ? "PRIVATE" : "PUBLIC";
         
-        onShowModal(`게시물 상태를 ${changeStatus == "PUBLIC" ? "공개" : "비공개"}로 변경하시겠습니까?`, () => {
-            setStatus(changeStatus);
-            dispatch(changePostStatusRequest({ id: post.id, body: { status: changeStatus } }));
-            setIsShowOtherMenu(false);
-        })
-
+        onShowModal(`게시물 상태를 ${changeStatus == "PUBLIC" ? "공개" : "비공개"}로 변경하시겠습니까?`, {
+            confirm: () => {
+                setStatus(changeStatus);
+                dispatch(changePostStatusRequest({ id: post.id, body: { status: changeStatus } }));
+                setIsShowOtherMenu(false);
+            }
+        });
     }, [status]);
     
     const onShowPostInput = useCallback(() => {
@@ -98,16 +100,20 @@ const PostCard = ({ post }: { post: IPost }) => {
     }, [showPostInput]);
     
     const updatePost = useCallback(() => {
-        onShowModal("게시물을 수정하시겠습니까?", () => {
-            dispatch(updatePostRequest({ id: post.id, body: { description: description } }))
-            setShowPostInput(false);
+        onShowModal("게시물을 수정하시겠습니까?", {
+            confirm: () => {
+                dispatch(updatePostRequest({ id: post.id, body: { description: description } }))
+                setShowPostInput(false);
+            }
         });
     }, [description]);
 
     const onDeletePost = useCallback(() => {
-        onShowModal("게시물을 삭제하시겠습니까?", () => {
-            dispatch(deletePostRequest(post.id));
-            setIsShowOtherMenu(false);
+        onShowModal("게시물을 삭제하시겠습니까?", {
+            confirm: () => {
+                dispatch(deletePostRequest(post.id));
+                setIsShowOtherMenu(false);
+            }
         });
     }, [])
 

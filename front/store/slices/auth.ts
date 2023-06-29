@@ -1,8 +1,10 @@
+import { TOKEN_COOKIE_NAME } from './../../utils/cookie';
 import { IUser } from './../../components/component/PostCard/PostCard';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import auth from '../../api/auth';
 import { setCookie } from '../../utils/cookie';
+import { resetDoneState } from './reset';
 
 interface IAuthState {
   logInLoading: boolean;
@@ -70,7 +72,7 @@ export const authSlice = createSlice({
         state.logInDone = true;
         state.user = { id, username, usercode, accessToken, profileImagePath };
         auth.setToken(accessToken);
-        setCookie('P2P|refreshToken', refreshToken, 1);
+        setCookie(TOKEN_COOKIE_NAME, refreshToken, 1);
         state.expireRefreshTokenError = null;
     },
     logInFailure: (state, action: PayloadAction<any>) => {
@@ -156,7 +158,7 @@ export const authSlice = createSlice({
         state.issueAccessTokenDone = false;
         state.issueAccessTokenError = null;
     },
-    issueAccessTokenSuccess: (state, action: PayloadAction<any>) => {
+    issueAccessTokenSuccess: (state, action: PayloadAction<IUser>) => {
         state.issueAccessTokenLoading = false;
         state.issueAccessTokenDone = true;
         const { id, username, usercode, accessToken, profileImagePath } = action.payload;
@@ -167,10 +169,32 @@ export const authSlice = createSlice({
         state.issueAccessTokenLoading = false;
         state.issueAccessTokenError = action.payload;
     },
-    clearModalMessage: (state) => {
+    //모달 확인 처리 후 상태값 리셋
+    resetSpecificAuth: (state, action: PayloadAction<string>) => {
+        const key = action.payload;
+        if (state.hasOwnProperty(key)) {
+            state[key] = false;
+        }
+    },
+    resetAllAuthDone: (state) => {
+        Object.keys(state).forEach((key) => {
+            if (key.endsWith("Done")) {
+                state[key] = false;
+            }
+        });
         state.modalMessage = null;
     },
-  }
+    resetAllAuthError: (state) => {
+        Object.keys(state).forEach((key) => {
+            if (key.endsWith("Error")) {
+                state[key] = false;
+            }
+        });
+    },
+    resetAllAuth: (state) => {
+        Object.assign(state, initialState)
+    }
+  },
 })
 
 export const {
@@ -194,6 +218,9 @@ export const {
   issueAccessTokenRequest,
   issueAccessTokenSuccess,
   issueAccessTokenFailure,
-  clearModalMessage
+  resetSpecificAuth,
+  resetAllAuthDone,
+  resetAllAuthError,
+  resetAllAuth,
 } = authSlice.actions;
 export default authSlice.reducer;

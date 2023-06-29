@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/common/Loading/Loading';
 import { RootState } from '../../store/configureStore';
 import useModal from '../../hooks/useModal';
-import { signUpRequest } from '../../store/slices/auth';
+import { signUpRequest, resetSpecificAuth } from '../../store/slices/auth';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -75,14 +75,20 @@ const Signup = () => {
 
     useEffect(() => {
         if (signUpError) {
-            onShowModal(`회원가입 중 오류가 발생했습니다. ${signUpError.message}`);
+            onShowModal(`회원가입 중 오류가 발생했습니다. ${signUpError.message}`, {
+                cancel: () => {
+                    dispatch(resetSpecificAuth("signUpError"));
+                }
+            });
         }
     }, [signUpError]);
 
     useEffect(() => {
         if (signUpDone) {
-            onShowModal("회원가입이 완료되었습니다. 로그인 화면으로 이동하시겠습니까?", () => {
-                router.push('/login');
+            onShowModal("회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.", {
+                cancel: () => {
+                    router.push('/login');
+                }
             });
         }
     }, [signUpDone]);

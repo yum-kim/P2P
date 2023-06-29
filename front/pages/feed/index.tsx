@@ -8,9 +8,9 @@ import Loading from '../../components/common/Loading/Loading';
 import { RootState } from '../../store/configureStore';
 import useModal from '../../hooks/useModal';
 import styles from './feed.module.scss';
-import { getPostsRequest, clearModalMessage } from '../../store/slices/post';
+import { getPostsRequest } from '../../store/slices/post';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
-import { useRouter } from 'next/dist/client/router';
+import { resetAllPostDone, resetAllPostError } from '../../store/slices/post';
 
 const Feed = () => {
     const {
@@ -32,10 +32,7 @@ const Feed = () => {
     const dispatch = useDispatch();
     const { Modal, onShowModal } = useModal(false);
     const intersectingRef = useRef(null);
-    const { isIntersecting } = useInfiniteScroll(intersectingRef, {
-        threshold: 0.3
-    });
-    const router = useRouter();
+    const { isIntersecting } = useInfiniteScroll(intersectingRef, { threshold: 0.3 });
 
     const completeMsgMap = {
         addPostDone,
@@ -47,9 +44,12 @@ const Feed = () => {
     useEffect(() => {
         const doneStates = Object.keys(completeMsgMap).filter((key) => completeMsgMap[key]);
         if (doneStates.length > 0 && modalMessage) {
-            onShowModal(`${modalMessage}이(가) 완료되었습니다.`);
+            onShowModal(`${modalMessage}이(가) 완료되었습니다.`, {
+                cancel: () => {
+                    dispatch(resetAllPostDone());
+                }
+            });
         }
-        dispatch(clearModalMessage());
     }, Object.values(completeMsgMap));
 
     const errMsgMap = {
@@ -68,7 +68,11 @@ const Feed = () => {
         const errMsg = doneStates.length > 0 && errMsgMap[doneStates[0]].message;
 
         if (errMsg) {
-            onShowModal(`${errMsg}`);
+            onShowModal(`${errMsg}`, {
+                cancel: () => {
+                    dispatch(resetAllPostError());
+                }
+            });
         }
     }, Object.values(errMsgMap));
 
@@ -97,11 +101,12 @@ const Feed = () => {
             <AppLayout>
                 {(getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading || updatePostHeartLoading || updatePostLoading) && <Loading />}
                 <Modal />
+
                 <PostForm />
-                    {allPosts.length == 0 && <p className={styles.cnt}>등록된 게시물이 없어요.🥲</p>}
-                    {allPosts?.map((post) => (
-                        <PostCard key={post.id} post={post} />
-                    ))}
+                {allPosts.length == 0 && <p className={styles.cnt}>등록된 게시물이 없어요.🥲</p>}
+                {allPosts?.map((post) => (
+                    <PostCard key={post.id} post={post} />
+                ))}
                 
                 <div ref={intersectingRef}></div>
             </AppLayout>

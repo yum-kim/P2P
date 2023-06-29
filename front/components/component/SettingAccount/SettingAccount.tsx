@@ -5,7 +5,7 @@ import { RootState } from '../../../store/configureStore';
 import { BsFillPersonFill, BsFileEarmarkPersonFill, BsFillArrowLeftCircleFill, BsFillTrashFill } from "react-icons/bs";
 import Input from '../../element/Input/Input';
 import Button from '../../element/Button/Button';
-import { updateUserRequest, deleteProfileImgRequest, clearModalMessage } from '../../../store/slices/auth';
+import { updateUserRequest, deleteProfileImgRequest, resetAllAuthDone, resetAllAuthError } from '../../../store/slices/auth';
 import useModal from '../../../hooks/useModal';
 
 const SettingAccount = ({ onClose }) => {
@@ -29,9 +29,12 @@ const SettingAccount = ({ onClose }) => {
   useEffect(() => {
       const doneStates = Object.keys(completeMsgMap).filter((key) => completeMsgMap[key]);
       if (doneStates.length > 0 && modalMessage) {
-          onShowModal(`${modalMessage}이(가) 완료되었습니다.`);
+        onShowModal(`${modalMessage}이(가) 완료되었습니다.`, {
+          cancel: () => {
+            dispatch(resetAllAuthDone());
+          }
+        });
       }
-      dispatch(clearModalMessage());
   }, Object.values(completeMsgMap));
 
   const errMsgMap = {
@@ -44,7 +47,11 @@ const SettingAccount = ({ onClose }) => {
       const errMsg = doneStates.length > 0 && errMsgMap[doneStates[0]].message;
 
       if (errMsg) {
-          onShowModal(`${errMsg}`);
+        onShowModal(`${errMsg}`, {
+          cancel: () => {
+            dispatch(resetAllAuthError());
+          } 
+        });
       }
   }, Object.values(errMsgMap));
 
@@ -118,21 +125,25 @@ const SettingAccount = ({ onClose }) => {
   }, [password]);
 
   const onDeleteProfileImg = useCallback(() => {
-    onShowModal("등록된 프로필 이미지를 삭제하시겠습니까?", () => {
-      dispatch(deleteProfileImgRequest());
-      setFile(null);
-    })
+    onShowModal("등록된 프로필 이미지를 삭제하시겠습니까?", {
+      confirm: () => {
+        dispatch(deleteProfileImgRequest());
+        setFile(null);
+      }
+    });  
   }, []);
 
   const onBackMyPage = useCallback(() => {
     if (isActiveNameInput || isActivePwInput) {
-      onShowModal("수정 중인 값이 있습니다. 취소 후 돌아가시겠습니까?", () => {
-        setIsActiveNameInput(false);
-        setIsActivePwInput(false);
-        setNickname(user?.usercode);
-        setPassword(null);
-        onClose();
-      })
+      onShowModal("수정 중인 값이 있습니다. 취소 후 돌아가시겠습니까?", {
+        confirm: () => {
+          setIsActiveNameInput(false);
+          setIsActivePwInput(false);
+          setNickname(user?.usercode);
+          setPassword(null);
+          onClose();
+        }
+      });
     } else {
       onClose();
     }
