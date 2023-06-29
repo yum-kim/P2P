@@ -41,7 +41,7 @@ const useModal = (initialValue: boolean): IModalHook => {
     return {
         Modal:
             isShowModal ? ({ title }: IModalProps) => {
-                const type = callbackRef.current.confirm ? 'confirm' : 'alert';
+                const type = callbackRef?.current?.confirm ? 'confirm' : 'alert';
                 return (
                     <Modal
                         type={type}

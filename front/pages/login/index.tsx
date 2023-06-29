@@ -54,11 +54,7 @@ const Login = () => {
 
     useEffect(() => {
         if (!expireRefreshTokenError && logOutDone && !user) {
-            onShowModal("로그아웃이 완료되었습니다.", {
-                cancel: () => {
-                    dispatch(resetSpecificAuth("logOutDone"));
-                },
-            });
+            onShowModal("로그아웃이 완료되었습니다.");
         }
     }, [logOutDone])
 
