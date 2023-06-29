@@ -4,7 +4,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import auth from '../../api/auth';
 import { setCookie } from '../../utils/cookie';
-import { resetDoneState } from './reset';
 
 interface IAuthState {
   logInLoading: boolean;
