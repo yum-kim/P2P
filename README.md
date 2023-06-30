@@ -4,34 +4,31 @@
 
 기존 광고가 지배적인 SNS 서비스에 피로도를 느낀 사용자들에게 직관적인 UI와 사용성을 제공하는 간단한 SNS 서비스를 제공하고자 하는 목적으로 해당 프로젝트를 기획하였습니다.
 다른 측면에서, P2P는 실제 토이 프로젝트를 진행하며 다양한 기술 스택을 직접 적용해보고 이해를 높이고자 하는 스터디 목적으로 시작된 프로젝트입니다. 또한, SNS라는 서비스 특성 상 로그인, 이미지 최적화, 페이징과 같은 기본적인 기능을 모두 다루고 있기에 포트폴리오 및 스터디의 목적과도 부합한다고 판단했습니다.
-<br>
-<br>
+<br />
 
 ### 🔍 프로젝트 인원 및 포지션
 
 - 프론트엔드 1명 (@yum-kim)
 - 백엔드 1명 (@jemin-kim)
-<br>
-<br>
+<br />
 
 ### 🔍 기술 스택 및 라이브러리
 
-💄 **프론트엔드**
+  💄 **프론트엔드**
 
-- React, Next.js, TypeScript
-- 상태관리: Redux-toolkit, Redux-saga
-- 스타일링: CSS Modules, SCSS, react-icons
-- CI/CD: Github Actions
-- 배포: AWS S3, CloudFront
+    - React, Next.js, TypeScript
+    - 상태관리: Redux-toolkit, Redux-saga
+    - 스타일링: CSS Modules, SCSS, react-icons
+    - CI/CD: Github Actions
+    - 배포: AWS S3, CloudFront
 
-💾 **백엔드**
+  💾 **백엔드**
 
-- Node, Nest.js, Typescript
-- DB: PostgreSQL
-- docker
-- 배포: AWS EC2
-<br>
-<br>
+    - Node, Nest.js, Typescript
+    - DB: PostgreSQL
+    - docker
+    - 배포: AWS EC2
+<br />
 
 ### 🔍 화면 기능 명세
 
@@ -56,8 +53,8 @@
     1-3. 구글 OAuth 로그인
     
     - 구현 예정
-  <br>
-  <br>
+  <br />
+
 2. **피드 화면**
 
     2-1. 게시물 업로드 (사진, 텍스트)
@@ -90,12 +87,12 @@
     ![스크롤페이징-github](https://github.com/yum-kim/P2P/assets/61794233/1619c628-a5f1-4e00-9f62-1a56157cbc5d)
 
     - 스크롤 페이징은 Intersection Observer 방식으로 구현하였으며, 리스트 하단 교차점에 닿을 시 10개씩 다음 포스트 데이터를 불러와 렌더링한다. 더 이상 불러온 데이터가 없을 때에는 lastPage로 간주하고 스크롤이 교차점에 닿아도 데이터를 불러오지 않는다.
-  <br>
-  <br>
+  <br />
+
 3. **채팅 화면**
     - 구현 예정
-  <br>
-  <br>
+  <br />
+
 4. **마이페이지 화면**
     
     4-1. 계정설정 - 프로필, 닉네임, 비밀번호 수정
@@ -111,8 +108,8 @@
     ![회원탈퇴-github](https://github.com/yum-kim/P2P/assets/61794233/1fb4821b-8e95-48f2-86fe-897c683a34dc)
 
     - 회원탈퇴 버튼 클릭 시 confirm 모달을 통해 진행여부를 확인하고 진행 시 탈퇴 API 호출 후 전역 user 상태값을 리셋시키고 로그인 화면으로 전환시킨다.
-  <br>
-  <br>
+  <br />
+
 5. **공통 헤더 컴포넌트**
     ![로그아웃-github](https://github.com/yum-kim/P2P/assets/61794233/8d72ecde-27a0-4e90-8469-b3fec6acafe9)
 
@@ -123,8 +120,8 @@
     5-2. 로그아웃
     
     - confirm 모달을 통해 로그아웃을 진행할지 여부를 묻고, 진행할 경우 전역 user 상태값과 accessToken을 리셋 시키고 로그인 페이지로 전환한다. (서버 API 호출을 하지 않고, 프론트에서만 처리)
-  <br>
-  <br>
+  <br />
+
 6. **공통 네비게이션 컴포넌트**
     
     6-1. desktop 용
@@ -137,8 +134,8 @@
     - 반응형으로 뷰포트가 mobile, tablet 브레이크포인트에 잡히면 기존 헤더 메뉴가 변경되어 우측 상단에 햄버거 메뉴로 네비게이션에 진입할 수 있다.
     - 햄버거 버튼 클릭 시 화면 왼쪽에서 네비가 슬라이드 되며, 기능은 desktop과 동일하게 네비 리스트 클릭 시 지정된 page 경로로 이동된다.
     - 슬라이드된 네비 뒤의 배경을 클릭하거나 ‘X’ 버튼을 클릭하여 네비 화면을 닫을 수 있다.
-  <br>
-  <br>
+  <br />
+
 7. **기타**
     
     ![모바일-github](https://github.com/yum-kim/P2P/assets/61794233/b204ccff-5cff-4afb-9606-cd5256282b49)
