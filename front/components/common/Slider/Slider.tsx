@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import styles from './Slider.module.scss';
 
 interface ISliderProps {
     visible: boolean,
     children: React.ReactNode,
+    options: {
+        direction: "left" | "right",
+        top: string,
+        width?: string,
+        speed?: number
+    } 
 }
 
-const Slider = ({ visible, children }: ISliderProps) => {
+const Slider = ({ visible, children, options }: ISliderProps) => {
     const [isRendered, setIsRendered] = useState(visible);
 
     useEffect(() => {
@@ -23,17 +28,19 @@ const Slider = ({ visible, children }: ISliderProps) => {
 
 
     const sliderStyle: React.CSSProperties = {
-        transform: `translateX(${visible ? 0 : '200%'})`,
-        transition: 'transform 0.6s ease-in-out',
+        transform: `translateX(${visible ? 0 : options.direction == 'left' ? '-110%' : '200%'})`,
+        transition: `transform ${options.speed || 0.6}s ease-in-out`,
         position: 'absolute',
-        top: '20px',
+        width: options.width || '100%',
+        top: options.top,
         left: 0,
         bottom: 0,
         right: 0,
+        zIndex: 900
     };
 
     return isRendered ? (
-        <section className={styles.slider} style={sliderStyle}>
+        <section style={sliderStyle}>
             {children}
         </section>
     ) : null;

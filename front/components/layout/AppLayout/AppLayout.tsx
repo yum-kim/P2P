@@ -11,7 +11,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
             <Header />
             <div className={`container ${styles.wrapper}`}>
                 <section className={styles.section}>
-                    <aside className={`lg-only ${styles.aside}`}>
+                    <aside className={`${styles.aside}`}>
                         <Nav />
                     </aside>
                     <main className={styles.main}>

@@ -85,7 +85,7 @@ const mypage = () => {
                 </section>
                 {/* )} */}
                 
-                <Slider visible={visible}>
+                <Slider visible={visible} options={{ direction: 'right', top: '20px' }}>
                     <SettingAccount onClose={onCloseSettingAccountSlider}/>
                 </Slider>
                     

@@ -1,0 +1,119 @@
+@import '../../../styles/constants/colors';
+@import '../../../styles/mixins/text_style';
+@import '../../../styles/mixins/flexbox';
+@import '../../../styles/mixins/position';
+
+.slide {
+  .slideBox {
+    position: fixed;
+    top:0;
+    left:0;
+    width: 80vw;
+    height: 100vh;
+    padding: 50px 0;
+    background-color: $white;
+    z-index: 800;
+  }
+
+  .userInfo {
+    padding: 0 30px;
+
+    .profile {
+      width: 100px;
+      height: 100px;
+      position: relative;
+      border: 1px solid $border;
+      border-radius: 50%;
+      overflow: hidden;
+      text-align: center;
+  
+      svg {
+          @include pos-center-x;
+          top: 4px;
+          width: 100%;
+          height: 100%;
+          color: $tertiary;
+      }
+  
+      img {
+          width: 100%;
+          overflow: hidden;
+      }
+    }
+  
+    .user {
+      margin: 2rem 0;
+      
+      .usercode {
+        margin-bottom: 5px;
+  
+        span {
+          @include text-style(16, $primary);
+          font-weight: 400;
+        }
+      }
+      
+      .username {
+        color: $primary;
+      }
+    }
+  }
+
+  .navList {
+    @include column-flexbox(start, start);
+    @include text-style(16, $black);
+
+    a {
+      @include flexbox(start);
+      width: 100%;
+      height: 50px;
+      padding-left: 25px;
+
+      &.active {
+        color: $white;
+        background: $purple-light;
+      }
+
+      svg {
+        font-size: 18px;
+        margin-right: 10px;
+      }
+    }
+
+  }
+
+  .closeBtn {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    padding: 5px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .btmArea {
+    @include flexbox(start, center);
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    bottom: 0;
+    padding: 0 20px;
+    background-color: $background;
+
+    .logoutBtn {
+      @include flexbox();
+
+      svg {
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+        margin-right: 5px;
+      }
+    }
+  }
+}

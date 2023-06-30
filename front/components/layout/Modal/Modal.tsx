@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Button from '../../element/Button/Button';
 import { FcHighPriority, FcInfo } from "react-icons/fc";
 import styles from "./Modal.module.scss";
@@ -16,12 +16,23 @@ const Modal:React.FC<IModalProps> = ({ type, title, children, onCloseModal, onCo
     const [mounted, setMounted] = useState(false);
     const modalRootRef = useRef<Element | null>(null);
     
+    const unlockScroll = useCallback(() => {
+        document.body.style.overflow = "auto";
+    }, []);
+        
+    const lockScroll = useCallback(() => {
+        document.body.style.overflow = "hidden";
+    }, []);
+
     useEffect(() => {
         setMounted(true);    
         if(document) {
             const dom = document.getElementById('modal');
             modalRootRef.current = dom;
         }
+
+        lockScroll();
+        return () => unlockScroll();
     }, [])
  
     const modal = (
