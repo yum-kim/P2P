@@ -1,6 +1,8 @@
 @import '../../../styles/constants/colors';
 @import '../../../styles/mixins/text_style';
 @import '../../../styles/mixins/flexbox';
+@import '../../../styles/mixins/responsive';
+@import '../../../styles/layout/grids';
 
 .modalContainer {
     .modalBg {
@@ -15,15 +17,19 @@
     
     .modal {
         @include column-flexbox(between);
+        width: 80%;
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, calc(-50% - 50px));
-        width: 400px;
         border-radius: 6px;
         background-color: $white;
         padding: 3rem;
         z-index: 999;
+        
+        @include responsive(T) {
+            width: 400px;
+        }
 
         .ico {
             font-size: 2.5rem;
@@ -51,6 +57,7 @@
 
             button {
                 min-width: 75px;
+                width: auto;
 
                 &:not(:last-child) {
                     margin-right: 1rem;
