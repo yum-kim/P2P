@@ -1,4 +1,4 @@
-import { TOKEN_COOKIE_NAME } from './../../utils/cookie';
+import { TOKEN_COOKIE_NAME, deleteCookie } from './../../utils/cookie';
 import { IUser } from './../../components/component/PostCard/PostCard';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
@@ -83,7 +83,8 @@ export const authSlice = createSlice({
         state.logOutDone = true;
         state.user = null;
         auth.setToken(null);
-
+        deleteCookie(TOKEN_COOKIE_NAME);
+        
         if (action?.payload) { //토큰만료로 로그아웃 시켰을 때
           state.expireRefreshTokenError = action.payload;
         }

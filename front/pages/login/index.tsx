@@ -12,6 +12,7 @@ import useModal from '../../hooks/useModal';
 import { RootState } from '../../store/configureStore';
 import { logInRequest, issueAccessTokenRequest, resetSpecificAuth } from '../../store/slices/auth';
 import useInput from '../../hooks/useInput';
+import { getCookie, TOKEN_COOKIE_NAME } from '../../utils/cookie';
 
 const Login = () => {
     const [username, onChangeUsername] = useInput('');
@@ -59,8 +60,8 @@ const Login = () => {
     }, [logOutDone])
 
     useEffect(() => {
-        //refreshToken 있다면 accessToken 발급 후 자동로그인 처리
-        dispatch(issueAccessTokenRequest());
+        const refreshToken = getCookie(TOKEN_COOKIE_NAME);
+        refreshToken && dispatch(issueAccessTokenRequest());
     }, [])
 
     return (
