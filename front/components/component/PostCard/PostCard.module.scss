@@ -91,6 +91,7 @@
 
                 svg {
                     font-size: 16px;
+                    color: $dark;
                 }
             }
 
@@ -103,6 +104,7 @@
                 border-radius: 4px;
                 background-color: $white;
                 box-shadow: 3px 3px 4px -1px rgba(176, 176, 176, 0.5);
+                color: $dark;
 
                 li {
                     &:not(:last-child) {
