@@ -19,7 +19,7 @@ const Login = () => {
     const [password, onChangePassword] = useInput('');
     const dispatch = useDispatch();
     const router = useRouter();
-    const { logInLoading, logInError, logOutDone, expireRefreshTokenError, user, issueAccessTokenLoading } = useSelector((state: RootState) => state.auth);
+    const { logInLoading, logInError, logOutDone, expireRefreshTokenError, user, issueAccessTokenLoading, removeAccountDone } = useSelector((state: RootState) => state.auth);
     const { Modal, onShowModal } = useModal(false);
 
     const onSubmitLogin = useCallback(async (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -34,12 +34,12 @@ const Login = () => {
     useEffect(() => {
         if (expireRefreshTokenError && !user) {
             onShowModal("토큰이 만료되어 권한이 없습니다. 재로그인 해주세요.", {
-               cancel: () => {
-                   dispatch(resetSpecificAuth("expireRefreshTokenError"));
-               }
-           });
+                cancel: () => {
+                    dispatch(resetSpecificAuth("expireRefreshTokenError"));
+                }
+            });
         }
-    }, [expireRefreshTokenError])
+    }, [expireRefreshTokenError]);
     
     useEffect(() => {
         logInError && onShowModal(logInError.message, {
@@ -47,17 +47,31 @@ const Login = () => {
                 dispatch(resetSpecificAuth("logInError"));
             }
         });
-    }, [logInError])
+    }, [logInError]);
 
     useEffect(() => {
         !logOutDone && user && router.push('/feed');
-    }, [user, logOutDone])
+    }, [user, logOutDone]);
 
     useEffect(() => {
-        if (!expireRefreshTokenError && logOutDone && !user) {
-            onShowModal("로그아웃이 완료되었습니다.");
+        if (!expireRefreshTokenError && !removeAccountDone && logOutDone && !user) {
+            onShowModal("로그아웃이 완료되었습니다.", {
+                cancel: () => {
+                    dispatch(resetSpecificAuth("logOutDone"));
+                }
+            });
         }
-    }, [logOutDone])
+    }, [logOutDone]);
+
+    useEffect(() => {
+        if (removeAccountDone) {
+            onShowModal("회원탈퇴로 로그아웃 처리 되었습니다.", {
+                cancel: () => {
+                    dispatch(resetSpecificAuth("removeAccountDone"));
+                }
+            });
+        }
+    }, [removeAccountDone]);
 
     useEffect(() => {
         const refreshToken = getCookie(TOKEN_COOKIE_NAME);

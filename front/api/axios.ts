@@ -1,7 +1,7 @@
 import { TOKEN_COOKIE_NAME } from './../utils/cookie';
 import axios from 'axios';
 import auth from './auth';
-import { issueAccessTokenRequest, signUpInit, logOutRequest } from '../store/slices/auth';
+import { issueAccessTokenRequest, logOutRequest } from '../store/slices/auth';
 import { store } from '../store/configureStore';
 import { getCookie } from '../utils/cookie';
 

@@ -10,13 +10,15 @@ import Slider from '../../components/common/Slider/Slider';
 import SettingAccount from '../../components/component/SettingAccount/SettingAccount';
 import Loading from '../../components/common/Loading/Loading';
 import useModal from '../../hooks/useModal';
-import { removeAccountRequest, resetSpecificAuth } from '../../store/slices/auth';
+import { removeAccountRequest, resetSpecificAuth, logOutRequest } from '../../store/slices/auth';
+import { useRouter } from 'next/router';
 
 const mypage = () => {
     const { user, removeAccountLoading, removeAccountError } = useSelector((state: RootState) => state.auth);
     const [visible, setVisible] = useState(false);
     const { Modal, onShowModal } = useModal(false);
     const dispatch = useDispatch();
+    const router = useRouter();
     
     const onClickSettingAccountSlider = useCallback(() => {
         setVisible(true);
@@ -30,6 +32,8 @@ const mypage = () => {
         onShowModal("회원탈퇴 시 복구할 수 없습니다. 계속 진행하시겠습니까?", {
             confirm: () => {
                 dispatch(removeAccountRequest());
+                dispatch(logOutRequest(null));
+                router.push('/login');
             }
         })
     }, []);

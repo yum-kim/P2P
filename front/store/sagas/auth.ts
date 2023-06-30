@@ -25,8 +25,6 @@ function* signup(action) {
   } else {
     yield put(signUpFailure(error));
   }
-  
-  // yield put(signUpInit());
 }
 
 function* updateUser(action) {

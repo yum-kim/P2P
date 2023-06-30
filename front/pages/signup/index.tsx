@@ -87,6 +87,7 @@ const Signup = () => {
         if (signUpDone) {
             onShowModal("회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.", {
                 cancel: () => {
+                    dispatch(resetSpecificAuth("signUpDone"));
                     router.push('/login');
                 }
             });

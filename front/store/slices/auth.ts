@@ -97,15 +97,11 @@ export const authSlice = createSlice({
     signUpSuccess: (state, action: PayloadAction<any>) => {
         state.signUpLoading = false;
         state.signUpDone = true;
+        deleteCookie(TOKEN_COOKIE_NAME);
     },
     signUpFailure: (state, action: PayloadAction<any>) => {
         state.signUpLoading = false;
         state.signUpError = action.payload;
-    },
-    signUpInit: (state) => {
-        state.logInError = null;
-        state.signUpDone = false;
-        state.signUpError = null;
     },
     updateUserRequest: (state, action: PayloadAction<any>) => {
         state.updateUserLoading = true;
@@ -205,7 +201,6 @@ export const {
   signUpRequest,
   signUpSuccess,
   signUpFailure,
-  signUpInit,
   updateUserRequest,
   updateUserSuccess,
   updateUserFailure,
