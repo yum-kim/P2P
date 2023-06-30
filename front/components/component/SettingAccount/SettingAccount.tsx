@@ -96,7 +96,8 @@ const SettingAccount = ({ onClose }) => {
     setPassword(e.target.value);
   }, [password]);
 
-  const onActiveNameInput = useCallback(() => {
+
+  const onSaveNickname = useCallback(() => {
     if (nicknameError) {
       onShowModal("닉네임을 다시 확인해주세요.");
       return;
@@ -105,12 +106,16 @@ const SettingAccount = ({ onClose }) => {
     const formData = new FormData();
     formData.append('usercode', nickname);
 
-    setIsActiveNameInput((prev) => !prev);
-    isActiveNameInput && dispatch(updateUserRequest(formData));
+    dispatch(updateUserRequest(formData));
+    setIsActiveNameInput(false);
     setNicknameError(null);
-  }, [nickname]);
+  }, [nicknameError, nickname])
 
-  const onActivePwInput = useCallback(() => {
+  const onActiveNameInput = useCallback(() => {
+    setIsActiveNameInput(true);
+  }, []);
+
+  const onSavePw = useCallback(() => {
     if (passwordError) {
       onShowModal("비밀번호를 다시 확인해주세요.");
       return;
@@ -119,10 +124,14 @@ const SettingAccount = ({ onClose }) => {
     const formData = new FormData();
     formData.append('password', password);
     
-    setIsActivePwInput((prev) => !prev);
-    isActivePwInput && dispatch(updateUserRequest(formData));
+    setIsActivePwInput(false);
+    dispatch(updateUserRequest(formData));
     setPasswordError(null);
-  }, [password]);
+  }, [passwordError, password]);
+
+  const onActivePwInput = useCallback(() => {
+    setIsActivePwInput(true);
+  }, []);
 
   const onDeleteProfileImg = useCallback(() => {
     onShowModal("등록된 프로필 이미지를 삭제하시겠습니까?", {
@@ -156,7 +165,7 @@ const SettingAccount = ({ onClose }) => {
             <article className={styles.profile}>
                 <div className={styles.profileTop}>
                     <div className={styles.profileImg}>
-                        {user && user.profileImagePath ? <img src={user.profileImagePath} alt="" /> : <BsFillPersonFill />}
+                        {user && user.profileImagePath ? <img src={user.profileImagePath} alt="프로필 이미지" /> : <BsFillPersonFill />}
                     </div>
                     <input type="file" ref={profileInputRef} onChange={onChangeProfileImg} hidden />
                     <button className={styles.profileBtn} onClick={onClickImageUpload}>
@@ -179,7 +188,9 @@ const SettingAccount = ({ onClose }) => {
                     ) : (
                         <Input type="text" id="name" value={nickname} disabled />
                     )}   
-                    <button onClick={onActiveNameInput}>{isActiveNameInput ? '저장' : '수정'}</button>
+                    {isActiveNameInput ?
+                    (<button onClick={onSaveNickname}>저장</button>)
+                    : (<button onClick={onActiveNameInput}>수정</button>)}
                 </div>
                 <div className={styles.list}>
                     <label htmlFor="password">변경할 비밀번호</label>
@@ -190,7 +201,9 @@ const SettingAccount = ({ onClose }) => {
                     ) : (
                         <Input type="password" id="password" value={password} disabled />
                     )}
-                    <button onClick={onActivePwInput}>{isActivePwInput ? '저장' : '수정'}</button>
+                    {isActivePwInput ?
+                    (<button onClick={onSavePw}>저장</button>)
+                    : (<button onClick={onActivePwInput}>수정</button>)}
                 </div>
             </article>
             <button className={styles.backBtn} onClick={onBackMyPage}><BsFillArrowLeftCircleFill />돌아가기</button>
