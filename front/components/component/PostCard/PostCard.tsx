@@ -205,7 +205,7 @@ const PostCard = ({ post }: { post: IPost }) => {
                             <Button variant="primary-blue" onClick={() => setShowPostInput(false)}>취소</Button>
                         </div>
                     </div>
-                    : <p className={styles.content}>{post.description}</p>
+                    : <p className={styles.description}>{post.description}</p>
                 }
             </div>
             <div className={styles.reaction}>

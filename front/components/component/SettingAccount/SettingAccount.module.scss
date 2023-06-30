@@ -113,7 +113,11 @@
                 text-align: right;
                 font-weight: 600;
                 float: right;
-                color: $blue;
+                @include text-style(14, $blue);
+
+                @include responsive(T) {
+                    @include text-style(13, $blue);
+                }
             }
         }
     }
@@ -125,6 +129,7 @@
         bottom: -15px;
         @include text-style(16);
         font-weight: 600;
+        color: $black;
 
         svg {
             margin-right: 10px;

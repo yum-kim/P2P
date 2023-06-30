@@ -2,11 +2,17 @@
 @import '../../../styles/mixins/flexbox';
 @import '../../../styles/mixins/text_style';
 @import '../../../styles/mixins/position';
+@import '../../../styles/mixins/responsive';
+@import '../../../styles/layout/grids';
 
 .comments {
     padding-top: 1rem;
-    margin-top: 1rem;
     border-top: 1px solid $border;
+    margin: 1rem 20px 0;
+    
+    @include responsive(T) {
+        margin: 1rem 0 0;
+    }
 
     .length {
         @include text-style(14, $primary);

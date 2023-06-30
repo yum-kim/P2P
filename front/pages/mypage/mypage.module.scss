@@ -80,6 +80,7 @@
                 border-radius: 6px;
                 background-color: $white;
                 position: relative;
+                color: $black;
                 
                 &:disabled {
                     cursor: initial;
@@ -95,11 +96,8 @@
                     width: 20px;
                     height: 20px;
                     @include pos-center-y;
-
-                    // position: absolute;
                     right: 10px;
-                    // top: 50%;
-                    // transform: translateY(-50%);
+                    color: $black;
                 }
             }
         }
