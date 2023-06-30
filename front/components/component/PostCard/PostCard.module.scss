@@ -158,6 +158,11 @@
 
         .updateBox {
             @include column-flexbox(end, end);
+            padding: 0 20px;
+            
+            @include responsive(T) {
+                padding: 0;
+            }
 
             textarea {
                 border: 1px solid $tertiary;
