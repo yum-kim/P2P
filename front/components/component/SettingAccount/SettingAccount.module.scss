@@ -1,6 +1,7 @@
 @import '../../../styles/constants/colors';
 @import '../../../styles/mixins/flexbox';
 @import '../../../styles/mixins/responsive';
+@import '../../../styles/layout/grids';
 @import '../../../styles/mixins/position';
 @import '../../../styles/mixins/text_style';
 
@@ -8,14 +9,17 @@
 .setting {
     padding: 50px;
     background-color: $background;
-    // border: 1px solid $border;
     border-radius: 1rem;
     
     .settingWrapper {
         @include column-flexbox();
-        width: 350px;
+        width: 100%;
         margin: 0 auto;
         position: relative;
+        
+        @include responsive(T) {
+            width: 350px;
+        }
     }
 
     .profile {
