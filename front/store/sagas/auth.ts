@@ -2,7 +2,7 @@ import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
 import auth from '../../api/auth';
 import {
   logInRequest, logInSuccess, logInFailure,
-  signUpRequest, signUpSuccess, signUpFailure, signUpInit,
+  signUpRequest, signUpSuccess, signUpFailure,
   updateUserRequest, updateUserSuccess, updateUserFailure,
   deleteProfileImgSuccess, deleteProfileImgFailure, deleteProfileImgRequest, removeAccountRequest, removeAccountSuccess, removeAccountFailure, issueAccessTokenRequest, issueAccessTokenSuccess, issueAccessTokenFailure
 } from '../slices/auth';
