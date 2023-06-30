@@ -26,14 +26,14 @@ const useModal = (initialValue: boolean): IModalHook => {
     }, [modalContent, callbackRef.current]);
 
     const onCloseModal = useCallback(() => {
-        callbackRef.current?.cancel?.();
+        callbackRef?.current?.cancel?.();
         setIsShowModal(false);
         setModalContent(null);
         callbackRef.current = null;
-    }, []);
+    }, [callbackRef.current]);
 
     const onConfirmModal = useCallback(() => {
-        callbackRef.current?.confirm?.();
+        callbackRef?.current?.confirm?.();
         setIsShowModal(false);
         callbackRef.current = null;
     }, [callbackRef.current]);

@@ -62,6 +62,7 @@ async function checkErrorType(error:any, option: IOptionProps) {
       case "토큰이 만료되었습니다.":
         store.dispatch(issueAccessTokenRequest());
         return await request(option); //재요청
+      // case "유효하지 않은 토큰입니다.": ;
       case "refresh 토큰이 만료되었습니다.":
         store.dispatch(logOutRequest(message));
         return;

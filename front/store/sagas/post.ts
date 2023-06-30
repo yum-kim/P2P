@@ -1,9 +1,9 @@
 import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
-import boards from '../../api/boards';
+import post from '../../api/post';
 import { getPostsSuccess, getPostsFailure, addPostSuccess, addPostFailure, updatePostSuccess, updatePostFailure, deletePostSuccess, deletePostFailure, addCommentSuccess, addCommentFailure, updateCommentSuccess, updateCommentFailure, deleteCommentSuccess, deleteCommentFailure, changePostStatusSuccess, changePostStatusFailure, updatePostHeartSuccess, getPostsRequest, addPostRequest, updatePostRequest, addCommentRequest, updateCommentRequest, deleteCommentRequest, deletePostRequest, changePostStatusRequest, updatePostHeartRequest, updatePostHeartFailure } from '../slices/post';
 
 function* getPosts(action) {
-  const { res, error } = yield call(boards.getBoards, action.payload);
+  const { res, error } = yield call(post.getBoards, action.payload);
 
   if (res) {
     yield put(getPostsSuccess({ posts: res, cursor: action.payload.cursor }));
@@ -13,7 +13,7 @@ function* getPosts(action) {
 }
 
 function* addPost(action) {
-  const { res, error } = yield call(boards.createBoard, action.payload.formData);
+  const { res, error } = yield call(post.createBoard, action.payload.formData);
 
   if (res) {
     //TODO: image 결과값도 추가하기
@@ -24,7 +24,7 @@ function* addPost(action) {
 }
 
 function* updatePost(action) {
-  const { res, error } = yield call(boards.updateBoard, action.payload);
+  const { res, error } = yield call(post.updateBoard, action.payload);
 
   if (res) {
     yield put(updatePostSuccess(res));
@@ -34,7 +34,7 @@ function* updatePost(action) {
 }
 
 function* deletePost(action) {
-  const { res, error } = yield call(boards.deleteBoardById, action.payload);
+  const { res, error } = yield call(post.deleteBoardById, action.payload);
   
   if (!error) {
     yield put(deletePostSuccess({ id: action.payload }));
@@ -44,7 +44,7 @@ function* deletePost(action) {
 }
 
 function* addComment(action) {
-  const { res, error } = yield call(boards.addComment, action.payload);
+  const { res, error } = yield call(post.addComment, action.payload);
 
   if (res) {
     yield put(addCommentSuccess({ ...res, user: action.payload.user }));
@@ -54,7 +54,7 @@ function* addComment(action) {
 }
 
 function* updateComment(action) {
-  const { res, error } = yield call(boards.updateComment, action.payload.data);
+  const { res, error } = yield call(post.updateComment, action.payload.data);
 
   if (res) {
     yield put(updateCommentSuccess({ ...res, boardId: action.payload.boardId } ));
@@ -64,7 +64,7 @@ function* updateComment(action) {
 }
 
 function* deleteComment(action) {
-  const { res, error } = yield call(boards.deleteCommentById, action.payload.id);
+  const { res, error } = yield call(post.deleteCommentById, action.payload.id);
 
   if (res) {
     yield put(deleteCommentSuccess(action.payload));
@@ -74,7 +74,7 @@ function* deleteComment(action) {
 }
 
 function* changePostStatus(action) {
-  const { res, error } = yield call(boards.changeBoardStatus, action.payload);
+  const { res, error } = yield call(post.changeBoardStatus, action.payload);
 
   if (res) {
     yield put(changePostStatusSuccess(res));
@@ -84,7 +84,7 @@ function* changePostStatus(action) {
 }
 
 function* updatePostHeart(action) {
-  const { res, error } = yield call(boards.updatePostHeart, action.payload);
+  const { res, error } = yield call(post.updatePostHeart, action.payload);
 
   if (!error) {
     yield put(updatePostHeartSuccess(action.payload));
