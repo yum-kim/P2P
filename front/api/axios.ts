@@ -1,3 +1,6 @@
+import { useRouter } from 'next/dist/client/router';
+import { RootState } from './../store/configureStore';
+import { useSelector } from 'react-redux';
 import { TOKEN_COOKIE_NAME } from './../utils/cookie';
 import axios from 'axios';
 import auth from './auth';
@@ -42,8 +45,8 @@ export default async function request(option: IOptionProps) {
     if ([200, 201].includes(status)) {
       return { res: res.data };
     }
+
     console.log('request response', res);
-    
     throw new Error(res);
   } catch (e) {
     const { data: error } = e.response;
@@ -51,20 +54,30 @@ export default async function request(option: IOptionProps) {
   }
 }
 
-async function checkErrorType(error:any, option: IOptionProps) {
+async function checkErrorType(error:any, option: IOptionProps, count:number = 0) {
   const status = error.statusCode ?? error.status;
   const { message } = error;
-  
+  const { issueAccessTokenDone, issueAccessTokenError } = useSelector((state:RootState) => state.auth);
+  const router = useRouter();
+  const MAX_RETRY_COUNT = 5;
+
   //요청 실패 처리
   if (status == 401) {
     switch (message) {
       case "Token 전송 안됨": ;
       case "토큰이 만료되었습니다.":
-        store.dispatch(issueAccessTokenRequest());
-        return await request(option); //재요청
+        if (count < MAX_RETRY_COUNT) {
+          store.dispatch(issueAccessTokenRequest());
+          if (issueAccessTokenDone && !issueAccessTokenError) {
+            return await request(option); //발급 성공 시 기존 요청 재시도
+          } else {
+            return await checkErrorType(error, option, count++); //발급 재시도(최대 5회)
+          }
+        }
       // case "유효하지 않은 토큰입니다.": ;
       case "refresh 토큰이 만료되었습니다.":
         store.dispatch(logOutRequest(message));
+        router.push('/login');
         return;
     }
   }
