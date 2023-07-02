@@ -14,7 +14,7 @@ import { removeAccountRequest, resetSpecificAuth, logOutRequest } from '../../st
 import { useRouter } from 'next/router';
 
 const mypage = () => {
-    const { user, removeAccountLoading, removeAccountError } = useSelector((state: RootState) => state.auth);
+    const { user, removeAccountLoading, removeAccountError, expireRefreshTokenError } = useSelector((state: RootState) => state.auth);
     const [visible, setVisible] = useState(false);
     const { Modal, onShowModal } = useModal(false);
     const dispatch = useDispatch();
@@ -47,6 +47,12 @@ const mypage = () => {
             });
         }
     }, [removeAccountError]);
+
+    useEffect(() => {
+        if (expireRefreshTokenError) {
+            router.push('/login');
+        }
+    }, [expireRefreshTokenError])
 
     return (
         <>

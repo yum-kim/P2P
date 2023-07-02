@@ -11,6 +11,7 @@ import styles from './feed.module.scss';
 import { getPostsRequest } from '../../store/slices/post';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import { resetAllPostDone, resetAllPostError } from '../../store/slices/post';
+import { useRouter } from 'next/router';
 
 const Feed = () => {
     const {
@@ -27,12 +28,13 @@ const Feed = () => {
         cursor,
         modalMessage,
     } = useSelector((state: RootState) => state.post);
-    const { user } = useSelector((state: RootState) => state.auth);
+    const { user, expireRefreshTokenError } = useSelector((state: RootState) => state.auth);
     const [isLastPage, setIsLastPage] = useState(false);
     const dispatch = useDispatch();
     const { Modal, onShowModal } = useModal(false);
     const intersectingRef = useRef(null);
     const { isIntersecting } = useInfiniteScroll(intersectingRef, { threshold: 0.3 });
+    const router = useRouter();
 
     const completeMsgMap = {
         addPostDone,
@@ -91,7 +93,13 @@ const Feed = () => {
 
     useEffect(() => {
         getPosts();
-    }, [user]);
+    }, []);
+
+    useEffect(() => {
+        if (expireRefreshTokenError) {
+            router.push('/login');
+        }
+    }, [expireRefreshTokenError])
 
     return (
         <>
