@@ -141,6 +141,6 @@
 
 7. **기타**
     
-    ![모바일-github](https://github.com/yum-kim/P2P/assets/61794233/b204ccff-5cff-4afb-9606-cd5256282b49)
+    ![모바일](https://github.com/yum-kim/P2P/assets/61794233/a75ee082-49b6-43f6-86fe-7f2024e3b1b1)
 
     - 개발이 완료된 화면은 반응형 디자인 작업되어있어 모바일에서도 사용 가능합니다.
