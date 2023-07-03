@@ -37,7 +37,7 @@ const Login = () => {
         if (expireRefreshTokenError) {
             onShowModal("토큰이 만료되어 권한이 없습니다. 재로그인 해주세요.", {
                 cancel: () => {
-                    dispatch(resetAllAuthError());
+                    dispatch(resetAllAuth());
                     dispatch(resetAllPostError());
                 }
             });
