@@ -183,7 +183,7 @@ export const authSlice = createSlice({
     resetAllAuthError: (state) => {
         Object.keys(state).forEach((key) => {
             if (key.endsWith("Error")) {
-                state[key] = false;
+                state[key] = null;
             }
         });
     },

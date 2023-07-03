@@ -10,9 +10,10 @@ import { useRouter } from 'next/dist/client/router';
 import Loading from '../../components/common/Loading/Loading';
 import useModal from '../../hooks/useModal';
 import { RootState } from '../../store/configureStore';
-import { logInRequest, issueAccessTokenRequest, resetSpecificAuth } from '../../store/slices/auth';
+import { logInRequest, issueAccessTokenRequest, resetSpecificAuth, resetAllAuthError, resetAllAuth } from '../../store/slices/auth';
 import useInput from '../../hooks/useInput';
 import { getCookie, TOKEN_COOKIE_NAME } from '../../utils/cookie';
+import { resetAllPostError } from '../../store/slices/post';
 
 const Login = () => {
     const [username, onChangeUsername] = useInput('');
@@ -28,14 +29,16 @@ const Login = () => {
             onShowModal("빈 값이 있습니다.");
             return;
         }
+
         dispatch(logInRequest({ username, password }));
     }, [username, password]);
 
     useEffect(() => {
-        if (expireRefreshTokenError && !user) {
+        if (expireRefreshTokenError) {
             onShowModal("토큰이 만료되어 권한이 없습니다. 재로그인 해주세요.", {
                 cancel: () => {
-                    dispatch(resetSpecificAuth("expireRefreshTokenError"));
+                    dispatch(resetAllAuthError());
+                    dispatch(resetAllPostError());
                 }
             });
         }
