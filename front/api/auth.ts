@@ -13,7 +13,6 @@ class Auth {
 
     setToken(data: string) {
         this.accessToken = data;
-        console.log(this.accessToken);
     }
 
     async login(data: any) {
