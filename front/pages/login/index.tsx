@@ -35,7 +35,7 @@ const Login = () => {
 
     useEffect(() => {
         if (expireRefreshTokenError) {
-            onShowModal("토큰이 만료되어 권한이 없습니다. 재로그인 해주세요.", {
+            onShowModal("토큰이 만료되어 권한이 없습니다.\n다시 로그인 후 이용해주세요.", {
                 cancel: () => {
                     dispatch(resetAllAuth());
                     dispatch(resetAllPostError());
@@ -89,9 +89,9 @@ const Login = () => {
             {logInLoading || issueAccessTokenLoading && <Loading />}
             <Modal />
 
-            <div className={styles.login}>
+            <section className={styles.login}>
                 <h2 className={styles.logo}>
-                    <img src='images/extension_icon.svg' alt='로고' />
+                    <img src='images/logo.svg' alt='로고' />
                 </h2>
                 <div className={styles.loginWrapper}>
                     <form onSubmit={onSubmitLogin}>
@@ -111,7 +111,7 @@ const Login = () => {
                         <Button size='36' variant='secondary'>Sign up</Button>
                     </Link>
                 </div>
-            </div>
+            </section>
         </>
     );
 };

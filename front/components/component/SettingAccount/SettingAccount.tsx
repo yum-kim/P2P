@@ -144,7 +144,7 @@ const SettingAccount = ({ onClose }) => {
 
   const onBackMyPage = useCallback(() => {
     if (isActiveNameInput || isActivePwInput) {
-      onShowModal("수정 중인 값이 있습니다. 취소 후 돌아가시겠습니까?", {
+      onShowModal("수정 중인 값이 있습니다.\n취소 후 돌아가시겠습니까?", {
         confirm: () => {
           setIsActiveNameInput(false);
           setIsActivePwInput(false);

@@ -19,6 +19,7 @@
     "@types/react-dom": "^18.2.4",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.2.1",
+    "clsx": "^1.2.1",
     "next": "^13.1.0",
     "next-optimized-images": "^2.6.2",
     "prettier": "^2.8.8",

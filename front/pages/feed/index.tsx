@@ -36,6 +36,8 @@ const Feed = () => {
     const { isIntersecting } = useInfiniteScroll(intersectingRef, { threshold: 0.3 });
     const router = useRouter();
 
+    const isLoading = getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading || updatePostHeartLoading || updatePostLoading;
+
     const completeMsgMap = {
         addPostDone,
         deletePostDone,
@@ -107,7 +109,7 @@ const Feed = () => {
                 <title>P2P | feed</title>
             </Head>
             <AppLayout>
-                {(getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading || updatePostHeartLoading || updatePostLoading) && <Loading />}
+                {isLoading && <Loading />}
                 <Modal />
 
                 <PostForm />
