@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import styles from './Input.module.scss';
+import clsx from 'clsx';
 
 interface IInputProps {
     id?: string,
@@ -14,6 +15,17 @@ interface IInputProps {
 
 const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, IInputProps>((
     { id, type, placeholder, variant, value, height, onChange, disabled }, ref) => {
+    
+    const textareaClassNames = clsx(
+        styles.textarea,
+        styles[`variant-${variant}`],
+        styles[`height-${height}`]
+    );
+    const inputClassNames = clsx(
+        styles.input
+        , styles[`variant-${variant}`]
+    );
+    
     return (
         <>
             {type == 'textarea' ?
@@ -21,7 +33,7 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, IInputProps>((
                     id={id}
                     ref={ref as React.RefObject<HTMLTextAreaElement>}
                     placeholder={placeholder}
-                    className={`${styles.textarea} ${styles['variant-' + variant]} ${styles['height-' + height]}`}
+                    className={textareaClassNames}
                     value={value}
                     onChange={onChange}
                     disabled={disabled}
@@ -32,7 +44,7 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, IInputProps>((
                     ref={ref as React.RefObject<HTMLInputElement>}
                     placeholder={placeholder}
                     type={type}
-                    className={`${styles.input} ${styles['variant-' + variant]}`}
+                    className={inputClassNames}
                     value={value}
                     onChange={onChange}
                     disabled={disabled}
