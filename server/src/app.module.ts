@@ -10,6 +10,7 @@ import { CommentModule } from './comment/comment.module';
 import { BoardImageModule } from './board-image/board-image.module';
 import { HeartModule } from './heart/heart.module';
 import { LoggerMiddleware } from './middlewares/logger';
+import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { LoggerMiddleware } from './middlewares/logger';
     HeartModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
