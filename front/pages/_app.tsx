@@ -12,7 +12,7 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({ Component }) => {
-    const { socket } = useSocket();
+    // const { socket } = useSocket();
 
     return (
         <>
