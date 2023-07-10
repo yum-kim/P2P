@@ -16,13 +16,13 @@ const useSocket = () => {
     socket?.disconnect();
     setSocket(null);
   }, []);
-
-  socket.on('message', (message) => {
-    socket.emit(`received! : ${message}`);
-  });
-
+  
   useEffect(() => {
     connectSocket();
+
+    socket.on('message', (message) => {
+      socket.emit(`received! : ${message}`);
+    });
 
     return () => {
       disconnectSocket();
