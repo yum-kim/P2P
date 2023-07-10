@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { setupSwagger } from './config/swagger.config';
 import * as config from 'config';
 import { readFileSync } from 'fs';
+import { SocketIoAdapter } from './adapters/socket-io.adapters';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +12,7 @@ async function bootstrap() {
   const port = serverConfig.port;
   app.enableCors();
   setupSwagger(app);
+  app.useWebSocketAdapter(new SocketIoAdapter(app));
   await app.listen(port);
   try {
     const banner: string = readFileSync('./.banner', 'utf8');
