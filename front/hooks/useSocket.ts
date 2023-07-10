@@ -7,9 +7,15 @@ const useSocket = () => {
 
   const connectSocket = useCallback(() => {
     if (socket) return;
-    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL);
+
+    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
+      transports: ['websocket'],
+      reconnectionAttempts: 5,
+      reconnectionDelayMax: 2000,
+    });
+
     setSocket(newSocket);
-    console.log('socket connect', socket);
+    console.log('socket connect', newSocket);
   }, []);
 
   const disconnectSocket = useCallback(() => {
@@ -19,10 +25,6 @@ const useSocket = () => {
   
   useEffect(() => {
     connectSocket();
-
-    socket.on('message', (message) => {
-      socket.emit(`received! : ${message}`);
-    });
 
     return () => {
       disconnectSocket();
