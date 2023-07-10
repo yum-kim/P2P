@@ -26,7 +26,6 @@ export default async function request(option: IOptionProps) {
     const accessToken = auth.getToken();
     const refreshToken = getCookie(TOKEN_COOKIE_NAME);
 
-
     if (accessToken) {
       axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     }
@@ -75,7 +74,6 @@ async function checkErrorType(error:any, option: IOptionProps, count:number = 0)
       // case "유효하지 않은 토큰입니다.": ;
       case "refresh 토큰이 만료되었습니다.":
         store.dispatch(logOutRequest(message));
-        return;
     }
   }
 

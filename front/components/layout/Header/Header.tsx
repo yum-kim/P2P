@@ -19,14 +19,14 @@ const Header = () => {
     const { Modal, onShowModal } = useModal(false);
     const [isShowSlideBox, setIsShowSlideBox] = useState(false);
 
-    const onClickLogout = () => {
+    const onClickLogout = useCallback(() => {
         onShowModal("로그아웃 하시겠습니까?", {
             confirm: () => {
                 dispatch(logOutRequest(null));
                 router.push('/login');
             }
         })
-    }
+    }, []);
 
     const unlockScroll = useCallback(() => {
         document.body.style.overflow = "auto";
@@ -61,7 +61,7 @@ const Header = () => {
                         <div className={styles.header}>
                             <h1 className={styles.logo}>
                                 <Link href='/'>
-                                    <img src='images/extension_icon.svg' alt='로고' />
+                                    <img src='images/logo.svg' alt='로고' />
                                     <span>PTOP</span>
                                 </Link>
                             </h1>

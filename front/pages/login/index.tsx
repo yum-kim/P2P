@@ -10,9 +10,10 @@ import { useRouter } from 'next/dist/client/router';
 import Loading from '../../components/common/Loading/Loading';
 import useModal from '../../hooks/useModal';
 import { RootState } from '../../store/configureStore';
-import { logInRequest, issueAccessTokenRequest, resetSpecificAuth } from '../../store/slices/auth';
+import { logInRequest, issueAccessTokenRequest, resetSpecificAuth, resetAllAuthError, resetAllAuth } from '../../store/slices/auth';
 import useInput from '../../hooks/useInput';
 import { getCookie, TOKEN_COOKIE_NAME } from '../../utils/cookie';
+import { resetAllPostError } from '../../store/slices/post';
 
 const Login = () => {
     const [username, onChangeUsername] = useInput('');
@@ -28,14 +29,16 @@ const Login = () => {
             onShowModal("빈 값이 있습니다.");
             return;
         }
+
         dispatch(logInRequest({ username, password }));
     }, [username, password]);
 
     useEffect(() => {
-        if (expireRefreshTokenError && !user) {
-            onShowModal("토큰이 만료되어 권한이 없습니다. 재로그인 해주세요.", {
+        if (expireRefreshTokenError) {
+            onShowModal("토큰이 만료되어 권한이 없습니다.\n다시 로그인 후 이용해주세요.", {
                 cancel: () => {
-                    dispatch(resetSpecificAuth("expireRefreshTokenError"));
+                    dispatch(resetAllAuth());
+                    dispatch(resetAllPostError());
                 }
             });
         }
@@ -86,9 +89,9 @@ const Login = () => {
             {logInLoading || issueAccessTokenLoading && <Loading />}
             <Modal />
 
-            <div className={styles.login}>
+            <section className={styles.login}>
                 <h2 className={styles.logo}>
-                    <img src='images/extension_icon.svg' alt='로고' />
+                    <img src='images/logo.svg' alt='로고' />
                 </h2>
                 <div className={styles.loginWrapper}>
                     <form onSubmit={onSubmitLogin}>
@@ -108,7 +111,7 @@ const Login = () => {
                         <Button size='36' variant='secondary'>Sign up</Button>
                     </Link>
                 </div>
-            </div>
+            </section>
         </>
     );
 };

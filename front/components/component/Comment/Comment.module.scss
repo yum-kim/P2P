@@ -31,6 +31,7 @@
             @include pos-center-y();
             right: 5px;
             width: 32px;
+            color: $primary;
 
             &:hover {
                 color: $primary;

@@ -18,7 +18,7 @@ const MobileNav = ({ onClose, onLogout }) => {
         </button>
         <div className={styles.userInfo}>
           <div className={styles.profile}>
-              {user && user.profileImagePath ? <img src={user.profileImagePath} alt="프로필" /> :     <BsFillPersonFill />}
+              {user && user.profileImagePath ? <img src={user.profileImagePath} alt="프로필" /> : <BsFillPersonFill />}
           </div>
           <div className={styles.user}>
             <h2 className={styles.usercode}>{user && user.usercode}<span>, 환영해요!</span></h2>

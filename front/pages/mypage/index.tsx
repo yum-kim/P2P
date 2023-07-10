@@ -29,7 +29,7 @@ const mypage = () => {
     }, [visible]);
 
     const onClickRemoveAccount = useCallback(() => {
-        onShowModal("회원탈퇴 시 복구할 수 없습니다. 계속 진행하시겠습니까?", {
+        onShowModal("회원탈퇴 시 복구할 수 없습니다.\n계속 진행하시겠습니까?", {
             confirm: () => {
                 dispatch(removeAccountRequest());
                 dispatch(logOutRequest(null));
@@ -40,7 +40,7 @@ const mypage = () => {
 
     useEffect(() => {
         if (removeAccountError) {
-            onShowModal(`회원탈퇴 중 오류가 발생했습니다. ${removeAccountError.message}`, {
+            onShowModal(`회원탈퇴 중 오류가 발생했습니다.\n${removeAccountError.message}`, {
                 cancel: () => {
                     dispatch(resetSpecificAuth("removeAccountError"));
                 }
@@ -95,7 +95,7 @@ const mypage = () => {
                 </section>
                 {/* )} */}
                 
-                <Slider visible={visible} options={{ direction: 'right', top: '20px' }}>
+                <Slider visible={visible} options={{ direction: 'right', top: '20px', zIndex: 100 }}>
                     <SettingAccount onClose={onCloseSettingAccountSlider}/>
                 </Slider>
                     

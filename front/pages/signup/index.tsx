@@ -75,7 +75,7 @@ const Signup = () => {
 
     useEffect(() => {
         if (signUpError) {
-            onShowModal(`회원가입 중 오류가 발생했습니다. ${signUpError.message}`, {
+            onShowModal(`회원가입 중 오류가 발생했습니다.\n${signUpError.message}`, {
                 cancel: () => {
                     dispatch(resetSpecificAuth("signUpError"));
                 }
@@ -85,7 +85,7 @@ const Signup = () => {
 
     useEffect(() => {
         if (signUpDone) {
-            onShowModal("회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.", {
+            onShowModal("회원가입이 완료되었습니다.\n로그인 화면으로 이동합니다.", {
                 cancel: () => {
                     dispatch(resetSpecificAuth("signUpDone"));
                     router.push('/login');
@@ -105,7 +105,7 @@ const Signup = () => {
 
             <div className={styles.signup}>
                 <h2 className={styles.logo}>
-                    <img src='images/extension_icon.svg' alt='로고' />
+                    <img src='images/logo.svg' alt='로고' />
                 </h2>
                 <div className={styles.signupWrapper}>
                     <div className={styles.form}>

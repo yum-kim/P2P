@@ -150,6 +150,8 @@
 
         .description {
             padding: 0 20px;
+            white-space: pre-wrap;
+            line-height: 1.5;
 
             @include responsive(T) {
                 padding: 0;
