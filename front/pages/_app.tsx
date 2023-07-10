@@ -5,13 +5,14 @@ import '../styles/global.scss';
 import { Provider } from 'react-redux';
 import { NextPage } from 'next';
 import { store } from '../store/configureStore';
+import useSocket from '../hooks/useSocket';
 
 interface AppProps {
     Component: NextPage
 }
 
 const App: React.FC<AppProps> = ({ Component }) => {
-    // const { store, props } = wrapper.useWrappedStore(rest);
+    const { socket } = useSocket();
 
     return (
         <>
