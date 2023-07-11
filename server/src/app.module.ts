@@ -11,6 +11,7 @@ import { BoardImageModule } from './board-image/board-image.module';
 import { HeartModule } from './heart/heart.module';
 import { LoggerMiddleware } from './middlewares/logger';
 import { AppGateway } from './app.gateway';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AppGateway } from './app.gateway';
     AuthModule,
     BoardImageModule,
     HeartModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway],
