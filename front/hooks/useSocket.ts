@@ -8,7 +8,7 @@ const useSocket = () => {
   const connectSocket = useCallback(() => {
     if (socket?.connected) return;
 
-    const newSocket = io("http://ec2-43-202-42-66.ap-northeast-2.compute.amazonaws.com:3001", {
+    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
       transports: ['websocket'],
       reconnectionAttempts: 5,
       reconnectionDelayMax: 2000,
