@@ -3,7 +3,7 @@ import styles from './Profile.module.scss';
 import {  BsFillPersonFill } from "react-icons/bs";
 import ProfileModal from '../ProfileModal/ProfileModal';
 
-const Profile = ({ profileImagePath }) => {
+const Profile = ({ user }) => {
   const [isShowDetail, setIsShowDetail] = useState(false);
 
   const onCloseModal = useCallback(() => {
@@ -18,11 +18,11 @@ const Profile = ({ profileImagePath }) => {
   return (
     <>
       <div className={styles.profile} onClick={onClickProfile}>
-          {profileImagePath ? <img src={profileImagePath} alt="프로필" /> : <BsFillPersonFill />}
+          {user?.profileImagePath ? <img src={user.profileImagePath} alt="프로필" /> : <BsFillPersonFill />}
       </div>
 
       {isShowDetail && (
-        <ProfileModal user="" onClose={onCloseModal} />
+        <ProfileModal user={user} onClose={onCloseModal} />
       )}
     </>
   );

@@ -72,7 +72,7 @@ const PostForm = () => {
     return (
         <div className={styles.postForm}>
             <div className={styles.profile}>
-                <Profile profileImagePath={user?.profileImagePath} />
+                <Profile user={user} />
             </div>
             <div className={styles.content}>
                 <Input type='textarea' value={text} placeholder={`${user?.usercode}님! 오늘은 어떤 일이 있었나요?`} height='100' onChange={onChangeText} />

@@ -66,7 +66,7 @@ const MessageRoom = ({ onClose }) => {
                         <BsArrowLeftShort />
                     </button>
                     <div className={styles.profile}>
-                        <Profile profileImagePath={user?.profileImagePath} />                  
+                        <Profile user={user} />                  
                     </div>
                     <div className={styles.name}>
                         <h3 className={styles.usercode}>미나링</h3>

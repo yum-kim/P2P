@@ -159,7 +159,7 @@ const PostCard = ({ post }: { post: IPost }) => {
             <div className={styles.top}>
                 <div className={styles.profile}>
                     <div className={styles.img}>
-                        <Profile profileImagePath={post?.user?.profileImagePath} /> 
+                        <Profile user={post?.user} /> 
                     </div>
                     <div className={styles.postInfo}>
                         <p className={styles.name}>{post.user.usercode} <span className={styles.username}>({post.user.username})</span></p>

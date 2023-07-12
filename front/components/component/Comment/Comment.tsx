@@ -91,7 +91,7 @@ const Comment = ({ post } : { post: IPost }) => {
                 {post.comment.map((comment: IPostComment) => (
                     <li key={comment.id} className={styles.list}>
                         <div className={styles.img}>
-                            <Profile profileImagePath={comment?.user?.profileImagePath} />
+                            <Profile user={comment?.user} />
                         </div>
                         <div className={styles.rhtBox}>
                             <p className={styles.name}>{comment.user.usercode} ({comment.user.username})</p>

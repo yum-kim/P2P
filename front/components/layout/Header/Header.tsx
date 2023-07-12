@@ -77,7 +77,7 @@ const Header = () => {
                                     <BsBoxArrowInRight />
                                 </button>
                                 <div className={styles.profile}>
-                                    <Profile profileImagePath={user?.profileImagePath} />
+                                    <Profile user={user} />
                                 </div>
                             </div>
                             <div className={`lg-hidden ${styles.mobileNav}`}>

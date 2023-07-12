@@ -10,7 +10,7 @@ const MessageList = ({ onClickMessageList }) => {
 
     return (
         <li className={styles.list} onClick={onClickMessageList}>
-            <Profile profileImagePath={user?.profileImagePath} />                  
+            <Profile user={user} />
             <div className={styles.content}>
                 <div className={styles.user}>
                     <h3 className={styles.name}>yumi</h3>

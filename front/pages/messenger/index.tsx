@@ -6,12 +6,14 @@ import MessageList from '../../components/component/MessageList/MessageList';
 import styles from './messenger.module.scss';
 import MessageRoom from '../../components/component/MessageRoom/MessageRoom';
 import useModal from '../../hooks/useModal';
-import Slider from '../../components/common/Slider/Slider';
+import { useRouter } from 'next/router';
 
 const message = () => {
     const { Modal, onShowModal } = useModal(false);
     const [isShowMsgRoom, setIsShowMsgRoom] = useState(false);
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1200);
+    const router = useRouter();
+    const { query } = router;
 
     const messageList = [
         {
@@ -28,6 +30,16 @@ const message = () => {
     ]
 
     useEffect(() => {
+        if (query?.useid) {
+            //채팅방 바로 이동!!
+            
+            //1. (이미 생성된 채팅방 없다면 채팅방 생성)
+            
+            //2. 채팅방 클릭 바인딩
+
+                
+        }
+
         const handleResize = () => {
             setIsDesktop(window.innerWidth > 1200);
         };
