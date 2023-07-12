@@ -1,5 +1,5 @@
 //메인 피드 화면
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import Head from 'next/head';
 import AppLayout from "../../components/layout/AppLayout/AppLayout";
 import MessageList from '../../components/component/MessageList/MessageList';
@@ -11,6 +11,7 @@ import Slider from '../../components/common/Slider/Slider';
 const message = () => {
     const { Modal, onShowModal } = useModal(false);
     const [isShowMsgRoom, setIsShowMsgRoom] = useState(false);
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1200);
 
     const messageList = [
         {
@@ -26,17 +27,25 @@ const message = () => {
         }
     ]
 
+    useEffect(() => {
+        const handleResize = () => {
+            setIsDesktop(window.innerWidth > 1200);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     const onCloseMessageRoom = useCallback(() => {
-        console.log('닫아');
         setIsShowMsgRoom(false);
     }, []);
 
     const onClickMessageList = useCallback(() => {
-        // onShowModal("미구현 상태입니다!");
         setIsShowMsgRoom(true);
     }, []);
-
-    console.log('isShowMsgRoom', isShowMsgRoom);
 
     return (
         <>
@@ -46,19 +55,20 @@ const message = () => {
             <AppLayout>
                 <Modal />
                 <div className={styles.messenger}>
-                    <div className={styles.messageList}>
-                        {/* <h2>Recent message</h2> */}
-                        <ul>
-                            {messageList.map((msg) => (
-                                <MessageList key={msg.id} onClickMessageList={onClickMessageList} />
-                            ))}
-                        </ul>
-                    </div>
-                    <div className={styles.messageRoom}>
-                        <Slider visible={isShowMsgRoom} options={{ direction: 'right', top: '0px' }}>
+                    {(isDesktop || (!isDesktop && !isShowMsgRoom)) && (
+                        <div className={styles.messageList}>
+                            <ul>
+                                {messageList.map((msg) => (
+                                    <MessageList key={msg.id} onClickMessageList={onClickMessageList} />
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                    {isShowMsgRoom && (
+                        <div className={`${styles.messageRoom}`}>
                             <MessageRoom onClose={onCloseMessageRoom} />
-                        </Slider>
-                    </div>
+                        </div>
+                    )}
                 </div>
             </AppLayout>
         </>
