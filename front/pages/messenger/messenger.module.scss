@@ -7,24 +7,27 @@
     @include flexbox(start, start);
 }
 
-.message {
+.messageList {
     width: 30%;
-    // height: calc(100vh - 199px);
+    height: calc(100vh - 199px);
     border-right: 1px solid $border;
+    overflow-y: auto;
 
     h2 {
         @include text-style(16, $black);
         margin-bottom: 1rem;
         font-weight: 400;
     }
-
-    .messageList {
-        padding-right: 10px;
+    
+    ul {
+        padding-right: 1rem;
         overflow-y: auto;
     }
 }
 
 .messageRoom {
     width: 70%;
-    // height: calc(100vh - 199px);
+    height: calc(100vh - 199px);
+    position: relative;
+    overflow: hidden;
 }
