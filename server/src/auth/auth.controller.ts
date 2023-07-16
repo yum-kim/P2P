@@ -64,7 +64,7 @@ export class AuthController {
     @Body(ValidationPipe) authCredentialDto: AuthCredentialDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<ResponseUserDto> {
-    return this.authService.signIn(authCredentialDto, res);
+    return this.authService.signIn(authCredentialDto);
   }
 
   @ApiOperation({

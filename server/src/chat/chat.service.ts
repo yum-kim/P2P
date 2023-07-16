@@ -6,6 +6,7 @@ import { Chat } from './chat.entity';
 import { SearchChatDto } from './dto/search-chat.dto';
 import { ResponseChatDto } from './dto/response-chat.dto';
 import { AuthService } from 'src/auth/auth.service';
+import { formatDateUtil } from 'src/common/util';
 
 @Injectable()
 export class ChatService {
@@ -34,7 +35,13 @@ export class ChatService {
       ? chatMessageList[chatMessageList.length - 1].id
       : null;
 
-    return [chatMessageList, lastCursor];
+    const result = chatMessageList.map((item) => {
+      return {
+        ...item,
+        createAt: formatDateUtil(item.createAt),
+      };
+    }) as unknown as Chat[];
+    return [result, lastCursor];
   }
 
   async getChatList(user: User): Promise<ResponseChatDto[]> {
