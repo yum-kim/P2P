@@ -1,45 +1,24 @@
 //메인 피드 화면
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import AppLayout from "../../components/layout/AppLayout/AppLayout";
 import MessageList from '../../components/component/MessageList/MessageList';
 import styles from './messenger.module.scss';
 import MessageRoom from '../../components/component/MessageRoom/MessageRoom';
 import useModal from '../../hooks/useModal';
-import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/configureStore';
+import { getChatListRequest, updateCurrentChatUserRequest } from '../../store/slices/chat';
+import Loading from '../../components/common/Loading/Loading';
 
 const message = () => {
     const { Modal, onShowModal } = useModal(false);
     const [isShowMsgRoom, setIsShowMsgRoom] = useState(false);
-    const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1200);
-    const router = useRouter();
-    const { query } = router;
-
-    const messageList = [
-        {
-            id: 1,
-            user: {
-                id: 1,
-                username: 'yumi',
-                usercode: '윰',
-                profileImgPath: '',
-            },
-            lastMessage: '나중에 만나용',
-            createAt: '11:15 PM'
-        }
-    ]
+    const [isDesktop, setIsDesktop] = useState(false);
+    const { chatList, getChatListLoading, getChatListError, getChatListDone, currentChatUser } = useSelector((state: RootState) => state.chat);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (query?.useid) {
-            //채팅방 바로 이동!!
-            
-            //1. (이미 생성된 채팅방 없다면 채팅방 생성)
-            
-            //2. 채팅방 클릭 바인딩
-
-                
-        }
-
         const handleResize = () => {
             setIsDesktop(window.innerWidth > 1200);
         };
@@ -53,10 +32,25 @@ const message = () => {
 
     const onCloseMessageRoom = useCallback(() => {
         setIsShowMsgRoom(false);
+        dispatch(updateCurrentChatUserRequest(null));
     }, []);
 
     const onClickMessageList = useCallback(() => {
         setIsShowMsgRoom(true);
+    }, []);
+
+    const getChatList = useCallback(() => {
+        dispatch(getChatListRequest());
+    }, []);
+
+    useEffect(() => {
+        if (!currentChatUser) return;
+        setIsShowMsgRoom(true);
+    }, [currentChatUser]);
+
+    useEffect(() => {
+        getChatList();
+        setIsDesktop(window.innerWidth > 1200);
     }, []);
 
     return (
@@ -66,19 +60,27 @@ const message = () => {
             </Head>
             <AppLayout>
                 <Modal />
+                {getChatListLoading && <Loading />}
+
                 <div className={styles.messenger}>
                     {(isDesktop || (!isDesktop && !isShowMsgRoom)) && (
                         <div className={styles.messageList}>
                             <ul>
-                                {messageList.map((msg) => (
-                                    <MessageList key={msg.id} onClickMessageList={onClickMessageList} />
+                                {chatList.map((message) => (
+                                    <MessageList
+                                        key={message.user_username}
+                                        message={message}
+                                        onClick={onClickMessageList}
+                                    />
                                 ))}
                             </ul>
                         </div>
                     )}
                     {isShowMsgRoom && (
                         <div className={`${styles.messageRoom}`}>
-                            <MessageRoom onClose={onCloseMessageRoom} />
+                            <MessageRoom
+                                onClose={onCloseMessageRoom}
+                            />
                         </div>
                     )}
                 </div>

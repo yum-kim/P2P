@@ -3,17 +3,33 @@ import styles from './ProfileModal.module.scss';
 import { BsFillPersonFill, BsChatRightDots, BsXLg } from "react-icons/bs";
 import { createPortal } from 'react-dom';
 import Button from '../../element/Button/Button';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { updateCurrentChatUserRequest } from '../../../store/slices/chat';
 
 const ProfileModal = ({ user, onClose }) => {
   const [mounted, setMounted] = useState(false);
   const modalRootRef = useRef<Element | null>(null);
-    
+  const router = useRouter();  
+  const dispatch = useDispatch();
+
   const unlockScroll = useCallback(() => {
       document.body.style.overflow = "auto";
   }, []);
       
   const lockScroll = useCallback(() => {
       document.body.style.overflow = "hidden";
+  }, []);
+
+  const onMoveMessage = useCallback(() => {
+    dispatch(updateCurrentChatUserRequest({
+      userid: user.id,
+      username: user.username,
+      usercode: user.usercode,
+      profileImagePath: user.profileImagePath,
+    }));
+    router.push('/messenger');
+    onClose();
   }, []);
 
   useEffect(() => {
@@ -40,11 +56,11 @@ const ProfileModal = ({ user, onClose }) => {
           </div>
         </div>
         <div className={styles.user}>
-          <p className={styles.username}>{user?.username || '윰'}</p>
-          <p className={styles.usercode}>{user?.usercode || 'Yumi'}</p>
+          <p className={styles.usercode}>{user?.usercode}</p>
+          <p className={styles.username}>{user?.username}</p>
       </div>
       <div className={styles.btnBox}>
-        <Button variant='primary-blue' size="40"><BsChatRightDots />Message</Button>
+        <Button variant='primary-blue' size="40" onClick={onMoveMessage}><BsChatRightDots />Message</Button>
       </div>
       </div>
     </section>

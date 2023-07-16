@@ -47,13 +47,12 @@
         text-align: center;
 
         .username {
-            font-size: 36px;
-            font-weight: 600;
-            // margin-bottom: 1rem;
+          @include text-style(16, $secondary);
         }
-
+        
         .usercode {
-            @include text-style(16, $secondary);
+          font-size: 36px;
+          font-weight: 600;
         }
     }
 
