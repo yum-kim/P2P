@@ -6,7 +6,7 @@ const useSocket = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   const connectSocket = useCallback(() => {
-    if (socket) return;
+    if (socket?.connected) return;
 
     const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
       transports: ['websocket'],
@@ -15,13 +15,13 @@ const useSocket = () => {
     });
 
     setSocket(newSocket);
-    console.log('socket connect', newSocket);
-  }, []);
+    console.log('new socket connect', newSocket);
+  }, [socket]);
 
   const disconnectSocket = useCallback(() => {
     socket?.disconnect();
     setSocket(null);
-  }, []);
+  }, [socket]);
   
   useEffect(() => {
     connectSocket();
