@@ -33,10 +33,7 @@ export class AuthService {
     return this.userRepository.createUser(authCredentialDto);
   }
 
-  async signIn(
-    authCredentialDto: AuthCredentialDto,
-    res,
-  ): Promise<ResponseUserDto> {
+  async signIn(authCredentialDto: AuthCredentialDto): Promise<ResponseUserDto> {
     const jwtConfig = config.get('jwt');
     const { username, password } = authCredentialDto;
     const user = await this.userRepository.findOne({ where: { username } });
