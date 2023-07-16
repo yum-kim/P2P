@@ -5,10 +5,14 @@ import { ChatRepository } from './chat.repository';
 import { Chat } from './chat.entity';
 import { SearchChatDto } from './dto/search-chat.dto';
 import { ResponseChatDto } from './dto/response-chat.dto';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class ChatService {
-  constructor(private chatRepository: ChatRepository) {}
+  constructor(
+    private authService: AuthService,
+    private chatRepository: ChatRepository,
+  ) {}
 
   async getChatMessage(
     { chatUserId, chatUserId2, cursor }: SearchChatDto,
@@ -34,32 +38,7 @@ export class ChatService {
   }
 
   async getChatList(user: User): Promise<ResponseChatDto[]> {
-    const queryBuilder = this.chatRepository
-      .createQueryBuilder('chat')
-      .select([
-        'user.username',
-        'user.usercode',
-        'chat.send_user_id',
-        'chat.receive_user_id',
-        'chat.chat_message',
-        'chat.created_at',
-      ])
-      .innerJoin(
-        User,
-        'user',
-        'user.id = chat.send_user_id OR user.id = chat.receive_user_id',
-      )
-      .where('chat.send_user_id = :userId OR chat.receive_user_id = :userId', {
-        userId: user.id,
-      })
-      .andWhere(
-        'chat.id IN (SELECT MAX(sub_chat.id) FROM public.chat sub_chat GROUP BY LEAST(sub_chat.send_user_id, sub_chat.receive_user_id), GREATEST(sub_chat.send_user_id, sub_chat.receive_user_id))',
-      )
-      .setParameter('userId', user.id);
-
-    const chatMessageList: any = await queryBuilder.getRawMany();
-
-    return chatMessageList;
+    return await this.authService.getChatList(user);
   }
 
   async createChat(createChatDto: CreateChatDto, user: User): Promise<Chat> {

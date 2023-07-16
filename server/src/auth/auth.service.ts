@@ -12,6 +12,9 @@ import { User } from './user.entity';
 import { delete_image } from 'src/aws/s3.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as config from 'config';
+import { ResponseChatDto } from 'src/chat/dto/response-chat.dto';
+import { Chat } from 'src/chat/chat.entity';
+import { formatDateUtil } from 'src/common/util';
 
 @Injectable()
 export class AuthService {
@@ -121,6 +124,56 @@ export class AuthService {
     } else {
       throw new NotFoundException(`삭제할 유저를 찾을 수 없습니다`);
     }
+  }
+
+  async getChatList(user: User): Promise<ResponseChatDto[]> {
+    const chatMessageList = await this.userRepository
+      .createQueryBuilder('u')
+      .select([
+        'u.id id',
+        'u.usercode usercode',
+        'u.username username',
+        'c.chat_message',
+        'c.created_at',
+        'u.profile_image_path',
+      ])
+      .innerJoin(
+        (qb) =>
+          qb
+            .select([
+              'LEAST(c2.send_user_id, c2.receive_user_id) as value1',
+              'GREATEST(c2.send_user_id, c2.receive_user_id) as value2',
+              'c2.id',
+              'c2.chat_message',
+              'c2.send_user_id',
+              'c2.receive_user_id',
+              'c2.created_at',
+            ])
+            .from(Chat, 'c2')
+            .where('c2.send_user_id = :userId', { userId: user.id })
+            .orWhere('c2.receive_user_id = :userId', { userId: user.id })
+            .orderBy('value1', 'ASC')
+            .addOrderBy('value2', 'ASC')
+            .addOrderBy('c2.created_at', 'DESC')
+            .distinctOn(['value1', 'value2']),
+        'c',
+        '(u.id = c.send_user_id OR u.id = c.receive_user_id) AND u.id <> :userId',
+        { userId: user.id },
+      )
+      .groupBy(
+        'u.id, u.usercode, u.username, c.chat_message, c.created_at, u.profile_image_path',
+      )
+      .orderBy('u.id', 'ASC')
+      .getRawMany();
+
+    const result = chatMessageList.map((item) => {
+      return {
+        ...item,
+        created_at: formatDateUtil(item.created_at),
+      };
+    });
+
+    return result;
   }
 
   async checkPassword(password, oriPassword) {
