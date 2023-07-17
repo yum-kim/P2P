@@ -4,6 +4,7 @@
 @import '../../../styles/mixins/responsive';
 @import '../../../styles/mixins/position';
 @import '../../../styles/mixins/text_style';
+@import '../../../styles/modules/profile';
 
 .title {
     @include text-style(24);
@@ -23,7 +24,11 @@
     overflow: hidden;
 
     &:hover {
-        // border: 1px solid $tertiary;
+
+    }
+
+    .profile {
+        @extend %profile-base;
     }
 
     .content {

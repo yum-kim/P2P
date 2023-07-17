@@ -68,7 +68,7 @@ const message = () => {
                             <ul>
                                 {chatList.map((message) => (
                                     <MessageList
-                                        key={message.user_username}
+                                        key={message.id}
                                         message={message}
                                         onClick={onClickMessageList}
                                     />
