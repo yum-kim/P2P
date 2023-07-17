@@ -45,6 +45,7 @@
         }
 
         .profile {
+            @extend %profile-base;
             width: 40px;
             height: 40px;
 
@@ -90,15 +91,16 @@
     }
 
     .content {
-        @include column-flexbox(start, end);
+        @include column-flexbox(start, between);
         flex: 1;
+        flex-direction: column-reverse;
         padding: 1rem;
         overflow: auto;
 
         .textBox {
             @include flexbox();
 
-            &:not(:last-child) {
+            &:not(:first-child) {
                 margin-bottom: 1.5rem;
             }
 

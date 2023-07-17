@@ -10,7 +10,9 @@ const Profile = ({ user }) => {
     setIsShowDetail(false);
   }, []);
 
-  const onClickProfile = useCallback(() => {
+  const onClickProfile = useCallback((e) => {
+    e.stopPropagation();
+    
     //프로필 상세 화면으로
     setIsShowDetail(true);
   }, []);
