@@ -1,4 +1,4 @@
-import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
+import { all, fork, put, takeLatest, call, select } from 'redux-saga/effects';
 import chat from '../../api/chat';
 import {
   getChatListRequest, getChatListSuccess, getChatListFailure,
@@ -28,9 +28,12 @@ function* getChatDetail(action) {
 
 function* createChat(action) {
   const { res, error } = yield call(chat.createChat, action.payload);
+  const socketState = yield select((state) => state.socket);
+  const socket = socketState.socket;
 
   if (res) {
     yield put(createChatSuccess(res));
+    socket?.emit('message', res);
   } else {
     yield put(createChatFailure(error));
   }

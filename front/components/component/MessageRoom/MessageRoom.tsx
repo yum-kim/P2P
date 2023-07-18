@@ -40,7 +40,6 @@ const MessageRoom = ({ onClose }) => {
         e.preventDefault();
         if (!message || !currentChatUser.userid) return;
         dispatch(createChatRequest({ chatMessage: message, receiveUserId: currentChatUser.userid}));
-        socket?.emit('message', {chatMessage: message, receiveUserId: currentChatUser.userid});
         setMessage('');
     }, [message]);
     
@@ -90,8 +89,7 @@ const MessageRoom = ({ onClose }) => {
         //스크롤 페이징 아니고, cursor가 null일 때만
         if (!cursor && fetchedChatDetails.length !== 0) getChatDetail();
 
-        //FIXME: 마지막 페이지일 때도 cursor가 null인데 안받아야됨 예외 추가!
-        // => 이대로 하면 방 닫았다가 다른 채팅방 열면 fetchedData가 0개라 호출이 안됨. 새로 열린 방이 아닐 경우 판단 조건 필요
+        //FIXME: 
 
     }, [cursor]);
 
