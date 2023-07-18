@@ -60,10 +60,12 @@ export const chatSlice = createSlice({
         state.getChatDetailLoading = false;
         state.getChatDetailError = action.payload;
     },
-    resetChatDetailRequset: (state) => {
+    resetChatCursorRequset: (state) => {
         state.cursor = null;
-        // state.fetchedChatDetails = [];
-        // state.chatDetails = [];
+      },
+    resetChatDetailRequset: (state) => {
+        state.fetchedChatDetails = [];
+        state.chatDetails = [];
     },
     createChatRequest: (state, action: PayloadAction<any>) => {
         state.createChatLoading = true;
@@ -80,6 +82,8 @@ export const chatSlice = createSlice({
       },
     updateCurrentChatUserRequest: (state, action: PayloadAction<any>) => {
         state.currentChatUser = action.payload;
+        state.fetchedChatDetails = [];
+        state.chatDetails = [];
     },
     resetAllChatDone: (state) => {
         Object.keys(state).forEach((key) => {
@@ -108,6 +112,7 @@ export const {
     getChatDetailRequest,
     getChatDetailSuccess,
     getChatDetailFailure,
+    resetChatCursorRequset,
     resetChatDetailRequset,
     createChatRequest,
     createChatSuccess,

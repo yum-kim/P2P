@@ -17,6 +17,7 @@ const message = () => {
     const [isDesktop, setIsDesktop] = useState(false);
     const { chatList, getChatListLoading, getChatListError, getChatListDone, currentChatUser } = useSelector((state: RootState) => state.chat);
     const dispatch = useDispatch();
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -24,29 +25,34 @@ const message = () => {
         };
 
         window.addEventListener('resize', handleResize);
+        currentChatUser && setCurrentUser(currentChatUser); //프로필 모달에서 진입 시
 
         return () => {
             window.removeEventListener('resize', handleResize);
+            currentChatUser && dispatch(updateCurrentChatUserRequest(null));
         };
     }, []);
 
     const onCloseMessageRoom = useCallback(() => {
         setIsShowMsgRoom(false);
-        dispatch(updateCurrentChatUserRequest(null));
+        setCurrentUser(null);
     }, []);
 
-    const onClickMessageList = useCallback(() => {
-        setIsShowMsgRoom(true);
-    }, []);
+    const onClickMessageList = useCallback((user) => {
+        setCurrentUser(user);
+    }, [currentUser]);
+
+    useEffect(() => {
+        if (currentUser) {
+            setIsShowMsgRoom(true);
+        } else {
+            setIsShowMsgRoom(false);
+        }
+    }, [currentUser]);
 
     const getChatList = useCallback(() => {
         dispatch(getChatListRequest());
     }, []);
-
-    useEffect(() => {
-        if (!currentChatUser) return;
-        setIsShowMsgRoom(true);
-    }, [currentChatUser]);
 
     useEffect(() => {
         getChatList();
@@ -79,6 +85,7 @@ const message = () => {
                     {isShowMsgRoom && (
                         <div className={`${styles.messageRoom}`}>
                             <MessageRoom
+                                targetUser={currentUser}
                                 onClose={onCloseMessageRoom}
                             />
                         </div>

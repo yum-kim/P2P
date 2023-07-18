@@ -1,33 +1,37 @@
 import React, { useCallback } from 'react';
 import styles from './MessageList.module.scss';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../store/configureStore';
 import { BsFillPersonFill } from "react-icons/bs";
-import Profile from '../../common/Profile/Profile';
-import { updateCurrentChatUserRequest } from '../../../store/slices/chat';
 
-export interface IChat {
-    chatMessage: string
-    id: string,
-    usercode: string
-    username: string
-    sendUserId?: string
-    receiveUserId?: string
-    deleteAt: string
+interface IMessageListParams {
+    onClick: (user) => void,
+    message: IChat
 }
 
-const MessageList = ({ onClick, message }) => {
-    const { user } = useSelector((state: RootState) => state.auth);
-    const dispatch = useDispatch();
+export interface IChat {
+    chat_message: string
+    id: string,
+    usercode: string,
+    username: string,
+    created_at: string,
+    profile_image_path: string
+}
 
+export interface IMessageRoomUser {
+    userid: string,
+    username: string,
+    usercode: string,
+    profileImagePath: string,
+}
+
+const MessageList = ({ onClick, message }: IMessageListParams) => {
     const onClickMessageList = useCallback(() => {
-        dispatch(updateCurrentChatUserRequest({
+        const user: IMessageRoomUser = {
             userid: message.id,
             username: message.username,
             usercode: message.usercode,
             profileImagePath: message.profile_image_path,
-        }))
-        onClick();
+        }
+        onClick(user);
     }, []);
         
     return (
@@ -43,9 +47,9 @@ const MessageList = ({ onClick, message }) => {
                 <p className={styles.text}>{message.chat_message}</p>
                 
                 {/* TODO: alert 기능 추가 */}
-                <div className={styles.alert}>
+                {/* <div className={styles.alert}>
                     <span>1</span>
-                </div>
+                </div> */}
             </div>
         </li>
     );

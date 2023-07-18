@@ -5,12 +5,17 @@ import {  BsSend, BsFillPersonFill, BsThreeDots, BsArrowLeftShort } from "react-
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/configureStore';
 import useInput from '../../../hooks/useInput';
-import MessageList from '../MessageList/MessageList';
 import Profile from '../../common/Profile/Profile';
 import useInfiniteScroll from '../../../hooks/useInfiniteScroll';
-import { getChatDetailRequest, createChatRequest, resetChatDetailRequset, resetAllChatError, updateCurrentChatUserRequest } from '../../../store/slices/chat';
+import { getChatDetailRequest, createChatRequest, resetChatCursorRequset, resetAllChatError, resetChatDetailRequset } from '../../../store/slices/chat';
 import Loading from '../../common/Loading/Loading';
 import useModal from '../../../hooks/useModal';
+import { IMessageRoomUser } from '../MessageList/MessageList';
+
+interface IMessageRoomParams {
+    targetUser: IMessageRoomUser,
+    onClose: () => void
+}
 
 interface IMessage {
     id: number,
@@ -22,11 +27,11 @@ interface IMessage {
     deleteAt?: string
 }
 
-const MessageRoom = ({ onClose }) => {
+const MessageRoom = ({ targetUser, onClose }: IMessageRoomParams) => {
     const [messages, setMessages] = useState([]);
     const { user } = useSelector((state: RootState) => state.auth);
     const { socket } = useSelector((state: RootState) => state.socket);
-    const { cursor, getChatDetailLoading, getChatDetailDone, getChatDetailError, createChatLoading, createChatDone, createChatError, fetchedChatDetails, chatDetails, currentChatUser } = useSelector((state: RootState) => state.chat);
+    const { cursor, getChatDetailLoading, getChatDetailDone, getChatDetailError, createChatLoading, createChatDone, createChatError, fetchedChatDetails, chatDetails } = useSelector((state: RootState) => state.chat);
     const messageEndRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [message, onChangeMessage, setMessage] = useInput('');
@@ -35,11 +40,12 @@ const MessageRoom = ({ onClose }) => {
     const { isIntersecting } = useInfiniteScroll(intersectingRef, { threshold: 0.3 });
     const dispatch = useDispatch();
     const { Modal, onShowModal } = useModal(false);
+    const [prevUser, setPrevUser] = useState(null);
 
     const onSubmitMessage = useCallback((e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!message || !currentChatUser.userid) return;
-        dispatch(createChatRequest({ chatMessage: message, receiveUserId: currentChatUser.userid}));
+        if (!message || !targetUser) return;
+        dispatch(createChatRequest({ chatMessage: message, receiveUserId: targetUser.userid}));
         setMessage('');
     }, [message]);
     
@@ -51,54 +57,53 @@ const MessageRoom = ({ onClose }) => {
 
     useEffect(() => {
         socket?.on('getMessage', (message) => {
-            console.log('socket getMessage: ', message);
             setMessages((prevMessages) => [message.payload, ...prevMessages]);
         });
     }, [socket]);
 
+    useEffect(() => {
+        if (prevUser?.userid === targetUser.userid) return;
+
+        onResetCurrentRoom();
+    }, [targetUser]);
+
     const onCloseMessageRoom = useCallback(() => {
-        dispatch(resetChatDetailRequset());
-        dispatch(updateCurrentChatUserRequest(null));
+        dispatch(resetChatCursorRequset());
         onClose();
     }, []);
 
     const getChatDetail = useCallback(() => {
-        dispatch(getChatDetailRequest({ chatUserId: user.id, chatUserId2: currentChatUser.userid || 1, cursor, size: 20 }));
-    }, [currentChatUser?.username, cursor]);
+        dispatch(getChatDetailRequest({ chatUserId: user.id, chatUserId2: targetUser.userid, cursor, size: 20 }));
+    }, [cursor, targetUser]);
 
     const onResetCurrentRoom = useCallback(() => {
         setMessages([]);
-        if (currentChatUser?.username) {
-            dispatch(resetChatDetailRequset());
-            setIsLastPage(false);
-        };
-    }, [currentChatUser?.username]);
-
-    useEffect(() => { 
-        onResetCurrentRoom();
-    }, [currentChatUser?.username]);
+        dispatch(resetChatCursorRequset());
+        dispatch(resetChatDetailRequset());
+        setIsLastPage(false);
+        setPrevUser(targetUser);
+    }, [targetUser]);
 
     useEffect(() => {
         inputRef?.current.focus();
-
-        console.log('room mount!');
-        // getChatDetail();
+        
+        return () => {
+            onResetCurrentRoom();
+        }
     }, []);
 
     useEffect(() => {
-        //스크롤 페이징 아니고, cursor가 null일 때만
-        if (!cursor && fetchedChatDetails.length !== 0) getChatDetail();
-
-        //FIXME: 
-
+        if (!cursor && chatDetails.length == 0) {
+            getChatDetail();
+        }
     }, [cursor]);
-
+    
     useEffect(() => {
         setMessages((prevMessages) => [...prevMessages, ...fetchedChatDetails]);
     }, [fetchedChatDetails]);
 
     useEffect(() => {
-        if (getChatDetailDone && fetchedChatDetails.length === 0) setIsLastPage(true);
+        if (getChatDetailDone && chatDetails.length > 0 && fetchedChatDetails.length === 0) setIsLastPage(true);
     }, [getChatDetailDone]);
 
     useEffect(() => {
@@ -124,6 +129,7 @@ const MessageRoom = ({ onClose }) => {
             }
         })
     }, [createChatError]);
+
     return (
         <section className={styles.messageRoom}>
             {(getChatDetailLoading || createChatLoading) && <Loading />}
@@ -134,10 +140,10 @@ const MessageRoom = ({ onClose }) => {
                     <button onClick={onCloseMessageRoom} className={styles.closeBtn}>
                         <BsArrowLeftShort />
                     </button>
-                    <Profile user={currentChatUser} />
+                    <Profile user={targetUser} />
                     <div className={styles.name}>
-                        <h3 className={styles.usercode}>{currentChatUser?.usercode}</h3>
-                        <span className={styles.username}>{currentChatUser?.username}</span>
+                        <h3 className={styles.usercode}>{targetUser?.usercode}</h3>
+                        <span className={styles.username}>{targetUser?.username}</span>
                     </div>
                     <button className={styles.dotsBtn}>
                         <BsThreeDots />
@@ -147,7 +153,7 @@ const MessageRoom = ({ onClose }) => {
             <article className={styles.content}>
                 <div ref={messageEndRef}></div>
 
-                {messages.map((message) => (
+                {messages.map((message: IMessage) => (
                     <div
                     key={message.id}
                     className={`${styles.textBox} ${message.sendUserId == user?.id ? styles.sended : styles.received}`}
@@ -155,7 +161,7 @@ const MessageRoom = ({ onClose }) => {
                         <div className={styles.profile}>
                             {message.sendUserId === user?.id ?
                                 (user?.profileImagePath ? <img src={user.profileImagePath} alt="프로필" /> : <BsFillPersonFill />) :
-                                (currentChatUser?.profileImagePath ? <img src={currentChatUser.profileImagePath} alt="프로필" /> : <BsFillPersonFill />)
+                                (targetUser?.profileImagePath ? <img src={targetUser.profileImagePath} alt="프로필" /> : <BsFillPersonFill />)
                             }
                         </div>
                         <div className={styles.message}>
