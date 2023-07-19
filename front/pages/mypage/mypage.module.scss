@@ -8,6 +8,7 @@
 .mypage {
     padding: 50px;
     border-radius: 1rem;
+    position: relative;
 
     .mypageWrapper {
         @include column-flexbox();

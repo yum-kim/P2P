@@ -7,6 +7,7 @@ import { BsFillPersonFill, BsFileImage, BsCloudUpload, BsXCircleFill } from "rea
 import { RootState } from '../../../store/configureStore';
 import { addPostRequest } from '../../../store/slices/post';
 import { issueAccessTokenRequest } from '../../../store/slices/auth';
+import Profile from '../../common/Profile/Profile';
 
 const PostForm = () => {
     const { user } = useSelector((state: RootState) => state.auth);
@@ -71,7 +72,7 @@ const PostForm = () => {
     return (
         <div className={styles.postForm}>
             <div className={styles.profile}>
-                {user && user.profileImagePath ? <img src={user.profileImagePath} alt="" /> : <BsFillPersonFill />}
+                <Profile user={user} />
             </div>
             <div className={styles.content}>
                 <Input type='textarea' value={text} placeholder={`${user?.usercode}님! 오늘은 어떤 일이 있었나요?`} height='100' onChange={onChangeText} />

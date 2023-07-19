@@ -21,7 +21,9 @@
     @include column-flexbox(start, start);
     flex: 1 1 100%;
     height: 100%;
-    
+    height: calc(100% - 82px - 77px);
+    // overflow-x: hidden;
+
     @include responsive(D) {
         .aside {
             height: 100%;

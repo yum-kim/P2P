@@ -14,6 +14,7 @@ import { logInRequest, issueAccessTokenRequest, resetSpecificAuth, resetAllAuthE
 import useInput from '../../hooks/useInput';
 import { getCookie, TOKEN_COOKIE_NAME } from '../../utils/cookie';
 import { resetAllPostError } from '../../store/slices/post';
+import { disconnetSocketRequest } from '../../store/slices/socket';
 
 const Login = () => {
     const [username, onChangeUsername] = useInput('');
@@ -21,6 +22,7 @@ const Login = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { logInLoading, logInError, logOutDone, expireRefreshTokenError, user, issueAccessTokenLoading, removeAccountDone } = useSelector((state: RootState) => state.auth);
+    const { socket } = useSelector((state: RootState) => state.socket);
     const { Modal, onShowModal } = useModal(false);
 
     const onSubmitLogin = useCallback(async (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -79,6 +81,7 @@ const Login = () => {
     useEffect(() => {
         const refreshToken = getCookie(TOKEN_COOKIE_NAME);
         refreshToken && dispatch(issueAccessTokenRequest());
+        socket && dispatch(disconnetSocketRequest());
     }, [])
 
     return (

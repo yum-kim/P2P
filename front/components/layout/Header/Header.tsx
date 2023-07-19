@@ -3,7 +3,7 @@ import styles from './Header.module.scss';
 import Link from "next/link";
 import Search from '../../common/Search/Search';
 import { useDispatch, useSelector } from 'react-redux';
-import { BsBoxArrowInRight, BsBell, BsFillPersonFill } from "react-icons/bs";
+import { BsBoxArrowInRight, BsBell } from "react-icons/bs";
 import { FcMenu } from "react-icons/fc";
 import { useRouter } from 'next/dist/client/router';
 import { logOutRequest } from '../../../store/slices/auth';
@@ -11,6 +11,7 @@ import useModal from '../../../hooks/useModal';
 import { RootState } from '../../../store/configureStore';
 import MobileNav from '../MobileNav/MobileNav';
 import Slider from '../../common/Slider/Slider';
+import Profile from '../../common/Profile/Profile';
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -76,7 +77,7 @@ const Header = () => {
                                     <BsBoxArrowInRight />
                                 </button>
                                 <div className={styles.profile}>
-                                    {user && user.profileImagePath ? <img src={user.profileImagePath} alt="프로필" /> : <BsFillPersonFill />}
+                                    <Profile user={user} />
                                 </div>
                             </div>
                             <div className={`lg-hidden ${styles.mobileNav}`}>
