@@ -24,7 +24,7 @@ const Profile = ({ user }) => {
       </div>
 
       {isShowDetail && (
-        <ProfileModal user={user} onClose={onCloseModal} />
+        <ProfileModal userInfo={user} onClose={onCloseModal} />
       )}
     </>
   );

@@ -14,7 +14,10 @@ import { IMessageRoomUser } from '../MessageList/MessageList';
 
 interface IMessageRoomParams {
     targetUser: IMessageRoomUser,
-    onClose: () => void
+    onClose: () => void,
+    onLoadChatList: () => void,
+    isEnteredToProfile: boolean,
+    setIsEnteredToProfile: (boolean) => void
 }
 
 interface IMessage {
@@ -27,11 +30,11 @@ interface IMessage {
     deleteAt?: string
 }
 
-const MessageRoom = ({ targetUser, onClose }: IMessageRoomParams) => {
+const MessageRoom = ({ targetUser, onClose, onLoadChatList, isEnteredToProfile, setIsEnteredToProfile }: IMessageRoomParams) => {
     const [messages, setMessages] = useState([]);
     const { user } = useSelector((state: RootState) => state.auth);
     const { socket } = useSelector((state: RootState) => state.socket);
-    const { cursor, getChatDetailLoading, getChatDetailDone, getChatDetailError, createChatLoading, createChatDone, createChatError, fetchedChatDetails, chatDetails } = useSelector((state: RootState) => state.chat);
+    const { cursor, chatList, getChatDetailLoading, getChatDetailDone, getChatDetailError, createChatLoading, createChatDone, createChatError, fetchedChatDetails, chatDetails } = useSelector((state: RootState) => state.chat);
     const messageEndRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [message, onChangeMessage, setMessage] = useInput('');
@@ -41,13 +44,25 @@ const MessageRoom = ({ targetUser, onClose }: IMessageRoomParams) => {
     const dispatch = useDispatch();
     const { Modal, onShowModal } = useModal(false);
     const [prevUser, setPrevUser] = useState(null);
+    const [isExistedChat, setIsExistedChat] = useState(false);
+    
+    const [isGetDetailAgain, setIsGetDetailAgain] = useState(false);
 
     const onSubmitMessage = useCallback((e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!message || !targetUser) return;
         dispatch(createChatRequest({ chatMessage: message, receiveUserId: targetUser.userid}));
         setMessage('');
+
+        let existed = chatList.find((chat) => chat.id === targetUser.userid);
+        setIsExistedChat(existed);
     }, [message]);
+
+    useEffect(() => {
+        if (createChatDone && !isExistedChat) {
+            onLoadChatList();
+        }
+    }, [isExistedChat, createChatDone]);
     
     useEffect(() => {
         if (createChatDone) {
@@ -63,9 +78,15 @@ const MessageRoom = ({ targetUser, onClose }: IMessageRoomParams) => {
 
     useEffect(() => {
         if (prevUser?.userid === targetUser.userid) return;
-
         onResetCurrentRoom();
     }, [targetUser]);
+
+    useEffect(() => {
+        //프로필 통해 빈 채팅방 처음 열었을 때, 다른 채팅 리스트 클릭 시 채팅내역 못받아오는 경우로 인해 추가(cursor:null, chatDetails: null이라 GetDetail 못받아옴)
+        if (isEnteredToProfile && getChatDetailDone && fetchedChatDetails.length == 0) {
+            setIsGetDetailAgain(true);
+        }
+    }, [isEnteredToProfile, getChatDetailDone]);
 
     const onCloseMessageRoom = useCallback(() => {
         dispatch(resetChatCursorRequset());
@@ -82,7 +103,14 @@ const MessageRoom = ({ targetUser, onClose }: IMessageRoomParams) => {
         dispatch(resetChatDetailRequset());
         setIsLastPage(false);
         setPrevUser(targetUser);
-    }, [targetUser]);
+        setIsExistedChat(false);
+
+        if (isGetDetailAgain) {
+            getChatDetail();
+            setIsGetDetailAgain(false);
+            setIsEnteredToProfile(false);
+        }
+    }, [targetUser, isGetDetailAgain]);
 
     useEffect(() => {
         inputRef?.current.focus();
@@ -97,13 +125,15 @@ const MessageRoom = ({ targetUser, onClose }: IMessageRoomParams) => {
             getChatDetail();
         }
     }, [cursor]);
-    
+
     useEffect(() => {
         setMessages((prevMessages) => [...prevMessages, ...fetchedChatDetails]);
     }, [fetchedChatDetails]);
 
     useEffect(() => {
-        if (getChatDetailDone && chatDetails.length > 0 && fetchedChatDetails.length === 0) setIsLastPage(true);
+        if (getChatDetailDone && chatDetails.length > 0 && fetchedChatDetails.length === 0) {
+            setIsLastPage(true);
+        }
     }, [getChatDetailDone]);
 
     useEffect(() => {

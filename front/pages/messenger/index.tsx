@@ -18,6 +18,7 @@ const message = () => {
     const { chatList, getChatListLoading, getChatListError, getChatListDone, currentChatUser } = useSelector((state: RootState) => state.chat);
     const dispatch = useDispatch();
     const [currentUser, setCurrentUser] = useState(null);
+    const [isEnteredToProfile, setIsEnteredToProfile] = useState(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -25,11 +26,19 @@ const message = () => {
         };
 
         window.addEventListener('resize', handleResize);
-        currentChatUser && setCurrentUser(currentChatUser); //프로필 모달에서 진입 시
+
+        //프로필 모달에서 진입 시
+        if (currentChatUser) {
+            setCurrentUser(currentChatUser);
+            setIsEnteredToProfile(true);
+        }
 
         return () => {
             window.removeEventListener('resize', handleResize);
-            currentChatUser && dispatch(updateCurrentChatUserRequest(null));
+            if (currentChatUser) {
+                dispatch(updateCurrentChatUserRequest(null));
+                setIsEnteredToProfile(false);
+            }
         };
     }, []);
 
@@ -59,6 +68,10 @@ const message = () => {
         setIsDesktop(window.innerWidth > 1200);
     }, []);
 
+    const onLoadChatList = () => {
+        getChatList();
+    }
+
     return (
         <>
             <Head>
@@ -77,6 +90,7 @@ const message = () => {
                                         key={message.id}
                                         message={message}
                                         onClick={onClickMessageList}
+                                        
                                     />
                                 ))}
                             </ul>
@@ -85,7 +99,10 @@ const message = () => {
                     {isShowMsgRoom && (
                         <div className={`${styles.messageRoom}`}>
                             <MessageRoom
+                                isEnteredToProfile={isEnteredToProfile}
+                                setIsEnteredToProfile={setIsEnteredToProfile}
                                 targetUser={currentUser}
+                                onLoadChatList={onLoadChatList}
                                 onClose={onCloseMessageRoom}
                             />
                         </div>
