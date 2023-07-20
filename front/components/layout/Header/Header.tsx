@@ -66,9 +66,9 @@ const Header = () => {
                                     <span>PTOP</span>
                                 </Link>
                             </h1>
-                            <div className={`lg-only ${styles.search}`}>
+                            {/* <div className={`lg-only ${styles.search}`}>
                                 <Search placeholder='search' />
-                            </div>
+                            </div> */}
                             <div className={`${styles.rightArea} lg-only`}>
                                 <button className={styles.icon}>
                                     <BsBell />
