@@ -90,6 +90,7 @@ const message = () => {
                                         key={message.id}
                                         message={message}
                                         onClick={onClickMessageList}
+                                        messageRoomUser={currentUser}
                                         
                                     />
                                 ))}
