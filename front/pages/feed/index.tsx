@@ -12,6 +12,7 @@ import { getPostsRequest } from '../../store/slices/post';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import { resetAllPostDone, resetAllPostError } from '../../store/slices/post';
 import { useRouter } from 'next/router';
+import { connetSocketRequest } from '../../store/slices/socket';
 
 const Feed = () => {
     const {
@@ -35,6 +36,7 @@ const Feed = () => {
     const intersectingRef = useRef(null);
     const { isIntersecting } = useInfiniteScroll(intersectingRef, { threshold: 0.3 });
     const router = useRouter();
+    const { socket } = useSelector((state: RootState) => state.socket);
 
     const isLoading = getPostsLoading || addPostLoading || addCommentLoading || updateCommentLoading || deleteCommentLoading || deletePostLoading || changePostStatusLoading || updatePostHeartLoading || updatePostLoading;
 
@@ -94,6 +96,7 @@ const Feed = () => {
     }, [isIntersecting, isLastPage]);
 
     useEffect(() => {
+        dispatch(connetSocketRequest());
         getPosts();
     }, []);
 
