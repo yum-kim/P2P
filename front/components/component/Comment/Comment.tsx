@@ -2,12 +2,13 @@ import React, { useRef, useState, useCallback, useEffect } from 'react';
 import styles from './Comment.module.scss';
 import Input from '../../element/Input/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { BsSend, BsFillPersonFill, BsPencil, BsTrash3 } from "react-icons/bs";
+import { BsSend, BsPencil, BsTrash3 } from "react-icons/bs";
 import { IPost, IPostComment } from '../PostCard/PostCard';
 import { RootState } from '../../../store/configureStore';
 import { addCommentRequest, updateCommentRequest, deleteCommentRequest } from '../../../store/slices/post';
 import useModal from '../../../hooks/useModal';
 import useInput from '../../../hooks/useInput';
+import Profile from '../../common/Profile/Profile';
 
 const Comment = ({ post } : { post: IPost }) => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -90,7 +91,7 @@ const Comment = ({ post } : { post: IPost }) => {
                 {post.comment.map((comment: IPostComment) => (
                     <li key={comment.id} className={styles.list}>
                         <div className={styles.img}>
-                            {comment.user.profileImagePath ? <img src={comment.user.profileImagePath} alt="profile" /> : <BsFillPersonFill />}
+                            <Profile user={comment?.user} />
                         </div>
                         <div className={styles.rhtBox}>
                             <p className={styles.name}>{comment.user.usercode} ({comment.user.username})</p>

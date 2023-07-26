@@ -14,6 +14,7 @@ import { RootState } from '../../../store/configureStore';
 import useModal from '../../../hooks/useModal';
 import useInput from '../../../hooks/useInput';
 import { resetSpecificAuth } from '../../../store/slices/auth';
+import Profile from '../../common/Profile/Profile';
 
 export interface IPost {
     id: number,
@@ -158,7 +159,7 @@ const PostCard = ({ post }: { post: IPost }) => {
             <div className={styles.top}>
                 <div className={styles.profile}>
                     <div className={styles.img}>
-                        {post.user.profileImagePath ? <img src={`${post.user.profileImagePath}`} alt="프로필" /> : <BsFillPersonFill />}
+                        <Profile user={post?.user} /> 
                     </div>
                     <div className={styles.postInfo}>
                         <p className={styles.name}>{post.user.usercode} <span className={styles.username}>({post.user.username})</span></p>
