@@ -15,6 +15,7 @@ import * as config from 'config';
 import { ResponseChatDto } from 'src/chat/dto/response-chat.dto';
 import { Chat } from 'src/chat/chat.entity';
 import { formatDateUtil } from 'src/common/util';
+import { UserNotification } from 'src/user-notification/user-notification.entity';
 
 @Injectable()
 export class AuthService {
@@ -133,6 +134,7 @@ export class AuthService {
         'c.chat_message',
         'c.created_at',
         'u.profile_image_path',
+        'COALESCE(n.noticount, 0) as noticount',
       ])
       .innerJoin(
         (qb) =>
@@ -157,8 +159,14 @@ export class AuthService {
         '(u.id = c.send_user_id OR u.id = c.receive_user_id) AND u.id <> :userId',
         { userId: user.id },
       )
+      .leftJoin(
+        UserNotification,
+        'n',
+        'n.receiveUserId = :userId and u.id = n.sendUserId',
+        { userId: user.id },
+      )
       .groupBy(
-        'u.id, u.usercode, u.username, c.chat_message, c.created_at, u.profile_image_path',
+        'u.id, u.usercode, u.username, c.chat_message, c.created_at, u.profile_image_path, n.noticount',
       )
       .orderBy('u.id', 'ASC')
       .getRawMany();
