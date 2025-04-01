@@ -1,0 +1,127 @@
+@import '../../../styles/constants/colors';
+@import '../../../styles/mixins/text_style';
+
+%btn-base {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    font-weight: 700;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.btn {
+    //style
+    &.variant-primary {
+      @extend %btn-base;
+      color: $white;
+      background-color: $black;
+      transition: background-color 200ms ease-in-out;
+      border: 1px solid $black;
+    
+      &:not(:disabled):hover {
+        background-color: $white;
+        color: $black;
+      }
+    }
+
+    &.variant-primary-blue {
+        @extend %btn-base;
+        color: $white;
+        background-color: $blue;
+        // border: 1px solid $blue;
+        transition: background-color 200ms ease-in-out;
+
+        &:not(:disabled):hover {
+            background-color: $blue-dark;
+        }
+    }
+
+    &.variant-outlined {
+        @extend %btn-base;
+        color: $blue;
+        background-color: $white;
+        border: 1px solid $blue;
+        transition: background-color 200ms ease-in-out;
+
+        &:not(:disabled):hover {
+            background-color: $blue-light;
+        }
+    }
+
+    &.variant-secondary {
+        @extend %btn-base;
+        color: $white;
+        background-color: $purple;
+        border: 1px solid $white;
+        transition: background-color 200ms ease-in-out;
+
+        &:not(:disabled):hover {
+            background-color: $purple-dark;
+        }
+    }
+
+    &.variant-ghost {
+        @extend %btn-base;
+        color: $primary;
+        background-color: transparent;
+        border: none;
+        transition: color 200ms ease-in-out;
+
+        &:not(:disabled):hover {
+            color: $secondary;
+        }
+    }
+
+    &.variant-danger {
+        @extend %btn-base;
+        color: $white;
+        background-color: $red;
+        border: none;
+        transition: color 200ms ease-in-out;
+
+        &:not(:disabled):hover {
+            background-color: $red-dark;
+        }
+    }
+
+    //sizes
+    &.size-32 {
+        @include text-style(14);
+        height: 32px;
+    }
+
+    &.size-36 {
+        @include text-style(16);
+        height: 36px;
+    }
+
+    &.size-40 {
+        @include text-style(16);
+        height: 40px;
+    }
+
+    &.size-48 {
+        @include text-style(16);
+        height: 48px;
+    }
+
+    &.size-55 {
+        @include text-style(18);
+        height: 55px;
+    }
+
+    &:disabled {
+        cursor: initial;
+        border: none;
+        background-color: $border;
+        color: $tertiary
+    }
+}
+
+
+
+
+

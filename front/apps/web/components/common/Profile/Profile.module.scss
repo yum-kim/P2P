@@ -1,0 +1,6 @@
+@import '../../../styles/modules/profile';
+
+.profile {
+  @extend %profile-base;
+  cursor: pointer;
+}

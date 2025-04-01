@@ -1,0 +1,110 @@
+@import '../../styles/constants/colors';
+@import '../../styles/mixins/flexbox';
+@import '../../styles/mixins/responsive';
+@import '../../styles/layout/grids';
+@import '../../styles/mixins/position';
+@import '../../styles/mixins/text_style';
+
+.mypage {
+    padding: 50px;
+    border-radius: 1rem;
+    position: relative;
+
+    .mypageWrapper {
+        @include column-flexbox();
+        margin: 0 auto;
+        width: 100%;
+        
+        @include responsive(T) {
+            width: 350px;
+        }
+    }
+
+    .profile {
+        position: relative;
+
+        .profileImg {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid $tertiary;
+    
+            svg {
+                @include pos-center-x;
+                top: 20px;
+                width: 100%;
+                height: 100%;
+                color: $secondary;
+            }
+    
+            img {
+                @include pos-center();
+                width: 100%;
+            }
+        }
+    }
+
+    .user {
+        margin: 2rem 0 3rem 0;
+        text-align: center;
+
+        .username {
+            font-size: 36px;
+            margin-bottom: 1rem;
+        }
+
+        .usercode {
+            @include text-style(16)
+        }
+    }
+
+    .btnBox {
+        width: 100%;
+
+        li {
+            width: 100%;
+            height: 50px;
+            
+            &:not(:last-child) {
+                margin-bottom: 2rem;
+            }
+            
+            button {
+                width: 100%;
+                height: 100%;
+                @include text-style(16);
+                font-weight: 600;
+                text-align: center;
+                border: 1px solid $tertiary;
+                border-radius: 6px;
+                background-color: $white;
+                position: relative;
+                color: $black;
+                
+                &:disabled {
+                    cursor: initial;
+                    border: 1px solid $border;
+                    background-color: $background;
+                }
+            
+                &:hover:not(:disabled) {
+                    background-color: $blue-light;
+                }
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                    @include pos-center-y;
+                    right: 10px;
+                    color: $black;
+                }
+            }
+        }
+    }
+
+
+
+ }
+ 

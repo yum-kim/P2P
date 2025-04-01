@@ -1,0 +1,35 @@
+@import '../../../styles/mixins/flexbox';
+@import '../../../styles/mixins/text_style';
+@import '../../../styles/constants/colors';
+@import '../../../styles/mixins/responsive';
+@import '../../../styles/layout/grids';
+
+.nav {
+    @include text-style(16);
+    
+    .navList {
+        a {
+            @include flexbox(start);
+    
+            width: 100%;
+            height: 50px;
+            padding-left: 20px;
+            color: $black;
+            border-radius: 10px;
+    
+            &.active {
+                color: $white;
+                background: $purple-light;
+            }
+    
+            &:hover:not(.active) {
+                color: $primary;
+            }
+    
+            svg {
+                font-size: 18px;
+                margin-right: 10px;
+            }
+        }
+    }
+}

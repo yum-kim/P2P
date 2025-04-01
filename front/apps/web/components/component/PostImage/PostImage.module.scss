@@ -1,0 +1,46 @@
+@import '../../../styles/layout/grids';
+@import '../../../styles/mixins/responsive';
+@import '../../../styles/mixins/flexbox';
+
+.imgWrapper {    
+    @include flexbox();
+    flex-wrap: wrap;
+
+    img {
+        display: block;
+        max-width: 100%;
+        object-fit: cover;
+    }
+
+    @for $i from 1 through 2 {
+        .img#{$i} {
+            width: 100%;
+            max-height: 500px;
+    
+            @include responsive("D") {
+                width: calc(100% / $i);
+            }
+        }
+    }
+    
+    @for $i from 3 through 4 {
+        .img#{$i} {
+            width: 100%;
+    
+            @include responsive("D") {
+                &:nth-child(1) {
+                    width: 100%;
+                    max-height: 500px;
+    
+                }
+    
+                &:not(:nth-child(1)) {
+                    width: calc(100% / calc($i - 1));
+                    max-height: 400px;
+                }
+            }
+        }
+    }
+
+}
+
