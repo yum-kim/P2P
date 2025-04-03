@@ -1,0 +1,10 @@
+{
+  "extends": "@base-config/typescript-config/tsconfig.base.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  }
+}
