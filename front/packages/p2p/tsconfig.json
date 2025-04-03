@@ -1,10 +1,12 @@
 {
-  "extends": "@base-config/typescript-config/tsconfig.base.json",
+  "extends": "../../lib/base-config/tsconfig.base.json",
   "compilerOptions": {
     "plugins": [
       {
         "name": "next"
       }
     ]
-  }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/login/index.tsx"],
+  "exclude": ["node_modules"]
 }
