@@ -1,5 +1,30 @@
 {
   "name": "p2p-ui",
   "version": "1.0.0",
-  "private": true
+  "main": "dist/bundle.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/bundle.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "private": true,
+  "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
+    "@swc/core": "^1.11.16",
+    "@types/react": "^18.3.20",
+    "react": "18.2.0",
+    "react-dom": "^18.2.0",
+    "swc-loader": "^0.2.6",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.1"
+  },
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "dev": "webpack serve --open --config webpack.config.js",
+    "build:types": "tsc --project tsconfig.build.json"
+  }
 }

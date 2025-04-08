@@ -5,7 +5,13 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "jsx": "preserve",
+    "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@p2p-ui/*": ["../ui/src/*"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/login/index.tsx"],
   "exclude": ["node_modules"]

@@ -6,24 +6,24 @@ import { useRouter } from 'next/dist/client/router';
 import { RootState } from '../store/configureStore';
 
 const Home = () => {
-    const { user } = useSelector((state: RootState) => state.auth);
-    const router = useRouter();
+  const { user } = useSelector((state: RootState) => state.auth);
+  const router = useRouter();
 
-    useEffect(() => {
-        if (user) {
-            router.push('/feed');
-        } else {
-            router.push('/login');
-        }
-    }, [])
+  useEffect(() => {
+    if (user) {
+      router.push('/feed');
+    } else {
+      router.push('/login');
+    }
+  }, []);
 
-    return (
-        <>
-            <Head>
-                <title>P2P | main</title>
-            </Head>
-        </>
-    );
-}
+  return (
+    <>
+      <Head>
+        <title>P2P | main</title>
+      </Head>
+    </>
+  );
+};
 
 export default Home;

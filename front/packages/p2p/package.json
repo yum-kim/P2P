@@ -1,7 +1,7 @@
 {
   "name": "p2p-web",
   "version": "1.0.0",
-  "main": "index.tsx",
+  "main": "index.js",
   "packageManager": "pnpm@8.15.1",
   "scripts": {
     "dev": "next dev",
@@ -11,18 +11,21 @@
   },
   "author": "yumiKim",
   "license": "ISC",
-  "description": "",
   "dependencies": {
+    "@redux-devtools/extension": "^3.3.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/jest": "^29.5.2",
     "@types/react-dom": "^18.2.4",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.2.1",
+    "bufferutil": "^4.0.9",
     "clsx": "^1.2.1",
     "next": "^13.1.0",
     "next-optimized-images": "^2.6.2",
     "prettier": "^2.8.8",
     "prop-types": "^15.8.1",
+    "react": "18.2.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
     "react-redux": "^8.0.5",
     "redux": "^4.2.0",
@@ -33,10 +36,11 @@
     "sharp": "^0.32.1",
     "socket.io-client": "^4.7.1",
     "styled-components": "^5.3.5",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.3",
+    "utf-8-validate": "^6.0.5",
+    "p2p-ui": "workspace:*"
   },
   "devDependencies": {
-    "@types/next": "^9.0.0",
     "@types/node": "^20.17.30",
     "@types/react": "^18.3.20",
     "eslint": "^8.23.1",
