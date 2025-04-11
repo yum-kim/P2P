@@ -21,6 +21,7 @@ import useInput from '../../hooks/useInput';
 import { getCookie, TOKEN_COOKIE_NAME } from '../../utils/cookie';
 import { resetAllPostError } from '../../store/slices/post';
 import { disconnetSocketRequest } from '../../store/slices/socket';
+import { Icon } from 'p2p-ui';
 
 const Login = () => {
   const [username, onChangeUsername] = useInput('');
@@ -109,10 +110,10 @@ const Login = () => {
       </Head>
       {logInLoading || (issueAccessTokenLoading && <Loading />)}
       <Modal />
-
       <section className={styles.login}>
         <h2 className={styles.logo}>
-          <img src="images/logo.svg" alt="로고" />
+          {/* <img src="images/logo.svg" alt="로고" /> */}
+          <Icon icon="Logo" />
         </h2>
         <div className={styles.loginWrapper}>
           <form onSubmit={onSubmitLogin}>

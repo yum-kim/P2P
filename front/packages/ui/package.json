@@ -23,7 +23,8 @@
     "webpack-dev-server": "^5.2.1"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "pnpm build:js && pnpm build:types",
+    "build:js": "webpack --config webpack.config.js",
     "dev": "webpack serve --open --config webpack.config.js",
     "build:types": "tsc --project tsconfig.build.json"
   }

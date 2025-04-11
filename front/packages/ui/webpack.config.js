@@ -7,12 +7,16 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
     publicPath: "/", // 중요: dev-server에서 정적 경로 설정
+    libraryTarget: "module",
+    module: true,
+  },
+  experiments: {
+    outputModule: true,
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
     alias: {
       "@p2p-ui/components": path.resolve(__dirname, "src/components"),
-      "@p2p-ui/assets": path.resolve(__dirname, "src/assets"),
     },
   },
   // build log 확인용
@@ -23,18 +27,6 @@ module.exports = {
   // },
   module: {
     rules: [
-      {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: "@svgr/webpack",
-            options: {
-              icon: true,
-            },
-          },
-          "url-loader",
-        ],
-      },
       {
         test: /\.(ts|tsx|js|jsx)$/,
         exclude: /node_modules/,
@@ -55,6 +47,31 @@ module.exports = {
             sourceMaps: true,
           },
         },
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: "@svgr/webpack",
+            options: {
+              icon: true,
+              exportType: "default",
+              svgo: true,
+              svgoConfig: {
+                plugins: [
+                  {
+                    name: "removeDimensions", // width,height 자동 제거
+                    active: true,
+                  },
+                  {
+                    name: "removeViewBox",
+                    active: false,
+                  },
+                ],
+              },
+            },
+          },
+        ],
       },
     ],
   },

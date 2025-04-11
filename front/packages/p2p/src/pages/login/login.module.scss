@@ -4,50 +4,44 @@
 @import '../../styles/layout/grids';
 
 .login {
-    @include column-flexbox();
-    
+  @include column-flexbox();
+
+  width: 100%;
+  padding: 0 1rem;
+  height: 100vh;
+  margin: 0 auto;
+
+  @include responsive('T') {
+    width: 400px;
+    padding: 0;
+  }
+
+  .logo {
+    width: 100px;
+    margin-bottom: 2rem;
+
+    @include flexbox(start, center);
+  }
+
+  .loginWrapper {
     width: 100%;
-    padding: 0 1rem;
-    height: 100vh;
-    margin: 0 auto;
 
-    @include responsive("T") {
-        width: 400px;
-        padding: 0;
+    input {
+      height: 34px;
+      margin-bottom: 1rem;
+      margin-top: 0.5rem;
     }
 
-    .logo {
-        width: 100px;
-        margin-bottom: 2rem;
-
-        @include flexbox(start, center);
-
-        img {
-            width: 100%;
-            margin-right: 10px;
-        }
+    button {
+      width: 100%;
+      margin-bottom: 1rem;
     }
 
-    .loginWrapper {
-        width: 100%;
-
-        input {
-            height: 34px;
-            margin-bottom: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        button {
-            width: 100%;
-            margin-bottom: 1rem;
-        }
-    
-        .divider {
-            width: 100%;
-            height: 1px;
-            background-color: $tertiary;
-            margin: 1.3rem 0;
-        }
-
+    .divider {
+      width: 100%;
+      height: 1px;
+      background-color: $tertiary;
+      margin: 1.3rem 0;
     }
+  }
 }
