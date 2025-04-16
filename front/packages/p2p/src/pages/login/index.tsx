@@ -112,8 +112,7 @@ const Login = () => {
       <Modal />
       <section className={styles.login}>
         <h2 className={styles.logo}>
-          {/* <img src="images/logo.svg" alt="로고" /> */}
-          <Icon icon="Logo" />
+          <Icon icon="Logo" width="80" height="80" />
         </h2>
         <div className={styles.loginWrapper}>
           <form onSubmit={onSubmitLogin}>
