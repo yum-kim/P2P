@@ -15,8 +15,9 @@
     "moduleResolution": "Node",
     "isolatedModules": true,
     "noEmit": true,
-    "incremental": true,
-    "jsx": "react-jsx"
+    // "incremental": true,
+    "jsx": "react-jsx",
+    "allowJs": true
   },
   "include": ["src", "types"],
   "exclude": ["node_modules", "dist"]

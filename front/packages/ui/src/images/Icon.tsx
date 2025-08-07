@@ -5,14 +5,14 @@ export const image = {
   Logo,
 };
 
-export const Icon = ({ icon: iconComponent, ...props }: IconProps) => {
+export const Icon = ({ icon: iconComponent, size, ...props }: IconProps) => {
   const SvgIcon = image[iconComponent];
 
   if (!SvgIcon) return null;
 
   return (
     <>
-      <SvgIcon {...props} />
+      <SvgIcon {...props} width={size} height={size} />
     </>
   );
 };

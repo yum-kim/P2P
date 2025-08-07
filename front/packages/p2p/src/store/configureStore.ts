@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import createSagaMiiddleWare from 'redux-saga';
 import authReducer from './slices/auth';
 import postReducer from './slices/post';
@@ -9,13 +9,13 @@ import rootSaga from './sagas/index';
 const sagaMiddleware = createSagaMiiddleWare();
 
 export const store = configureStore({
-    reducer: {
-        auth: authReducer,
-        post: postReducer,
-        chat: chatReducer,
-        socket: socketReducer,
-    },
-    middleware: [...getDefaultMiddleware({ thunk: false, serializableCheck: false }), sagaMiddleware],
+  reducer: {
+    auth: authReducer,
+    post: postReducer,
+    chat: chatReducer,
+    socket: socketReducer,
+  },
+  middleware: [...getDefaultMiddleware({ thunk: false, serializableCheck: false }), sagaMiddleware],
 });
 
 sagaMiddleware.run(rootSaga);

@@ -10,9 +10,19 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "@p2p-ui/*": ["../ui/src/*"]
-    }
+      "@p2p-ui/*": [
+        "../ui/src/*"
+      ]
+    },
+    "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/login/index.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/login/index.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

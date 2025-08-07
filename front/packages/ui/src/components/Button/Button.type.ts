@@ -1,5 +1,8 @@
 import React, { ButtonHTMLAttributes } from "react";
 
+type ButtonColor = "purple" | "black";
+
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  label?: string;
+  color?: ButtonColor;
+  loading?: boolean;
 }

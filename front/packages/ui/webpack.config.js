@@ -19,6 +19,10 @@ module.exports = {
       "@p2p-ui/components": path.resolve(__dirname, "src/components"),
     },
   },
+  externals: {
+    react: "react",
+    "react-dom": "react-dom",
+  },
   // build log 확인용
   // stats: "verbose",
   // infrastructureLogging: {
@@ -73,13 +77,18 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader", "postcss-loader"],
+        include: path.resolve(__dirname, "src"),
+      },
     ],
   },
   devServer: {
     static: {
       directory: path.resolve(__dirname, "src"), // 정적 HTML 파일 위치
     },
-    port: 3001,
+    port: 3008,
     hot: true,
     open: true,
   },
