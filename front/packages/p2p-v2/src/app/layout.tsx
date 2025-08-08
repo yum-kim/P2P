@@ -10,7 +10,7 @@ export const bebas = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
-  title: 'P2P',
+  title: 'P2P-v2',
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
