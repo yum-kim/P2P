@@ -1,31 +1,13 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
 import { BsFillPersonFill } from 'react-icons/bs';
 
-const Profile = ({ user }) => {
-  const [isShowDetail, setIsShowDetail] = useState(false);
-
-  const onCloseModal = useCallback(() => {
-    setIsShowDetail(false);
-  }, []);
-
-  const onClickProfile = useCallback((e) => {
-    e.stopPropagation();
-
-    //프로필 상세 화면으로
-    setIsShowDetail(true);
-  }, []);
-
+export const Profile = () => {
   return (
     <>
-      <div className="" onClick={onClickProfile}>
-        {user?.profileImagePath ? <img src={user.profileImagePath} alt="프로필" /> : <BsFillPersonFill />}
+      <div className="w-[28px] h-[28px] border rounded-[50%] border-p2p-tertiary overflow-hidden relative text-[30px]">
+        <BsFillPersonFill className="absolute transform translate-x-[-50%] left-[50%]" />
       </div>
-
-      {/* {isShowDetail && <ProfileModal userInfo={user} onClose={onCloseModal} />} */}
     </>
   );
 };
-
-export default Profile;

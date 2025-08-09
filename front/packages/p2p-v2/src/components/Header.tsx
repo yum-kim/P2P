@@ -4,56 +4,40 @@ import Link from 'next/link';
 import { BsBoxArrowInRight, BsBell } from 'react-icons/bs';
 import { FcMenu } from 'react-icons/fc';
 import { Icon } from 'p2p-ui';
-import { useCallback } from 'react';
-import Profile from './common/Profile';
+import { Profile } from './common/Profile';
 
-const Header = () => {
-  const onClickLogout = useCallback(() => {}, []);
-
-  const onClickHamburger = useCallback(() => {}, []);
-
-  const onCloseSlideBox = useCallback(() => {}, []);
-
+export const Header = () => {
   return (
-    <header className="w-full bg-p2p-background shadow-[-4px 2px 7px -1px rgba(176, 176, 176, 0.5)]">
-      {/* <Modal /> */}
-      <div className="">
-        <div className="">
-          <div className="">
-            <div className="justify-between py-6">
-              <h1 className="">
-                <Link href="/" className="items-center my-0 mx-auto p2p-lg:m-0">
-                  <Icon icon="Logo" width="30" height="30" />
-                  <span className="font-p2p-logo text-4xl ml-[10px]">PTOP</span>
-                </Link>
-              </h1>
-              <div className="flex max-p2p-lg:hidden">
-                <button className="p-[5px] mr-2">
-                  <BsBell />
-                </button>
-                <button className="p-[5px] mr-2" onClick={onClickLogout}>
-                  <BsBoxArrowInRight />
-                </button>
-                <div className="ml-[10px]">
-                  <Profile user={null} />
-                </div>
-              </div>
-              <div className="p2p-lg:hidden">
-                <button className="" onClick={onClickHamburger}>
-                  <FcMenu />
-                </button>
+    <header className="w-full flex items-center justify-center shadow shadow-[-4px 2px 7px -1px rgba(176, 176, 176, 0.5)]">
+      <div className="w-full max-w-screen-p2p-lg px-[12px] p2p-sm:px-[24px] p2p-md:px-[32px] p2p-lg:px-0">
+        <div className="flex items-center justify-between py-6">
+          <h1>
+            <Link href="/" className="items-center my-0 mx-auto p2p-lg:m-0">
+              <Icon icon="Logo" size={40} />
+            </Link>
+          </h1>
 
-                {/* {isShowSlideBox && <div className="" onClick={onCloseSlideBox}></div>}
-                <Slider visible={isShowSlideBox} options={{ direction: 'left', top: '0px', speed: 0.4, width: '80vw' }}>
-                  <MobileNav onClose={onCloseSlideBox} onLogout={onClickLogout} />
-                </Slider> */}
-              </div>
+          {/* lg에서만 노출 */}
+          <div className="hidden p2p-lg:flex items-center gap-x-[4px] text-p2p-secondary text-p2p-18">
+            <button className="p-[5px]">
+              <BsBell />
+            </button>
+            <button className="p-[5px]">
+              <BsBoxArrowInRight />
+            </button>
+            <div className="ml-[10px]">
+              <Profile />
             </div>
+          </div>
+
+          {/* sm,md 에서만 노출 */}
+          <div className="p2p-lg:hidden">
+            <button className="text-p2p-18">
+              <FcMenu />
+            </button>
           </div>
         </div>
       </div>
     </header>
   );
 };
-
-export default Header;
