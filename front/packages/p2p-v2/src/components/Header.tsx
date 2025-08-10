@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { BsBoxArrowInRight, BsBell } from 'react-icons/bs';
 import { FcMenu } from 'react-icons/fc';
 import { Icon } from 'p2p-ui';
-import { Profile } from './common/Profile';
+import Profile from './common/Profile';
 
-export const Header = () => {
+const Header = () => {
   return (
     <header className="w-full flex items-center justify-center">
       <div className="w-full max-w-screen-p2p-lg px-[12px] p2p-sm:px-[24px] p2p-md:px-[32px] p2p-lg:px-0">
@@ -41,3 +41,5 @@ export const Header = () => {
     </header>
   );
 };
+
+export default Header;

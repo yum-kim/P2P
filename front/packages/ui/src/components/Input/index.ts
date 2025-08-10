@@ -1,2 +1,2 @@
 export * from "./InputWithLabel";
-export * from "./Input";
+export * from "./Input.type";

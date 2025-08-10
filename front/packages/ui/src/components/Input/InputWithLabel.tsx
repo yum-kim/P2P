@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
-import { InputWithLabelProps } from "./Input";
 import clsx from "clsx";
+import { InputWithLabelProps } from "./Input.type";
 
 export const InputWithLabel = forwardRef<HTMLInputElement, InputWithLabelProps>(
   ({ children, label, isInvalid = false, inputProps, type = "text" }, ref) => {

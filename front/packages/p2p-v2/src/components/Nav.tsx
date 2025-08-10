@@ -6,7 +6,7 @@ import { BsHouseDoor, BsChatText, BsPersonGear } from 'react-icons/bs';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 
-export const Nav = () => {
+const Nav = () => {
   const pathname = usePathname();
 
   return (
@@ -28,6 +28,8 @@ export const Nav = () => {
     </nav>
   );
 };
+
+export default Nav;
 
 interface NavItemProps {
   href: string;
