@@ -8,7 +8,7 @@ import { Profile } from './common/Profile';
 
 export const Header = () => {
   return (
-    <header className="w-full flex items-center justify-center shadow shadow-[-4px 2px 7px -1px rgba(176, 176, 176, 0.5)]">
+    <header className="w-full flex items-center justify-center">
       <div className="w-full max-w-screen-p2p-lg px-[12px] p2p-sm:px-[24px] p2p-md:px-[32px] p2p-lg:px-0">
         <div className="flex items-center justify-between py-6">
           <h1>

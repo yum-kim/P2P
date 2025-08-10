@@ -11,8 +11,8 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       </section>
 
       {/* 2row - nav, main */}
-      <div className="col-span-2 flex justify-center p-[20px]">
-        <div className="w-full max-w-screen-p2p-lg flex bg-p2p-background rounded-[30px]">
+      <div className="col-span-2 flex justify-center p-[20px] bg-p2p-background">
+        <div className="w-full max-w-screen-p2p-lg flex">
           {/* nav: lg에서만 노출 */}
           <aside className="hidden p2p-lg:flex w-[200px] px-[10px] py-[20px] justify-center max-w-screen-p2p-lg">
             <Nav />
@@ -25,7 +25,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       {/* 3row - footer */}
-      <section className="col-span-2">
+      <section className="col-span-2 bg-p2p-background">
         <Footer />
       </section>
     </div>
