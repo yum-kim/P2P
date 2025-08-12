@@ -78,6 +78,10 @@ module.exports = {
         ],
       },
       {
+        test: /\.(png|jpe?g|gif)$/i,
+        type: "asset/resource",
+      },
+      {
         test: /\.css$/,
         use: ["style-loader", "css-loader", "postcss-loader"],
         include: path.resolve(__dirname, "src"),
