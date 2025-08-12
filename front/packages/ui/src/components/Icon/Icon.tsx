@@ -1,4 +1,5 @@
-import Logo from "./logo.svg";
+import Logo from "../../images/logo.svg";
+
 import { IconProps } from "./icon.type";
 
 export const image = {
