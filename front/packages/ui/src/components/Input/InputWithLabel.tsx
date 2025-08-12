@@ -21,11 +21,7 @@ export const InputWithLabel = forwardRef<HTMLInputElement, InputWithLabelProps>(
             autoComplete="off"
             id={label}
             type={type}
-            className={clsx(
-              "pr-3 block grow",
-
-              inputProps?.className ?? ""
-            )}
+            className={clsx("pr-3 block grow", inputProps?.className ?? "")}
             {...inputProps}
           />
         </div>
