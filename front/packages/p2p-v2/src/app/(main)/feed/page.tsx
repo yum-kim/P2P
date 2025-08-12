@@ -8,7 +8,11 @@ const Feed = () => {
   return (
     <div className="flex flex-col gap-y-[20px]">
       <PostForm />
-      <section className="">
+
+      <section>
+        {/* <p className="text-center">등록된 포스트가 없어요. 😂</p> */}
+        <PostCard />
+        <PostCard />
         <PostCard />
       </section>
     </div>

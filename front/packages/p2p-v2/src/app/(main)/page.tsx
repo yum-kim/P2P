@@ -10,5 +10,5 @@ export default function Home() {
     router.push('/feed');
   }, []);
 
-  return <div>home</div>;
+  return <div></div>;
 }
