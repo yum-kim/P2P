@@ -1,4 +1,4 @@
-import { Input } from 'p2p-ui';
+import { Input, Portal } from 'p2p-ui';
 import React from 'react';
 import { BsPencil, BsSend, BsTrash3 } from 'react-icons/bs';
 import Profile from './common/Profile';
@@ -6,10 +6,10 @@ import Profile from './common/Profile';
 const Comment = () => {
   return (
     <div className="pt-[14px] mt-[14px] border-t border-solid border-p2p-border">
-      <p className="pb-[14px] text-p2p-14">0개의 댓글이 있습니다.</p>
+      <p className="text-p2p-14">0개의 댓글이 있습니다.</p>
       <CommentForm />
 
-      <div className="py-[14px] flex flex-col gap-y-[8px]">
+      <div className="flex flex-col gap-y-[8px]">
         <CommentItem />
       </div>
     </div>
@@ -20,7 +20,7 @@ export default Comment;
 
 const CommentForm = () => {
   return (
-    <div className="relative">
+    <div className="relative py-[14px]">
       <Input className="bg-p2p-background pr-[34px]" placeholder="댓글을 입력하세요." />
       <button className="w-[24px] absolute right-[5px] top-[50%] transform translate-y-[-50%]">
         <BsSend />
