@@ -3,3 +3,7 @@ export * from "./Spinner";
 export * from "./Input";
 export * from "./Textarea";
 export * from "./Icon";
+export * from "./Portal";
+export * from "./Modal";
+export * from "./Dialog";
+export * from "./Backdrop";

@@ -11,7 +11,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       </section>
 
       {/* 2row - nav, main */}
-      <div className="col-span-2 flex justify-center p-[20px]">
+      <div className="col-span-2 flex justify-center">
         <div className="w-full max-w-screen-p2p-lg flex gap-x-[20px]">
           {/* nav: lg에서만 노출 */}
           <aside className="hidden p2p-lg:flex w-[200px] h-full px-[10px] py-[20px] justify-center max-w-screen-p2p-lg">

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Bebas_Neue } from 'next/font/google';
 import './globals.css';
+import { Providers } from '@/service/Providers';
 
 export const bebas = Bebas_Neue({
   variable: '--font-bebas',
@@ -16,7 +17,9 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="ko">
-      <body className="font-p2p-main antialiased min-h-screen">{children}</body>
+      <body className="font-p2p-main antialiased min-h-screen">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 };

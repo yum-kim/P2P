@@ -32,7 +32,7 @@ export const OutlinedButton = ({
       )}
       {...props}
     >
-      <div>{loading && <Spinner />}</div>
+      {loading && <Spinner />}
       <div className={theme.text}>{children}</div>
     </button>
   );

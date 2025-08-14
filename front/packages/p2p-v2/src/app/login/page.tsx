@@ -2,17 +2,15 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ContainedButton, Icon, InputWithLabel } from 'p2p-ui';
+import { ContainedButton, Dialog, Icon, InputWithLabel, useDialog } from 'p2p-ui';
 
 export default function Login() {
   const router = useRouter();
+  // const { showDialog } = useDialog();
 
   const onClickLogin = () => {
-    /**
-     * 개발 시 로그인 인증 로직 추가
-     */
-
-    router.push('/'); //app>(main)>page.tsx
+    //app>(main)>page.tsx
+    router.push('/');
   };
 
   return (
