@@ -1,16 +1,61 @@
 'use client';
 
+import useInput, { InputValueType } from '@/hooks/useInput';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ContainedButton, Dialog, Icon, InputWithLabel, useDialog } from 'p2p-ui';
+import { ContainedButton, Icon, InputWithLabel, useDialog } from 'p2p-ui';
+import { useCallback } from 'react';
 
 export default function Login() {
   const router = useRouter();
-  // const { showDialog } = useDialog();
+  const { showDialog, hideDialog } = useDialog();
+
+  const validateUsername = useCallback((username: InputValueType) => {
+    if (typeof username !== 'string' || !username.trim()) return '빈 값을 입력해주세요.';
+    if (!/^[a-zA-Z0-9]+$/.test(username.trim())) return '사용자 이름은 영문 혹은 숫자로 입력해주세요.';
+    return null;
+  }, []);
+
+  const validatePassword = useCallback((password: InputValueType) => {
+    if (typeof password !== 'string' || !password.trim()) return '빈 값을 입력해주세요.';
+    return null;
+  }, []);
+
+  const {
+    value: username,
+    onChange: onChangeUsername,
+    isInvalid: isInValidUsername,
+    errorMsg: usernameErrorMsg,
+    validate: validateUsernameInput,
+  } = useInput('', validateUsername);
+  const {
+    value: password,
+    onChange: onChangePassword,
+    isInvalid: isInValidPassword,
+    errorMsg: passwordErrorMsg,
+    validate: validatePasswordInput,
+  } = useInput('', validatePassword);
 
   const onClickLogin = () => {
+    const isUsernameValid = validateUsernameInput();
+    const isPasswordValid = validatePasswordInput();
+
+    if (!isUsernameValid || !isPasswordValid) {
+      showDialog({
+        id: 'validation-fail',
+        content: '모든 필수값을 올바르게 입력해주세요.',
+        actions: <ContainedButton onClick={() => hideDialog('validation-fail')}>확인</ContainedButton>,
+      });
+      return;
+    }
+
+    console.log(`로그인시도: ${username}, ${password}`);
+
+    /** TODO: API 통신 코드 추가 */
+
+    /** 통신 성공 시 */
     //app>(main)>page.tsx
-    router.push('/');
+    // router.push('/');
   };
 
   return (
@@ -18,8 +63,23 @@ export default function Login() {
       <div className="w-full max-w-[400px] flex flex-col items-center p-[10px] gap-y-[20px]">
         <Icon icon="Logo" size={70} />
         <div className="w-full flex flex-col gap-y-[20px]">
-          <InputWithLabel label="username">Username</InputWithLabel>
-          <InputWithLabel label="password" type="password">
+          <InputWithLabel
+            label="username"
+            value={username}
+            onChange={onChangeUsername}
+            isInvalid={isInValidUsername}
+            errMsg={usernameErrorMsg}
+          >
+            Username
+          </InputWithLabel>
+          <InputWithLabel
+            label="password"
+            value={password}
+            onChange={onChangePassword}
+            type="password"
+            isInvalid={isInValidPassword}
+            errMsg={passwordErrorMsg}
+          >
             Password
           </InputWithLabel>
         </div>

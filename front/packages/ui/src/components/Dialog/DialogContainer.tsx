@@ -4,6 +4,7 @@ import React from "react";
 import { DialogContainerProps } from "./Dialog.type";
 import { Portal } from "../Portal";
 import { Backdrop } from "../Backdrop";
+import { BsXLg } from "react-icons/bs";
 
 const DialogContainer = ({
   children,
@@ -29,8 +30,14 @@ const DialogContainer = ({
       }}
     >
       <Backdrop onClick={handleBackDropClick}>
-        <div className="bg-p2p-white rounded-[12px] p-[20px] shadow w-[320px]">
+        <div className="bg-p2p-white rounded-[12px] p-[20px] shadow w-[320px] relative">
           {children}
+          <button
+            onClick={onClose}
+            className="absolute right-[20px] top-[22px]"
+          >
+            <BsXLg />
+          </button>
         </div>
       </Backdrop>
     </Portal>
