@@ -1,6 +1,8 @@
 'use client';
 
-import useInput, { InputValueType } from '@/hooks/useInput';
+import useInput from '@/hooks/useInput';
+import apiRequest from '@/service/api/apiClient';
+import AuthService from '@/service/api/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ContainedButton, Icon, InputWithLabel, useDialog } from 'p2p-ui';
@@ -10,13 +12,13 @@ export default function Login() {
   const router = useRouter();
   const { showDialog, hideDialog } = useDialog();
 
-  const validateUsername = useCallback((username: InputValueType) => {
+  const validateUsername = useCallback((username: string) => {
     if (typeof username !== 'string' || !username.trim()) return '빈 값을 입력해주세요.';
     if (!/^[a-zA-Z0-9]+$/.test(username.trim())) return '사용자 이름은 영문 혹은 숫자로 입력해주세요.';
     return null;
   }, []);
 
-  const validatePassword = useCallback((password: InputValueType) => {
+  const validatePassword = useCallback((password: string) => {
     if (typeof password !== 'string' || !password.trim()) return '빈 값을 입력해주세요.';
     return null;
   }, []);
@@ -36,7 +38,7 @@ export default function Login() {
     validate: validatePasswordInput,
   } = useInput('', validatePassword);
 
-  const onClickLogin = () => {
+  const onClickLogin = async () => {
     const isUsernameValid = validateUsernameInput();
     const isPasswordValid = validatePasswordInput();
 
@@ -49,13 +51,20 @@ export default function Login() {
       return;
     }
 
-    console.log(`로그인시도: ${username}, ${password}`);
+    const data = await apiRequest.post('/auth/login', { username, password }, undefined, {
+      error: (message: string) => {
+        showDialog({
+          id: 'login-fail',
+          content: message,
+          actions: <ContainedButton onClick={() => hideDialog('login-fail')}>확인</ContainedButton>,
+        });
+      },
+    });
 
-    /** TODO: API 통신 코드 추가 */
-
-    /** 통신 성공 시 */
-    //app>(main)>page.tsx
-    // router.push('/');
+    if (data) {
+      //app>(main)>page.tsx
+      router.push('/');
+    }
   };
 
   return (

@@ -1,21 +1,19 @@
-import { ChangeEvent, Dispatch, InputHTMLAttributes, SetStateAction, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
-export type InputValueType = InputHTMLAttributes<HTMLInputElement>['value'];
-
-type Validator = (value: InputValueType) => string | null;
+type Validator = (value: string) => string | null;
 
 interface UseInputResult {
-  value: InputValueType;
+  value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  setValue: Dispatch<SetStateAction<InputValueType>>;
+  setValue: Dispatch<SetStateAction<string>>;
   errorMsg: string | null;
   isInvalid: boolean;
   validate: () => boolean;
   reset: () => void;
 }
 
-const useInput = (initialValue: InputValueType, validator?: Validator): UseInputResult => {
-  const [value, setValue] = useState<InputValueType>(initialValue);
+const useInput = (initialValue: string, validator?: Validator): UseInputResult => {
+  const [value, setValue] = useState<string>(initialValue);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
