@@ -3,14 +3,16 @@
 import useInput from '@/hooks/useInput';
 import apiRequest from '@/service/api/apiClient';
 import AuthService from '@/service/api/auth';
+import useAuthStore from '@/store/authStore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ContainedButton, Icon, InputWithLabel, useDialog } from 'p2p-ui';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export default function Login() {
   const router = useRouter();
   const { showDialog, hideDialog } = useDialog();
+  const { login, isLoggedIn } = useAuthStore();
 
   const validateUsername = useCallback((username: string) => {
     if (typeof username !== 'string' || !username.trim()) return '빈 값을 입력해주세요.';
@@ -51,21 +53,37 @@ export default function Login() {
       return;
     }
 
-    const data = await apiRequest.post('/auth/login', { username, password }, undefined, {
-      error: (message: string) => {
-        showDialog({
-          id: 'login-fail',
-          content: message,
-          actions: <ContainedButton onClick={() => hideDialog('login-fail')}>확인</ContainedButton>,
-        });
-      },
-    });
+    /** TODO: API 작업 시 코드 변경 */
+    // const loginResponse = await apiRequest.post('/auth/login', { username, password }, undefined, {
+    //   error: (message: string) => {
+    //     showDialog({
+    //       id: 'login-fail',
+    //       content: message,
+    //       actions: <ContainedButton onClick={() => hideDialog('login-fail')}>확인</ContainedButton>,
+    //     });
+    //   },
+    // });
 
-    if (data) {
+    const loginResponse = {
+      id: 1,
+      accessToken: 'sfldsskflsfksf',
+      usercode: '1',
+      username: 'dbal',
+      refreshToken: 'slkdfsjfls',
+      profileImagePath: '1',
+    };
+
+    if (loginResponse) {
+      login(loginResponse);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
       //app>(main)>page.tsx
       router.push('/');
     }
-  };
+  }, [isLoggedIn]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-y-[20px]">

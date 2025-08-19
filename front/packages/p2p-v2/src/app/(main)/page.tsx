@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 export default function Home() {
   const router = useRouter();
+  // const { login, isLoggedIn } = useAuthStore();
 
   useEffect(() => {
     router.push('/feed');
