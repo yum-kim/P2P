@@ -16,7 +16,7 @@ const colorThemes = {
 export const OutlinedButton = ({
   children,
   color = "purple",
-  loading = false,
+  isLoading = false,
   disabled = false,
   className,
   ...props
@@ -24,7 +24,7 @@ export const OutlinedButton = ({
   const theme = colorThemes[color];
   return (
     <button
-      disabled={loading || disabled}
+      disabled={isLoading || disabled}
       className={clsx(
         "flex gap-x-[10px] text-p2p-16 items-center rounded-md px-[10px] py-[8px] justify-center disabled:bg-p2p-secondary bg-p2p-white outline-1 outline focus:outline focus:outline-1 transition duration-100",
         theme.outline,
@@ -32,7 +32,7 @@ export const OutlinedButton = ({
       )}
       {...props}
     >
-      {loading && <Spinner />}
+      {isLoading && <Spinner />}
       <div className={theme.text}>{children}</div>
     </button>
   );

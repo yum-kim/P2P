@@ -18,7 +18,7 @@ const colorThemes = {
 export const ContainedButton = ({
   children,
   color = "purple",
-  loading = false,
+  isLoading = false,
   disabled = false,
   className,
   ...props
@@ -27,7 +27,7 @@ export const ContainedButton = ({
 
   return (
     <button
-      disabled={loading || disabled}
+      disabled={isLoading || disabled}
       className={clsx(
         "flex gap-x-[10px] text-p2p-16 items-center rounded-md px-[12px] py-[8px] justify-center hover:transition-colors hover:duration-100 disabled:bg-p2p-secondary",
         theme.bg,
@@ -36,7 +36,7 @@ export const ContainedButton = ({
       )}
       {...props}
     >
-      <>{loading && <Spinner />}</>
+      <>{isLoading && <Spinner />}</>
       <div className={theme.text}>{children}</div>
     </button>
   );

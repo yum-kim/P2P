@@ -31,10 +31,10 @@ apiClient.interceptors.response.use(
 
 /** API 요청 함수 */
 const apiRequest = {
-  get: async (
+  get: async <T>(
     url: string,
     config?: AxiosRequestConfig | null,
-    callback?: { success?: (message: string) => void; error?: (message: string) => void },
+    callback?: { success?: (data: T) => void; error?: (message: string) => void },
   ) => {
     const response = await apiClient.get(url, config === null ? undefined : config);
 
@@ -43,14 +43,14 @@ const apiRequest = {
       return;
     }
 
-    callback?.success?.(response.data.message);
+    callback?.success?.(response.data);
     return response.data;
   },
-  post: async <T>(
+  post: async <T, B>(
     url: string,
     data?: T,
     config?: AxiosRequestConfig | null,
-    callback?: { success?: (message: string) => void; error?: (message: string) => void },
+    callback?: { success?: (data: B) => void; error?: (message: string) => void },
   ) => {
     const response = await apiClient.post(url, data, config === null ? undefined : config);
 
@@ -59,14 +59,14 @@ const apiRequest = {
       return;
     }
 
-    callback?.success?.(response.data.message);
+    callback?.success?.(response.data);
     return response.data;
   },
-  put: async <T>(
+  put: async <T, B>(
     url: string,
     data?: T,
     config?: AxiosRequestConfig | null,
-    callback?: { success?: (message: string) => void; error?: (message: string) => void },
+    callback?: { success?: (data: B) => void; error?: (message: string) => void },
   ) => {
     const response = await apiClient.put(url, data, config === null ? undefined : config);
 
@@ -75,13 +75,13 @@ const apiRequest = {
       return;
     }
 
-    callback?.success?.(response.data.message);
+    callback?.success?.(response.data);
     return response.data;
   },
-  delete: async (
+  delete: async <T>(
     url: string,
     config?: AxiosRequestConfig | null,
-    callback?: { success?: (message: string) => void; error?: (message: string) => void },
+    callback?: { success?: (data: T) => void; error?: (message: string) => void },
   ) => {
     const response = await apiClient.delete(url, config === null ? undefined : config);
 
@@ -90,7 +90,7 @@ const apiRequest = {
       return;
     }
 
-    callback?.success?.(response.data.message);
+    callback?.success?.(response.data);
     return response.data;
   },
 };

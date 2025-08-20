@@ -1,50 +1,33 @@
 'use client';
 
-import useInput from '@/hooks/useInput';
 import apiRequest from '@/service/api/apiClient';
-import AuthService from '@/service/api/auth';
-import useAuthStore from '@/store/authStore';
+import useAuthStore, { AuthUser } from '@/store/authStore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ContainedButton, Icon, InputWithLabel, useDialog } from 'p2p-ui';
-import { useCallback, useEffect } from 'react';
+import { ContainedButton, Dialog, Icon, InputWithLabel, useDialog } from 'p2p-ui';
+import { useEffect } from 'react';
+import useLoginForm from './hooks/useLoginForm';
 
 export default function Login() {
   const router = useRouter();
   const { showDialog, hideDialog } = useDialog();
   const { login, isLoggedIn } = useAuthStore();
-
-  const validateUsername = useCallback((username: string) => {
-    if (typeof username !== 'string' || !username.trim()) return '빈 값을 입력해주세요.';
-    if (!/^[a-zA-Z0-9]+$/.test(username.trim())) return '사용자 이름은 영문 혹은 숫자로 입력해주세요.';
-    return null;
-  }, []);
-
-  const validatePassword = useCallback((password: string) => {
-    if (typeof password !== 'string' || !password.trim()) return '빈 값을 입력해주세요.';
-    return null;
-  }, []);
-
   const {
-    value: username,
-    onChange: onChangeUsername,
-    isInvalid: isInValidUsername,
-    errorMsg: usernameErrorMsg,
-    validate: validateUsernameInput,
-  } = useInput('', validateUsername);
-  const {
-    value: password,
-    onChange: onChangePassword,
-    isInvalid: isInValidPassword,
-    errorMsg: passwordErrorMsg,
-    validate: validatePasswordInput,
-  } = useInput('', validatePassword);
+    username,
+    password,
+    onChangeUsername,
+    onChangePassword,
+    isUsernameInvalid,
+    isPasswordInvalid,
+    usernameErrorMsg,
+    passwordErrorMsg,
+    validateAll,
+    getFormData,
+  } = useLoginForm();
 
   const onClickLogin = async () => {
-    const isUsernameValid = validateUsernameInput();
-    const isPasswordValid = validatePasswordInput();
-
-    if (!isUsernameValid || !isPasswordValid) {
+    const isValid = validateAll();
+    if (!isValid) {
       showDialog({
         id: 'validation-fail',
         content: '모든 필수값을 올바르게 입력해주세요.',
@@ -53,18 +36,19 @@ export default function Login() {
       return;
     }
 
-    /** TODO: API 작업 시 코드 변경 */
-    const data = await apiRequest.post('/auth/signin', { username, password }, null, {
+    const formData = getFormData();
+    await apiRequest.post('/auth/signin', formData, null, {
+      success: (data: AuthUser) => {
+        login(data);
+      },
       error: (message: string) => {
         showDialog({
           id: 'login-fail',
           content: message,
-          actions: <ContainedButton onClick={() => hideDialog('login-fail')}>확인</ContainedButton>,
+          actions: <Dialog.ContainedButton onClick={() => hideDialog('login-fail')}>확인</Dialog.ContainedButton>,
         });
       },
     });
-
-    if (data) login(data);
   };
 
   useEffect(() => {
@@ -83,7 +67,7 @@ export default function Login() {
             label="username"
             value={username}
             onChange={onChangeUsername}
-            isInvalid={isInValidUsername}
+            isInvalid={isUsernameInvalid}
             errMsg={usernameErrorMsg}
           >
             Username
@@ -93,7 +77,7 @@ export default function Login() {
             value={password}
             onChange={onChangePassword}
             type="password"
-            isInvalid={isInValidPassword}
+            isInvalid={isPasswordInvalid}
             errMsg={passwordErrorMsg}
           >
             Password

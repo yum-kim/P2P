@@ -27,14 +27,13 @@ const useAuthStore = create<AuthState & AuthAction>((set, get) => ({
   user: null,
 
   // action
-  login: (data) => {
+  login: (data: AuthUser) => {
     const user = { ...data };
     set({
       isLoggedIn: true,
       user,
     });
 
-    // console.log(user);
     if (data.accessToken) {
       localStorage.setItem('accessToken', data.accessToken);
     }
