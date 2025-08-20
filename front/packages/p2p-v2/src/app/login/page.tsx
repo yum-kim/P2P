@@ -54,28 +54,17 @@ export default function Login() {
     }
 
     /** TODO: API 작업 시 코드 변경 */
-    // const loginResponse = await apiRequest.post('/auth/login', { username, password }, undefined, {
-    //   error: (message: string) => {
-    //     showDialog({
-    //       id: 'login-fail',
-    //       content: message,
-    //       actions: <ContainedButton onClick={() => hideDialog('login-fail')}>확인</ContainedButton>,
-    //     });
-    //   },
-    // });
+    const data = await apiRequest.post('/auth/signin', { username, password }, null, {
+      error: (message: string) => {
+        showDialog({
+          id: 'login-fail',
+          content: message,
+          actions: <ContainedButton onClick={() => hideDialog('login-fail')}>확인</ContainedButton>,
+        });
+      },
+    });
 
-    const loginResponse = {
-      id: 1,
-      accessToken: 'sfldsskflsfksf',
-      usercode: '1',
-      username: 'dbal',
-      refreshToken: 'slkdfsjfls',
-      profileImagePath: '1',
-    };
-
-    if (loginResponse) {
-      login(loginResponse);
-    }
+    if (data) login(data);
   };
 
   useEffect(() => {
