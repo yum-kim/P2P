@@ -5,45 +5,36 @@ import useAuthStore, { AuthUser } from '@/store/authStore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ContainedButton, Dialog, Icon, InputWithLabel, useDialog } from 'p2p-ui';
-import useSignupForm from './hooks/useSignupForm';
+import { useForm } from 'react-hook-form';
+
+interface SignupFormInput {
+  username: string;
+  nickname: string;
+  password: string;
+  passwordConfirm: string;
+}
 
 export default function page() {
   const router = useRouter();
   const { showDialog, hideDialog } = useDialog();
   const { login } = useAuthStore();
   const {
-    username,
-    nickname,
-    password,
-    confirmPassword,
-    onChangeUsername,
-    onChangeNickname,
-    onChangePassword,
-    onChangeConfirmPassword,
-    isUsernameInvalid,
-    isNicknameInvalid,
-    isPasswordInvalid,
-    isConfirmPasswordInvalid,
-    usernameErrorMsg,
-    nicknameErrorMsg,
-    passwordErrorMsg,
-    confirmPasswordErrorMsg,
-    validateAll,
-    getFormData,
-  } = useSignupForm();
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormInput>();
 
-  const onClickSignup = async () => {
-    const isValid = validateAll();
-    if (!isValid) {
+  const onInValidSubmit = async () => {
+    if (Object.keys(errors).length > 0) {
       showDialog({
         id: 'signup-validation-fail',
         content: '모든 필수값을 올바르게 입력해주세요.',
         actions: <ContainedButton onClick={() => hideDialog('signup-validation-fail')}>확인</ContainedButton>,
       });
-      return;
     }
+  };
 
-    const formData = getFormData();
+  const onValidSubmit = async (formData: SignupFormInput) => {
     await apiRequest.post('/auth/signup', formData, null, {
       success: (data: AuthUser) => {
         login(data);
@@ -95,46 +86,59 @@ export default function page() {
         <div className="w-full flex flex-col gap-y-[20px] pb-[30px]">
           <InputWithLabel
             label="username"
-            value={username}
-            onChange={onChangeUsername}
-            isInvalid={isUsernameInvalid}
-            errMsg={usernameErrorMsg}
+            isInvalid={!!errors.username}
+            errMsg={errors.username?.message}
+            {...register('username', {
+              required: '사용자 이름을 입력해주세요',
+              pattern: {
+                value: /^[a-zA-Z0-9]+$/,
+                message: '사용자 이름은 영문 혹은 숫자로 입력해주세요.',
+              },
+            })}
           >
             Username
           </InputWithLabel>
           <div>
             <InputWithLabel
               label="nickname"
-              value={nickname}
-              onChange={onChangeNickname}
-              isInvalid={isNicknameInvalid}
-              errMsg={nicknameErrorMsg}
+              isInvalid={!!errors.nickname}
+              errMsg={errors.nickname?.message}
+              {...register('nickname', {
+                pattern: {
+                  value: /^[가-힣a-zA-Z0-9]{1,8}$/,
+                  message: '닉네임은 8자 이하의 한글, 영문, 숫자로 입력해주세요.',
+                },
+              })}
             >
               Nickname
             </InputWithLabel>
-            <span className="text-p2p-red pt-[8px] block">빈 값으로 제출 시 닉네임이 자동 생성됩니다.</span>
+            {!errors.nickname?.message && (
+              <span className="text-p2p-red pt-[8px] block">빈 값으로 제출 시 닉네임이 자동 생성됩니다.</span>
+            )}
           </div>
           <InputWithLabel
             label="password"
             type="password"
-            value={password}
-            onChange={onChangePassword}
-            isInvalid={isPasswordInvalid}
-            errMsg={passwordErrorMsg}
+            isInvalid={!!errors.password}
+            errMsg={errors.password?.message}
+            {...register('password', {
+              required: '비밀번호를 입력해주세요.',
+            })}
           >
             Password
           </InputWithLabel>
           <InputWithLabel
             label="confirmPassword"
             type="password"
-            value={confirmPassword}
-            onChange={onChangeConfirmPassword}
-            isInvalid={isConfirmPasswordInvalid}
-            errMsg={confirmPasswordErrorMsg}
+            isInvalid={!!errors.passwordConfirm}
+            errMsg={errors.passwordConfirm?.message}
+            {...register('passwordConfirm', {
+              required: '빈 값을 입력해주세요.',
+            })}
           >
             Confirm Password
           </InputWithLabel>
-          <ContainedButton className="w-full" onClick={onClickSignup}>
+          <ContainedButton className="w-full" onClick={handleSubmit(onValidSubmit, onInValidSubmit)}>
             Sign up
           </ContainedButton>
         </div>
