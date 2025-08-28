@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { Axios, AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -25,73 +25,50 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    return error.response;
+    if (typeof error.response?.data === 'object' && error.response.data !== null && 'message' in error.response.data) {
+      return Promise.reject(error.response?.data.message);
+    }
+    return Promise.reject(error.message);
   },
 );
 
 /** API 요청 함수 */
 const apiRequest = {
-  get: async <T>(
-    url: string,
-    config?: AxiosRequestConfig | null,
-    callback?: { success?: (data: T) => void; error?: (message: string) => void },
-  ) => {
-    const response = await apiClient.get(url, config === null ? undefined : config);
-
-    if (response.data.error) {
-      callback?.error?.(response.data.message);
-      return;
+  get: async (url: string, config?: AxiosRequestConfig | null) => {
+    try {
+      const response = await apiClient.get(url, config === null ? undefined : config);
+      return response.data;
+    } catch (message) {
+      console.error(message);
+      throw message;
     }
-
-    callback?.success?.(response.data);
-    return response.data;
   },
-  post: async <T, B>(
-    url: string,
-    data?: T,
-    config?: AxiosRequestConfig | null,
-    callback?: { success?: (data: B) => void; error?: (message: string) => void },
-  ) => {
-    const response = await apiClient.post(url, data, config === null ? undefined : config);
-
-    if (response.data.error) {
-      callback?.error?.(response.data.message);
-      return;
+  post: async <T>(url: string, data?: T, config?: AxiosRequestConfig | null) => {
+    try {
+      const response = await apiClient.post(url, data, config === null ? undefined : config);
+      return response.data;
+    } catch (message) {
+      console.error(message);
+      throw message;
     }
-
-    callback?.success?.(response.data);
-    return response.data;
   },
-  put: async <T, B>(
-    url: string,
-    data?: T,
-    config?: AxiosRequestConfig | null,
-    callback?: { success?: (data: B) => void; error?: (message: string) => void },
-  ) => {
-    const response = await apiClient.put(url, data, config === null ? undefined : config);
-
-    if (response.data.error) {
-      callback?.error?.(response.data.message);
-      return;
+  put: async <T>(url: string, data?: T, config?: AxiosRequestConfig | null) => {
+    try {
+      const response = await apiClient.put(url, data, config === null ? undefined : config);
+      return response.data;
+    } catch (message) {
+      console.error(message);
+      throw message;
     }
-
-    callback?.success?.(response.data);
-    return response.data;
   },
-  delete: async <T>(
-    url: string,
-    config?: AxiosRequestConfig | null,
-    callback?: { success?: (data: T) => void; error?: (message: string) => void },
-  ) => {
-    const response = await apiClient.delete(url, config === null ? undefined : config);
-
-    if (response.data.error) {
-      callback?.error?.(response.data.message);
-      return;
+  delete: async (url: string, config?: AxiosRequestConfig | null) => {
+    try {
+      const response = await apiClient.delete(url, config === null ? undefined : config);
+      return response.data;
+    } catch (message) {
+      console.error(message);
+      throw message;
     }
-
-    callback?.success?.(response.data);
-    return response.data;
   },
 };
 

@@ -2,6 +2,7 @@
 
 import apiRequest from '@/service/api/apiClient';
 import useAuthStore, { AuthUser } from '@/store/authStore';
+import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ContainedButton, Dialog, Icon, InputWithLabel, useDialog } from 'p2p-ui';
@@ -17,12 +18,58 @@ interface SignupFormInput {
 export default function page() {
   const router = useRouter();
   const { showDialog, hideDialog } = useDialog();
-  const { login } = useAuthStore();
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<SignupFormInput>();
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<SignupFormInput>({
+    defaultValues: {
+      username: '',
+      nickname: '',
+      password: '',
+      passwordConfirm: '',
+    },
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (formData: SignupFormInput) => {
+      return await apiRequest.post('/auth/signup', formData);
+    },
+    onSuccess: () => {
+      showDialog({
+        id: 'signup-success',
+        content: '회원가입에 성공했습니다. 로그인 화면으로 이동하시겠습니까?',
+        actions: (
+          <>
+            <Dialog.OutlinedButton
+              onClick={() => {
+                hideDialog('signup-success');
+                reset();
+              }}
+            >
+              아니오
+            </Dialog.OutlinedButton>
+            <Dialog.ContainedButton
+              onClick={() => {
+                hideDialog('signup-success');
+                router.push('/login');
+              }}
+            >
+              예
+            </Dialog.ContainedButton>
+          </>
+        ),
+      });
+    },
+    onError: (message: string) => {
+      showDialog({
+        id: 'signup-fail',
+        content: message,
+        actions: <Dialog.ContainedButton onClick={() => hideDialog('signup-fail')}>확인</Dialog.ContainedButton>,
+      });
+    },
+  });
 
   const onInValidSubmit = async () => {
     if (Object.keys(errors).length > 0) {
@@ -35,35 +82,7 @@ export default function page() {
   };
 
   const onValidSubmit = async (formData: SignupFormInput) => {
-    await apiRequest.post('/auth/signup', formData, null, {
-      success: (data: AuthUser) => {
-        login(data);
-        showDialog({
-          id: 'signup-success',
-          content: '회원가입에 성공했습니다. 로그인 화면으로 이동하시겠습니까?',
-          actions: (
-            <>
-              <Dialog.OutlinedButton onClick={() => hideDialog('signup-success')}>아니오</Dialog.OutlinedButton>
-              <Dialog.ContainedButton
-                onClick={() => {
-                  hideDialog('signup-success');
-                  router.push('/login');
-                }}
-              >
-                예
-              </Dialog.ContainedButton>
-            </>
-          ),
-        });
-      },
-      error: (message: string) => {
-        showDialog({
-          id: 'signup-fail',
-          content: message,
-          actions: <Dialog.ContainedButton onClick={() => hideDialog('signup-fail')}>확인</Dialog.ContainedButton>,
-        });
-      },
-    });
+    mutate(formData);
   };
 
   const onClickLoginButton = () => {
@@ -138,7 +157,12 @@ export default function page() {
           >
             Confirm Password
           </InputWithLabel>
-          <ContainedButton className="w-full" onClick={handleSubmit(onValidSubmit, onInValidSubmit)}>
+          <ContainedButton
+            className="w-full"
+            onClick={handleSubmit(onValidSubmit, onInValidSubmit)}
+            isLoading={isPending || isSubmitting}
+            disabled={isPending || isSubmitting}
+          >
             Sign up
           </ContainedButton>
         </div>

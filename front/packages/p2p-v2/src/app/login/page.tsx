@@ -2,6 +2,7 @@
 
 import apiRequest from '@/service/api/apiClient';
 import useAuthStore, { AuthUser } from '@/store/authStore';
+import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ContainedButton, Dialog, Icon, InputWithLabel, useDialog } from 'p2p-ui';
@@ -20,8 +21,27 @@ export default function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormInput>();
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (formData: LoginFormInput) => {
+      return await apiRequest.post('/auth/signin', formData);
+    },
+    onSuccess: (data: AuthUser) => {
+      login(data);
+    },
+    onError: (message: string) => {
+      showDialog({
+        id: 'login-fail',
+        content: message,
+        actions: <Dialog.ContainedButton onClick={() => hideDialog('login-fail')}>확인</Dialog.ContainedButton>,
+      });
+    },
+  });
+
+  const onValidSubmit = (formData: LoginFormInput) => {
+    mutate(formData);
+  };
 
   const onInvalidSubmit = () => {
     if (Object.keys(errors).length > 0) {
@@ -32,21 +52,6 @@ export default function Login() {
       });
       return;
     }
-  };
-
-  const onValidSubmit = async (formData: LoginFormInput) => {
-    await apiRequest.post('/auth/signin', formData, null, {
-      success: (data: AuthUser) => {
-        login(data);
-      },
-      error: (message: string) => {
-        showDialog({
-          id: 'login-fail',
-          content: message,
-          actions: <Dialog.ContainedButton onClick={() => hideDialog('login-fail')}>확인</Dialog.ContainedButton>,
-        });
-      },
-    });
   };
 
   useEffect(() => {
@@ -88,7 +93,13 @@ export default function Login() {
           </InputWithLabel>
         </div>
         <div className="w-full flex flex-col gap-y-[10px]">
-          <ContainedButton className="w-full" color="purple" onClick={handleSubmit(onValidSubmit, onInvalidSubmit)}>
+          <ContainedButton
+            className="w-full"
+            color="purple"
+            onClick={handleSubmit(onValidSubmit, onInvalidSubmit)}
+            isLoading={isPending || isSubmitting}
+            disabled={isPending || isSubmitting}
+          >
             Login
           </ContainedButton>
           <Link href="/signup">
